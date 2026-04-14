@@ -1,5 +1,50 @@
-import { theories, tagStyles, numStyles, proposals, eliminated, genTitles } from './data.js';
+import { theories, tagStyles, numStyles, proposals, eliminated, genTitles, disciplines } from './data.js';
 import { state } from './state.js';
+
+export function renderDisciplineOptions() {
+  const main = document.getElementById('mainDiscipline');
+  const sub = document.getElementById('subDiscipline');
+  if (!main || !sub) return;
+
+  // 避免重複渲染
+  if (main.options.length > 1) return;
+
+  Object.keys(disciplines).forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d;
+    main.appendChild(opt);
+  });
+
+  main.onchange = () => {
+    const val = main.value;
+    sub.innerHTML = '<option value="">請選擇子學科</option>';
+    if (val && disciplines[val]) {
+      sub.disabled = false;
+      disciplines[val].forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        sub.appendChild(opt);
+      });
+    } else {
+      sub.disabled = true;
+    }
+  };
+}
+
+export function renderConditions() {
+  const banner = document.getElementById('generationConditions');
+  if (!banner) return;
+  const { selectedTheories, seeds, iters } = state;
+  const theoryNames = Array.from(selectedTheories).map(i => theories[i].name).join('、');
+  banner.innerHTML = `
+    <div class="condition-item"><span class="condition-label">所選理論：</span><span class="condition-value">${theoryNames}</span></div>
+    <div class="condition-item"><span class="condition-label">種子數：</span><span class="condition-value">${seeds} 個</span></div>
+    <div class="condition-item"><span class="condition-label">迭代次數：</span><span class="condition-value">${iters} 次</span></div>
+  `;
+}
+
 
 export function renderTheories(onSelect) {
   const g = document.getElementById('theoryGrid');
@@ -55,6 +100,7 @@ export function goStep(n) {
 
 export function showResults() {
   goStep(4);
+  renderConditions();
   const paperDisplay = document.getElementById('displayPaperName');
   if (paperDisplay) paperDisplay.textContent = state.fileName || 'research_paper_demo.pdf';
   
@@ -74,7 +120,6 @@ export function showResults() {
       <div class="proposal-header" data-index="${i}">
         <div class="proposal-num" style="background:${ns.bg};color:${ns.color}">${i + 1}</div>
         <div class="proposal-title">${p.title}</div>
-        <div class="proposal-tag" style="background:${ts.bg};color:${ts.color}">${p.theory}</div>
         <span class="chevron" id="chev${i}">›</span>
       </div>
       <div class="proposal-body" id="body${i}">
@@ -190,14 +235,118 @@ export function copyProposal(i) {
   }, 2000);
 }
 
+export function renderPointRecords() {
+  const list = document.getElementById('pointRecordsList');
+  if (!list) return;
+  list.innerHTML = '';
+  state.pointRecords.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'record-item';
+    const ptsClass = r.points > 0 ? 'plus' : 'minus';
+    const ptsSign = r.points > 0 ? '+' : '';
+    item.innerHTML = `
+      <div class="record-desc">${r.desc}</div>
+      <div class="record-pts ${r.points > 0 ? 'plus' : 'minus'}">${r.points > 0 ? '+' : ''}${r.points} Pts</div>
+      <div class="record-date">${r.date}</div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+export function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (!list) return;
+  list.innerHTML = '';
+  if (state.history.length === 0) {
+    list.innerHTML = '<li class="history-item" style="color:#aaa; cursor:default; justify-content:center">尚無紀錄</li>';
+    return;
+  }
+  state.history.forEach(h => {
+    const item = document.createElement('li');
+    item.className = 'history-item';
+    item.innerHTML = `
+      <div class="history-content">
+        <div>${h.title}</div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px">${h.time}</div>
+      </div>
+      <button class="history-delete-btn" data-id="${h.id}">&#10005;</button>
+    `;
+    item.onclick = () => {
+       // Demo: Load this history
+       alert(`載入歷史紀錄：${h.title}`);
+    };
+    const delBtn = item.querySelector('.history-delete-btn');
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      state.history = state.history.filter(item => item.id !== h.id);
+      renderHistory();
+    };
+    list.appendChild(item);
+  });
+}
+
 export function updateUserUI() {
-  const { user } = state;
-  document.getElementById('userName').textContent = user.name;
-  document.getElementById('userStatus').textContent = user.status.replace('會員', '');
-  document.getElementById('userPoints').textContent = user.points;
-  document.getElementById('modalPoints').textContent = user.points;
-  document.getElementById('profileName').textContent = user.name;
-  document.getElementById('profileStatus').textContent = user.status;
+  const { user, isLoggedIn } = state;
+  const loginBtn = document.getElementById('loginBtn');
+  const memberBtn = document.getElementById('memberBtn');
+  const historyContainer = document.getElementById('historyContainer');
+  const uploadZone = document.getElementById('uploadZone');
+  const uploadTitle = document.getElementById('uploadTitle');
+  const uploadSub = document.getElementById('uploadSub');
+  const uploadIcon = document.getElementById('uploadIcon');
+  const step1Cta = document.getElementById('step1Cta');
+  const step1Note = document.getElementById('step1Note');
+
+  if (isLoggedIn) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (memberBtn) memberBtn.style.display = 'flex';
+    if (historyContainer) historyContainer.style.display = 'block';
+    
+    if (uploadZone) uploadZone.classList.remove('locked');
+    if (uploadTitle) uploadTitle.textContent = '拖放 PDF 論文，或點此選取';
+    if (uploadSub) uploadSub.textContent = '支援 PDF 格式，最大 50MB';
+    if (uploadIcon) {
+      uploadIcon.innerHTML = `
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto 1rem;display:block;opacity:0.3">
+          <rect x="8" y="4" width="18" height="26" rx="2" stroke="#1a1a18" stroke-width="1.5" />
+          <path d="M20 4v6h6" stroke="#1a1a18" stroke-width="1.5" />
+          <path d="M20 20v10M20 30l-4-4M20 30l4-4" stroke="#1a1a18" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      `;
+    }
+
+    if (step1Cta) step1Cta.style.display = 'flex';
+    if (step1Note) step1Note.style.display = 'block';
+
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userStatus').textContent = user.status.replace('會員', '');
+    document.getElementById('userPoints').textContent = user.points;
+    document.getElementById('modalPoints').textContent = user.points;
+    document.getElementById('profileName').textContent = user.name;
+    
+    renderPointRecords();
+    renderHistory();
+    renderDisciplineOptions();
+  } else {
+    if (loginBtn) loginBtn.style.display = 'flex';
+    if (memberBtn) memberBtn.style.display = 'none';
+    if (historyContainer) historyContainer.style.display = 'none';
+    
+    if (uploadZone) uploadZone.classList.add('locked');
+    if (uploadTitle) uploadTitle.textContent = '請先登入以解鎖上傳功能';
+    if (uploadSub) uploadSub.textContent = '登入後即可拖放 PDF 論文，或點此選取';
+    if (uploadIcon) {
+      uploadIcon.innerHTML = `
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 1rem;display:block;opacity:0.3">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      `;
+    }
+
+    if (step1Cta) step1Cta.style.display = 'none';
+    if (step1Note) step1Note.style.display = 'none';
+  }
 }
 
 export function toggleMemberModal(show) {

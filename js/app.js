@@ -15,10 +15,38 @@ function init() {
     };
   }
 
+  // Back to Landing
+  const backToLanding = document.getElementById('backToLanding');
+  if (backToLanding && landingPage && mainApp) {
+    backToLanding.onclick = (e) => {
+      e.preventDefault();
+      mainApp.style.display = 'none';
+      landingPage.style.display = 'flex';
+    };
+  }
+
   // Member Modal Events
   const memberBtn = document.getElementById('memberBtn');
+  const loginBtn = document.getElementById('loginBtn');
   const closeMemberBtn = document.getElementById('closeMemberBtn');
   const memberModal = document.getElementById('memberModal');
+
+  if (loginBtn) {
+    loginBtn.onclick = () => {
+      // 模擬登入流程
+      state.isLoggedIn = true;
+      updateUserUI();
+    };
+  }
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.onclick = () => {
+      state.isLoggedIn = false;
+      toggleMemberModal(false);
+      updateUserUI();
+    };
+  }
 
   if (memberBtn) memberBtn.onclick = () => toggleMemberModal(true);
   if (closeMemberBtn) closeMemberBtn.onclick = () => toggleMemberModal(false);
@@ -57,7 +85,10 @@ function init() {
   const fileName = document.getElementById('fileName');
 
   if (uploadZone && fileInput) {
-    uploadZone.onclick = () => fileInput.click();
+    uploadZone.onclick = () => {
+      if (!state.isLoggedIn) return; // 未登入不可點擊
+      fileInput.click();
+    };
     fileInput.onchange = e => {
       if (e.target.files[0]) {
         const file = e.target.files[0];
@@ -76,10 +107,16 @@ function init() {
         if (subjectContainer) subjectContainer.style.display = 'block';
       }
     };
-    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragging'); });
-    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragging'));
+    uploadZone.addEventListener('dragover', e => { 
+      e.preventDefault(); 
+      if (state.isLoggedIn) uploadZone.classList.add('dragging'); 
+    });
+    uploadZone.addEventListener('dragleave', () => {
+      if (state.isLoggedIn) uploadZone.classList.remove('dragging');
+    });
     uploadZone.addEventListener('drop', e => {
       e.preventDefault();
+      if (!state.isLoggedIn) return; // 未登入不可拖放
       uploadZone.classList.remove('dragging');
       if (e.dataTransfer.files[0]) {
         state.fileName = e.dataTransfer.files[0].name;
@@ -91,6 +128,10 @@ function init() {
 
   // Global functions exposed to HTML (or better, use event listeners)
   window.goToStep2Demo = () => {
+    if (!state.isLoggedIn) {
+      alert('請先登入！');
+      return;
+    }
     fileBadge.style.display = 'inline-flex';
     fileName.textContent = 'research_paper_demo.pdf';
     goStep(2);
