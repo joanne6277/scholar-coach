@@ -78,6 +78,20 @@ export function showResults() {
         <span class="chevron" id="chev${i}">›</span>
       </div>
       <div class="proposal-body" id="body${i}">
+        <div class="proposal-stats">
+          <div class="stat-item">
+            <div class="stat-label">勝場數</div>
+            <div class="stat-value">${p.wins}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">新穎性</div>
+            <div class="stat-value">${p.novelty}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">方法論</div>
+            <div class="stat-value" style="font-size:11px">${p.methodology}</div>
+          </div>
+        </div>
         <div class="proposal-section"><div class="ps-label">問題闡述</div><div class="ps-text">${p.problem}</div></div>
         <div class="proposal-section"><div class="ps-label">現有方法比較</div><div class="ps-text">${p.comparison}</div></div>
         <div class="proposal-section"><div class="ps-label">研究動機</div><div class="ps-text">${p.motivation}</div></div>

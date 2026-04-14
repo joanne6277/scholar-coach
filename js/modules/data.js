@@ -43,6 +43,7 @@ export const proposals = [
     motivation: "隨著穿戴裝置普及，整合客觀生理數據與主觀量表有望提高篩檢敏感度與特異性。",
     method: "設計結合心率變異性、睡眠品質與語音特徵的多模態特徵融合模型，搭配 PHQ-9 進行協同預測。",
     experiment: "招募社區樣本，持續追蹤 12 週穿戴數據並對照臨床診斷結果進行相關性分析。",
+    wins: 12, novelty: "98%", methodology: "多模態融合深度學習",
     references: [
       "Smith, J. et al. (2023). Multi-modal sensing for mental health. Nature Digital Medicine.",
       "Chen, L. (2022). Heart rate variability as a biomarker for depression. Journal of Affective Disorders."
@@ -54,7 +55,8 @@ export const proposals = [
     comparison: "文獻多以隨機對照試驗驗證療法效力，較少系統性分析無效案例的共同特徵。",
     motivation: "了解治療失敗的機制有助於設計更個人化的介入策略，提升整體治療效能。",
     method: "收集既有 RCT 中的無效案例，以紮根理論分析其基線認知特徵與治療反應模式。",
-    experiment: "對 50 位認知行為治療無效患者進行半結構式訪談，編碼分析核心失敗主題。"
+    experiment: "對 50 位認知行為治療無效患者進行半結構式訪談，編碼分析核心失敗主題。",
+    wins: 8, novelty: "85%", methodology: "紮根理論質性分析"
   },
   {
     theory: "尺度轉換", title: "從個人到社群：社會支持網絡密度對憂鬱症復發率的保護效果",
@@ -62,7 +64,8 @@ export const proposals = [
     comparison: "種子論文著重個人心理資源，現有社會學文獻未有效整合臨床結果指標。",
     motivation: "社群層次的網絡特性可能對個人復發率產生獨立保護效果，超越個人資源的影響。",
     method: "採用社會網絡分析量化個案的社會支持密度指標，追蹤 24 個月復發情況。",
-    experiment: "以長期縱向設計追蹤 200 位緩解期患者，每季評估網絡結構與心理健康指標。"
+    experiment: "以長期縱向設計追蹤 200 位緩解期患者，每季評估網絡結構與心理健康指標。",
+    wins: 5, novelty: "82%", methodology: "社會網絡分析 (SNA)"
   },
   {
     theory: "類比遷移", title: "借鑒工業品質管制的 SPC 方法監測門診患者情緒波動預警",
@@ -70,7 +73,8 @@ export const proposals = [
     comparison: "現有數位健康工具多為症狀回報，缺乏統計製程管制（SPC）的異常偵測邏輯。",
     motivation: "SPC 方法在工業場域已驗證對異常訊號的敏感偵測能力，具備跨域遷移潛力。",
     method: "將情緒日記數據轉化為時間序列，套用管制圖邏輯定義情緒惡化預警閾值。",
-    experiment: "以 6 個月 App 使用數據驗證 SPC 預警與實際就診紀錄的符合程度。"
+    experiment: "以 6 個月 App 使用數據驗證 SPC 預警與實際就診紀錄的符合程度。",
+    wins: 15, novelty: "96%", methodology: "統計製程管制 (SPC)"
   },
   {
     theory: "矛盾化解", title: "解決患者隱私需求與數據蒐集必要性的聯邦學習憂鬱預測架構",
@@ -78,7 +82,8 @@ export const proposals = [
     comparison: "現有預測模型多採集中式訓練，聯邦學習在心理健康場域應用尚屬少數。",
     motivation: "聯邦學習允許模型在本地訓練，在不上傳原始數據的前提下實現跨機構協作。",
     method: "建構跨院所聯邦學習框架，以差分隱私保護機制訓練憂鬱症風險預測模型。",
-    experiment: "聯合 3 家醫院進行模擬實驗，比較聯邦模型與集中式模型的預測效能差異。"
+    experiment: "聯合 3 家醫院進行模擬實驗，比較聯邦模型與集中式模型的預測效能差異。",
+    wins: 7, novelty: "75%", methodology: "聯邦學習 (Federated Learning)"
   },
   {
     theory: "邊界條件探索", title: "極端壓力事件後護理人員憂鬱症狀的特殊表現形式研究",
@@ -86,7 +91,8 @@ export const proposals = [
     comparison: "現有護理人員心理健康研究多採一般成人量表，未針對職業脈絡調整。",
     motivation: "極端職業壓力情境可能引發特殊的憂鬱表現型態，需要專用評估工具與介入策略。",
     method: "以現象學方法深度訪談經歷大規模傷亡事件的護理人員，建構特異症狀分類架構。",
-    experiment: "於重大災難事件後 3 個月內完成 30 位護理人員的深度訪談與縱向追蹤。"
+    experiment: "於重大災難事件後 3 個月內完成 30 位護理人員的深度訪談與縱向追蹤。",
+    wins: 4, novelty: "88%", methodology: "現象學質性研究"
   },
   {
     theory: "層次分解", title: "憂鬱症治療效果的多層次分解：患者、治療師與機構層次的變異分析",
@@ -94,7 +100,8 @@ export const proposals = [
     comparison: "現有療效研究多忽略層次結構，易產生生態謬誤與不當推論。",
     motivation: "多層次模型可量化各層次對治療結果的獨立貢獻，指引更精準的品質改善方向。",
     method: "收集多中心 RCT 數據，以多層線性模型分解患者、治療師與機構層次的效果變異。",
-    experiment: "分析 5 個臨床機構共 800 位患者數據，建立三層次治療效果歸因模型。"
+    experiment: "分析 5 個臨床機構共 800 位患者數據，建立三層次治療效果歸因模型。",
+    wins: 9, novelty: "72%", methodology: "多層線性模型 (HLM)"
   },
   {
     theory: "時間維度延伸", title: "憂鬱症首次發作後 10 年社會功能軌跡的潛在類別分析",
@@ -102,7 +109,8 @@ export const proposals = [
     comparison: "多數追蹤研究期間不超過 2 年，缺乏十年以上的縱向證據。",
     motivation: "識別不同恢復軌跡可指引個人化長期照護計畫，優化資源配置效率。",
     method: "以潛在類別成長分析（LCGA）識別首次發作後 10 年社會功能的異質軌跡群組。",
-    experiment: "追蹤首次就診後患者 10 年，每年施測社會功能量表並連結就業與住院紀錄。"
+    experiment: "追蹤首次就診後患者 10 年，每年施測社會功能量表並連結就業與住院紀錄。",
+    wins: 6, novelty: "68%", methodology: "潛在類別成長分析 (LCGA)"
   },
   {
     theory: "負向空間研究", title: "憂鬱症研究中被忽略的男性求助障礙：汙名、角色期待與服務可近性",
@@ -110,7 +118,8 @@ export const proposals = [
     comparison: "現有汙名研究多以女性或混合樣本為主，針對男性的質性探索相對稀少。",
     motivation: "填補男性求助行為的研究空白對提升整體就診率具有重要公衛意義。",
     method: "以現象學方法深度訪談拒絕或延遲就診的男性憂鬱症患者，萃取核心障礙主題。",
-    experiment: "招募 25 位符合 DSM-5 診斷但從未就診的男性，進行兩輪半結構式訪談。"
+    experiment: "招募 25 位符合 DSM-5 診斷但從未就診的男性，進行兩輪半結構式訪談。",
+    wins: 11, novelty: "92%", methodology: "現象學分析"
   },
   {
     theory: "系統動態建模", title: "憂鬱症復發的系統動態模型：壓力累積、社會支持與治療介入的回饋效應",
@@ -118,7 +127,8 @@ export const proposals = [
     comparison: "現有復發預測模型假設變項間線性關係，忽略系統回饋與閾值效應。",
     motivation: "系統動態方法可模擬壓力源、保護因子與治療之間的複雜互動關係。",
     method: "以系統動態建模方法建構憂鬱症復發模擬器，納入壓力累積、社會支持消耗與治療效益的回饋迴路。",
-    experiment: "以現有縱向研究數據校準模型參數，模擬不同介入時機對 5 年復發率的影響。"
+    experiment: "以現有縱向研究數據校準模型參數，模擬不同介入時機對 5 年復發率的影響。",
+    wins: 10, novelty: "97%", methodology: "系統動態學 (System Dynamics)"
   }
 ];
 
