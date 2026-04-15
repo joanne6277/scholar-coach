@@ -1,40 +1,3 @@
-export const theories = [
-  { name: "跨領域整合", desc: "結合不同學科方法論" },
-  { name: "逆向研究", desc: "從結果倒推原因機制" },
-  { name: "尺度轉換", desc: "微觀↔巨觀視角切換" },
-  { name: "類比遷移", desc: "借鑒其他領域的解法" },
-  { name: "矛盾化解", desc: "解決核心技術矛盾" },
-  { name: "邊界條件探索", desc: "極端情境下的行為研究" },
-  { name: "層次分解", desc: "拆解複雜系統各層次" },
-  { name: "時間維度延伸", desc: "縱向追蹤長期影響" },
-  { name: "負向空間研究", desc: "研究被忽略的缺失面向" },
-  { name: "系統動態建模", desc: "探討回饋迴路與湧現" }
-];
-
-export const tagStyles = [
-  { bg: "#eef2fd", color: "#2752b8" }, { bg: "#e1f5ee", color: "#0f6e56" },
-  { bg: "#eef7f0", color: "#27500a" }, { bg: "#faeeda", color: "#633806" },
-  { bg: "#faece7", color: "#712b13" }, { bg: "#e6f1fb", color: "#0c447c" },
-  { bg: "#fbeaf0", color: "#72243e" }, { bg: "#f1efe8", color: "#444441" },
-  { bg: "#fcebeb", color: "#791f1f" }, { bg: "#eef2fd", color: "#3c3489" }
-];
-
-export const numStyles = [
-  { bg: "#eef2fd", color: "#2752b8" }, { bg: "#e1f5ee", color: "#0f6e56" },
-  { bg: "#eef7f0", color: "#27500a" }, { bg: "#faeeda", color: "#633806" },
-  { bg: "#faece7", color: "#712b13" }, { bg: "#e6f1fb", color: "#0c447c" },
-  { bg: "#fbeaf0", color: "#72243e" }, { bg: "#f1efe8", color: "#444441" },
-  { bg: "#fcebeb", color: "#791f1f" }, { bg: "#eef2fd", color: "#3c3489" }
-];
-
-export const genTitles = [
-  ['正在分析論文...', '萃取詮釋資料與研究方法論'],
-  ['套用創新理論...', '生成多元研究視角種子想法'],
-  ['搜尋文獻資料庫...', '比對 PubMed、Google Scholar 等資料庫'],
-  ['新穎性過濾中...', '淘汰與現有研究高度重疊的方向'],
-  ['產出結構化提案...', '整合研究動機與試驗計畫']
-];
-
 export const proposals = [
   {
     theory: "跨領域整合", title: "整合可穿戴感測器與臨床問卷的多模態憂鬱症早期篩檢框架",
@@ -138,31 +101,3 @@ export const eliminated = [
   "運動介入對重鬱症的輔助療效（Cochrane 系統回顧已完整涵蓋）",
   "認知行為治療與藥物治療效果比較（多個 meta-analysis 已完成）"
 ];
-
-export const pointRecords = [
-  { type: "使用", points: -10, date: "2026-04-14 15:20", desc: "生成研究提案" },
-  { type: "儲值", points: 500, date: "2026-04-10 10:15", desc: "儲值套餐 B" },
-  { type: "使用", points: -10, date: "2026-04-09 14:20", desc: "生成研究提案" },
-  { type: "使用", points: -15, date: "2026-04-07 09:15", desc: "生成研究提案" },
-  { type: "儲值", points: 100, date: "2026-04-01 16:40", desc: "首充優惠" }
-];
-
-export const disciplines = {
-  "人文社會": ["心理學", "社會學", "傳播學", "教育學", "文學"],
-  "工程技術": ["電腦科學", "電機工程", "機械工程", "土木工程", "材料科學"],
-  "醫學健康": ["臨床醫學", "護理學", "公共衛生", "藥學", "復健醫學"],
-  "自然科學": ["物理學", "化學", "生物學", "地球科學", "環境科學"],
-  "管理商業": ["企業管理", "財務金融", "市場行銷", "資訊管理", "會計學"]
-};
-
-export const initialHistory = [
-  { id: 1, title: "失智症遠距照護研究", time: "昨天 14:20" },
-  { id: 2, title: "混合實境教學設計的成效", time: "3 天前 09:15" },
-  { id: 3, title: "高齡者睡眠品質分析", time: "5 天前 16:40" },
-  { id: 4, title: "區塊鏈在醫療紀錄的應用", time: "1 週前 10:00" },
-  { id: 5, title: "生成式 AI 對教育的衝擊", time: "2 週前 11:30" },
-  { id: 6, title: "永續城市發展策略研究", time: "2 週前 15:45" },
-  { id: 7, title: "遠距辦公對團隊協作影響", time: "1 個月前 09:20" },
-  { id: 8, title: "數位轉型中小企業個案分析", time: "1 個月前 14:10" }
-];
-

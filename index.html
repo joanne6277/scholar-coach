@@ -200,7 +200,7 @@
 
         <!-- Step 2: Settings -->
         <div class="step card" id="step2">
-          <div class="section-label" style="margin-top:0">快捷套餐方案</div>
+          <div class="section-label" style="margin-top:0">快速選擇</div>
           <div class="pkg-row">
             <button class="pkg-btn active" id="pkgSimple" onclick="setPackage('simple')">
               <div>簡易</div>
@@ -217,32 +217,35 @@
           </div>
 
           <div class="section-label">創新理論（可複選）</div>
+          <p class="section-subdesc">以 4 個方向、10 種經典理論框架引導 AI 發想，確保提出的研究提案有學術根據</p>
           <div class="select-all-row">
             <span id="theoryCount">已選 10 種</span>
             <button class="link-btn" onclick="toggleAllTheories()">全選 / 取消全選</button>
           </div>
-          <div class="theory-grid" id="theoryGrid"></div>
+          <div class="theory-grid-container" id="theoryGrid"></div>
 
-          <div class="section-label">每種理論生成種子想法數</div>
+          <div class="section-label">每種理論生成的初步創新想法數量</div>
           <div class="row-opts" id="seedOpts">
             <button class="opt-btn" onclick="selectOpt('seed',this,5)">5 個</button>
             <button class="opt-btn selected" onclick="selectOpt('seed',this,10)">10 個</button>
             <button class="opt-btn" onclick="selectOpt('seed',this,15)">15 個</button>
           </div>
+          <p class="info-text-blue">選擇多個理論，可以透過不同層次的交叉驗證，產出兼具學術深度與創新價值的提案。</p>
 
-          <div class="section-label">迭代次數</div>
+          <div class="section-label">迭代</div>
           <div class="row-opts" id="iterOpts">
             <button class="opt-btn selected" onclick="selectOpt('iter',this,1)">1 次</button>
             <button class="opt-btn" onclick="selectOpt('iter',this,2)">2 次</button>
             <button class="opt-btn" onclick="selectOpt('iter',this,3)">3 次</button>
           </div>
+          <p class="info-text-blue" style="margin-bottom: 12px;">AI 以初步的創新原型為核心，透過 RAG（檢索增強生成） 技術進行循環檢索與邏輯補強，在大幅減少AI幻覺的同時，將模糊概念轉化為具備理論深度與實作可能性的研究方案。<br>迭代越多次，系統越能精準串接外部權威文獻來填補知識空白，並在不斷的自我修正中，讓創新概念蛻變成具備高度可行性與學術深度的具體提案。</p>
 
-          <div class="section-label">自然語言條件（選填）</div>
+          <div class="section-label">客製化條件（選填）</div>
           <textarea class="nlp-input" id="nlpInput" placeholder="例：聚焦於台灣本土醫療情境、避免需要大型設備的實驗方法、優先考量臨床可行性..."></textarea>
 
           <div class="time-estimate">
             <div>
-              <div style="font-size:12px;color:#888;margin-bottom:3px">預估生成時間</div>
+              <div style="font-size:12px;color:#888;margin-bottom:3px">預估生成時間（部份情況可能出現偏差）</div>
               <div style="font-size:16px;font-weight:500" id="timeEst">約 4 分鐘</div>
               <div style="font-size:12px;color:#aaa;margin-top:3px" id="estDetail">10 理論 × 10 想法 × 1 迭代</div>
             </div>

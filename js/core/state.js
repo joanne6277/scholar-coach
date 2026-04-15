@@ -1,9 +1,19 @@
-import { theories, pointRecords, initialHistory } from './data.js';
+import { theories } from '../config/theories.js';
+import { pointRecords } from '../mock/pointRecords.js';
+import { initialHistory } from '../mock/history.js';
+
+// 將嵌套的理論扁平化，方便狀態管理（例如：'0-0' 代表第一個方向的第一個理論）
+const allTheories = [];
+theories.forEach((d, di) => {
+  d.items.forEach((t, ti) => {
+    allTheories.push(`${di}-${ti}`);
+  });
+});
 
 export const state = {
   isLoggedIn: false,
   currentStep: 1,
-  selectedTheories: new Set(theories.map((_, i) => i)),
+  selectedTheories: new Set(allTheories),
   seeds: 10,
   iters: 1,
   fileName: '',

@@ -1,6 +1,10 @@
-import { theories } from './modules/data.js';
-import { state, updateState } from './modules/state.js';
-import { renderTheories, updateEstimate, goStep, showResults, advanceGeneration, updateUserUI, toggleMemberModal, rechargePoints } from './modules/ui.js';
+import { theories } from './config/theories.js';
+import { state } from './core/state.js';
+import { goStep, updateUserUI } from './ui/Navigation.js';
+import { renderTheories, updateEstimate } from './ui/Settings.js';
+import { showResults } from './ui/Results.js';
+import { advanceGeneration } from './ui/Generation.js';
+import { toggleMemberModal, rechargePoints } from './ui/Member.js';
 
 function init() {
   // Landing Page Start Button
@@ -144,7 +148,15 @@ function init() {
     else if (type === 'advanced') { count = 5; s = 15; it = 2; }
 
     state.selectedTheories.clear();
-    for (let i = 0; i < count && i < theories.length; i++) state.selectedTheories.add(i);
+    let added = 0;
+    for (let di = 0; di < theories.length; di++) {
+      for (let ti = 0; ti < theories[di].items.length; ti++) {
+        if (added < count) {
+          state.selectedTheories.add(`${di}-${ti}`);
+          added++;
+        }
+      }
+    }
 
     state.seeds = s;
     state.iters = it;
@@ -161,9 +173,18 @@ function init() {
     updateEstimate();
   };
 
+  const totalTheoriesCount = theories.reduce((acc, dir) => acc + dir.items.length, 0);
+
   window.toggleAllTheories = () => {
-    if (state.selectedTheories.size === theories.length) state.selectedTheories.clear();
-    else theories.forEach((_, i) => state.selectedTheories.add(i));
+    if (state.selectedTheories.size === totalTheoriesCount) {
+      state.selectedTheories.clear();
+    } else {
+      theories.forEach((dir, di) => {
+        dir.items.forEach((_, ti) => {
+          state.selectedTheories.add(`${di}-${ti}`);
+        });
+      });
+    }
     renderTheories(updateEstimate);
     updateEstimate();
   };
