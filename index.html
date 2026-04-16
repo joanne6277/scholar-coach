@@ -13,15 +13,9 @@
   <div id="landingPage" class="landing-container">
     <div class="landing-content">
       <div class="hero-section">
-        <div class="landing-logo">
-          <svg width="64" height="64" viewBox="0 0 40 40" fill="none">
-            <rect x="8" y="4" width="24" height="32" rx="3" stroke="#2752b8" stroke-width="2" />
-            <path d="M20 4v8h8" stroke="#2752b8" stroke-width="2" />
-            <path d="M14 20h12M14 26h12M14 14h4" stroke="#2752b8" stroke-width="2" stroke-linecap="round" />
-          </svg>
+        <div class="main-brand-container">
+          <img src="demo附圖/566916.jpg" alt="Scholar Coach Brand" class="hero-brand-img">
         </div>
-        <h1 class="landing-title">Scholar Coach</h1>
-        <p class="landing-subtitle">讓 AI 助你一臂之力，從現有論文激發創新研究靈感</p>
         <button id="startBtn" class="btn-start">開始使用</button>
       </div>
 
@@ -96,12 +90,7 @@
     <div class="top-nav">
       <div class="logo-container">
         <a href="#" id="backToLanding" class="logo-link">
-          <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-            <rect x="8" y="4" width="24" height="32" rx="3" stroke="#2752b8" stroke-width="2" />
-            <path d="M20 4v8h8" stroke="#2752b8" stroke-width="2" />
-            <path d="M14 20h12M14 26h12M14 14h4" stroke="#2752b8" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <span>Scholar Coach</span>
+          <span class="nav-brand">SCHOLAR C<span class="brand-o">O</span>ACH</span>
         </a>
         <p class="nav-subtitle">從現有論文自動生成具創新性的後續研究提案</p>
       </div>
@@ -303,8 +292,14 @@
           </div>
           <div id="proposalList"></div>
           <div class="bottom-actions">
-            <button class="revival-btn" onclick="toggleRevival()">&#8617; 敗部復活</button>
-            <button class="redo-btn" onclick="goStep(2)">&#8635; 重新生成</button>
+            <div class="action-item">
+              <button class="revival-btn" onclick="toggleRevival()">&#8617; 敗部復活</button>
+              <p class="action-desc">查看迭代過程中生成的其他研究提案</p>
+            </div>
+            <div class="action-item">
+              <button class="redo-btn" onclick="goStep(2)">&#8635; 重新生成</button>
+              <p class="action-desc">調整設定條件，重新對目前使用的文獻生成研究提案（可能會出現部分相似的提案）</p>
+            </div>
           </div>
           <div class="revival-panel" id="revivalPanel">
             <h4>已被過濾的研究方向（因文獻重複而淘汰）</h4>
@@ -361,16 +356,6 @@
   </div>
 
   <script type="module" src="js/app.js"></script>
-</body>
-
-</html>
-
-</div>
-</div>
-</div>
-</div>
-
-<script type="module" src="js/app.js"></script>
 </body>
 
 </html>
