@@ -1,6 +1,5 @@
 import { state } from '../core/state.js';
 import { renderHistory } from './History.js';
-import { renderPointRecords } from './Member.js';
 import { renderDisciplineOptions } from './Upload.js';
 
 export function goStep(n) {
@@ -58,7 +57,9 @@ export function updateUserUI() {
     document.getElementById('modalPoints').textContent = user.points;
     document.getElementById('profileName').textContent = user.name;
     
-    renderPointRecords();
+    if (window.renderPointRecords) {
+      window.renderPointRecords();
+    }
     renderHistory();
     renderDisciplineOptions();
   } else {

@@ -1,5 +1,20 @@
 # Daily Log
 
+## 2026-05-26
+- **修復模組循環依賴導致首頁「開始使用」按鈕無反應之問題**：
+  - **修復 Navigation.js 與 Member.js 的循環導入**：移除 `js/ui/Navigation.js` 中對 `js/ui/Member.js` 的直接導入，將 `renderPointRecords()` 的調用改為動態檢測 `window.renderPointRecords` 屬性。
+  - **全域屬性掛載**：在 `js/ui/Member.js` 中將 `renderPointRecords` 函數掛載至 `window` 全域物件，徹底解除模組間的循環引用，修復 JS 載入阻塞並恢復完整的頁面初始化流程。
+- **實作 LINE Pay 模擬儲值金流流程**：
+  - **HTML 結構擴充**：於 `index.html` 中新增 `#paymentModal`（LINE Pay 模擬收銀台彈窗），包含「訂單確認」、「LINE Pay 手機模擬器（QR Code 掃描/帳密登入）」、「付款處理中」及「付款成功」四個子畫面。
+  - **CSS 樣式升級**：於 `css/main.css` 中實作 LINE Pay 專屬綠色品牌視覺，包含手機外框模擬、動態 QR Code 綠色雷射掃描線動畫、指紋按鈕脈衝特效、付款加載 Spinner 及儲值成功收據樣式。
+  - **金流與狀態邏輯實作**：於 `js/ui/Member.js` 中重構 `rechargePoints()` 並實作 `openPaymentModal()`、`closePaymentModal()`、`switchLpTab()` 及 `initPaymentEvents()` 等核心流程。模擬扣款完成後自動增值 `state.user.points`，並在點數明細中即時插入帶有當前時間的儲值紀錄。
+  - **全域事件註冊**：於 `js/app.js` 中導入並註冊 window 級金流控制函數，並初始化金流事件監聽。
+- **實作 Google 第三方登入/註冊流程**：
+  - **HTML 結構擴充**：於 `index.html` 尾部新增 Google 登入/註冊彈窗 (`#authModal`)，設計包含主登入畫面、選擇帳戶面板、自訂模擬帳戶表單以及載入狀態等 4 個步驟的子視圖結構。
+  - **CSS 樣式升級**：於 `css/main.css` 中實作了符合 Google 設計規範的 G 圖示登入按鈕、Google 帳戶選擇卡片、四色流光載入 Spinner，以及極具視覺效果的噴射 Confetti (彩紙花) 成功動畫。
+  - **新建 Auth UI 模組**：建立 `js/ui/Auth.js` 以控制登入彈窗轉場邏輯。支援點擊預設帳戶「林小明」快速登入，或選擇「使用其他帳戶」讓使用者自訂姓名與 Google 信箱，模擬真實註冊情境。
+  - **互動體驗優化**：修改 `js/app.js`，將原有的點擊登入按鈕改為啟動 Google 登入流程；優化「上傳論文鎖定區」與「繼續設定條件」按鈕，若訪客未登入點擊時，改為引導開啟登入彈窗，而非原本簡單的瀏覽器警告。
+
 ## 2026-04-24
 - **替換 Demo 結果為 Base Results 資料**：
   - 將 `js/mock/proposals.js` 中的 10 個研究提案替換為來自 `demo附圖/base_results/result.md` 的繼承法相關研究提案。

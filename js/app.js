@@ -4,7 +4,8 @@ import { goStep, updateUserUI } from './ui/Navigation.js';
 import { renderTheories, updateEstimate } from './ui/Settings.js';
 import { showResults } from './ui/Results.js';
 import { advanceGeneration } from './ui/Generation.js';
-import { toggleMemberModal, rechargePoints } from './ui/Member.js';
+import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
+import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
 
 function init() {
   // Landing Page Start Button
@@ -37,9 +38,7 @@ function init() {
 
   if (loginBtn) {
     loginBtn.onclick = () => {
-      // 模擬登入流程
-      state.isLoggedIn = true;
-      updateUserUI();
+      toggleAuthModal(true);
     };
   }
 
@@ -90,7 +89,10 @@ function init() {
 
   if (uploadZone && fileInput) {
     uploadZone.onclick = () => {
-      if (!state.isLoggedIn) return; // 未登入不可點擊
+      if (!state.isLoggedIn) {
+        toggleAuthModal(true);
+        return;
+      }
       fileInput.click();
     };
     fileInput.onchange = e => {
@@ -133,7 +135,7 @@ function init() {
   // Global functions exposed to HTML (or better, use event listeners)
   window.goToStep2Demo = () => {
     if (!state.isLoggedIn) {
-      alert('請先登入！');
+      toggleAuthModal(true);
       return;
     }
     fileBadge.style.display = 'inline-flex';
@@ -211,6 +213,12 @@ function init() {
   };
 
   window.rechargePoints = (pts, price) => rechargePoints(pts, price);
+  window.openPaymentModal = (pts, price) => openPaymentModal(pts, price);
+  window.closePaymentModal = () => closePaymentModal();
+  
+  // 初始化登入彈窗與支付彈窗事件
+  initAuthEvents();
+  initPaymentEvents();
 }
 
 document.addEventListener('DOMContentLoaded', init);
