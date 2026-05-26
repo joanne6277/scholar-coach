@@ -9,7 +9,7 @@ export function renderConditions() {
   const banner = document.getElementById('generationConditions');
   if (!banner) return;
   const { selectedTheories, seeds, iters } = state;
-  
+
   // 根據 "di-ti" 格式解索理論名稱
   const theoryNames = Array.from(selectedTheories).map(key => {
     const [di, ti] = key.split('-').map(Number);
@@ -28,7 +28,7 @@ export function showResults() {
   renderConditions();
   const paperDisplay = document.getElementById('displayPaperName');
   if (paperDisplay) paperDisplay.textContent = state.fileName || 'research_paper_demo.pdf';
-  
+
   const resultSubjectInput = document.getElementById('resultSubjectInput');
   if (resultSubjectInput) resultSubjectInput.value = state.researchSubject || '未命名研究主題';
 
@@ -82,10 +82,10 @@ export function showResults() {
         <div class="card-actions">
           <div class="feedback-actions">
             <button class="like-btn" id="likebtn${i}" data-index="${i}">
-              <span class="fb-icon">👍</span> <span class="fb-text">正讚</span>
+              <span class="fb-icon">👍</span>
             </button>
             <button class="dislike-btn" id="dislikebtn${i}" data-index="${i}">
-              <span class="fb-icon">👎</span> <span class="fb-text">倒讚</span>
+              <span class="fb-icon">👎</span>
             </button>
           </div>
           <button class="copy-btn" id="copybtn${i}" data-index="${i}">
@@ -165,7 +165,7 @@ export function toggleReferences(i) {
   const isOpen = list.classList.contains('open');
   list.classList.toggle('open', !isOpen);
   chev.style.transform = isOpen ? '' : 'rotate(90deg)';
-  
+
   const btn = document.querySelector(`.ref-toggle-btn[data-index="${i}"]`);
   if (btn) {
     btn.firstChild.textContent = isOpen ? '顯示參考文獻 (2) ' : '隱藏參考文獻 ';

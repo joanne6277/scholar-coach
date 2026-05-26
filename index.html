@@ -180,7 +180,6 @@
           <div class="cta-row" id="step1Cta" style="display: none;">
             <button class="btn-primary" onclick="goToStep2Demo()">繼續設定條件 ›</button>
           </div>
-          <p class="demo-note" id="step1Note" style="display: none;">Demo 模式：點擊繼續可略過上傳直接體驗完整流程</p>
         </div>
 
         <!-- Step 2: Settings -->
@@ -289,17 +288,13 @@
           <div id="proposalList"></div>
           <div class="bottom-actions">
             <div class="action-item">
-              <button class="revival-btn" onclick="toggleRevival()">&#8617; 敗部復活</button>
-              <p class="action-desc">查看迭代過程中生成的其他研究提案</p>
-            </div>
-            <div class="action-item">
               <button class="redo-btn" onclick="goStep(2)">&#8635; 重新生成</button>
               <p class="action-desc">調整設定條件，重新對目前使用的文獻生成研究提案（可能會出現部分相似的提案）</p>
             </div>
-          </div>
-          <div class="revival-panel" id="revivalPanel">
-            <h4>已被過濾的研究方向（因文獻重複而淘汰）</h4>
-            <ul class="eliminated-list" id="eliminatedList"></ul>
+            <div class="action-item">
+              <button class="analyze-another-btn" id="analyzeAnotherBtn">&#10227; 分析另一篇</button>
+              <p class="action-desc">返回上傳頁面，上傳其他文獻以生成全新主題的研究提案</p>
+            </div>
           </div>
         </div>
       </div>

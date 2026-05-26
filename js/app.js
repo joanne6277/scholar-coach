@@ -137,11 +137,14 @@ function init() {
   // Global functions exposed to HTML (or better, use event listeners)
   window.goToStep2Demo = () => {
     if (!state.isLoggedIn) {
+      showToast("請先登入帳戶！", "warning");
       toggleAuthModal(true);
       return;
     }
-    fileBadge.style.display = 'inline-flex';
-    fileName.textContent = 'research_paper_demo.pdf';
+    if (!state.fileName) {
+      showToast("請先上傳核心論文 PDF！", "warning");
+      return;
+    }
     goStep(2);
   };
 
@@ -257,10 +260,40 @@ function init() {
     });
   };
 
-  window.toggleRevival = () => {
-    const panel = document.getElementById('revivalPanel');
-    if (panel) panel.classList.toggle('open');
-  };
+  // 綁定「分析另一篇」按鈕事件
+  const analyzeAnotherBtn = document.getElementById('analyzeAnotherBtn');
+  if (analyzeAnotherBtn) {
+    analyzeAnotherBtn.onclick = () => {
+      // 1. 重設上傳狀態與 UI
+      state.fileName = '';
+      state.researchSubject = '';
+      
+      const fileBadge = document.getElementById('fileBadge');
+      const fileName = document.getElementById('fileName');
+      const uploadTitle = document.getElementById('uploadTitle');
+      const uploadSub = document.getElementById('uploadSub');
+      const subjectInput = document.getElementById('subjectInput');
+      const resultSubjectInput = document.getElementById('resultSubjectInput');
+      const subjectContainer = document.getElementById('subjectContainer');
+      const mainDiscipline = document.getElementById('mainDiscipline');
+      
+      if (fileBadge) fileBadge.style.display = 'none';
+      if (fileName) fileName.textContent = '';
+      if (uploadTitle) uploadTitle.textContent = '拖放 PDF 論文，或點此選取';
+      if (uploadSub) uploadSub.textContent = '支援 PDF 格式，最大 50MB';
+      if (subjectInput) subjectInput.value = '';
+      if (resultSubjectInput) resultSubjectInput.value = '';
+      if (subjectContainer) subjectContainer.style.display = 'none';
+      if (mainDiscipline) mainDiscipline.value = '';
+      
+      const fileInput = document.getElementById('fileInput');
+      if (fileInput) fileInput.value = '';
+      
+      // 2. 返回第一頁
+      goStep(1);
+      showToast("已重設狀態，請上傳新論文", "info");
+    };
+  }
 
   window.rechargePoints = (pts, price) => rechargePoints(pts, price);
   window.openPaymentModal = (pts, price) => openPaymentModal(pts, price);

@@ -1084,7 +1084,7 @@ body {
   gap: 8px;
 }
 
-.revival-btn, .redo-btn {
+.redo-btn, .analyze-another-btn {
   width: 100%;
   padding: 14px;
   border-radius: 10px;
@@ -1094,12 +1094,17 @@ body {
   transition: all 0.2s;
 }
 
-.revival-btn:hover {
-  background: #e2e8f0;
-}
-
 .redo-btn:hover {
   background: #e2e2e2;
+}
+
+.analyze-another-btn {
+  background: #eef2fd;
+  color: var(--primary);
+}
+
+.analyze-another-btn:hover {
+  background: rgba(39, 82, 184, 0.15);
 }
 
 .action-desc {
@@ -1109,54 +1114,9 @@ body {
   padding: 0 4px;
 }
 
-.revival-btn {
-  background: #f1f5f9;
-  color: #64748b;
-}
-
 .redo-btn {
   background: #eee;
   color: #666;
-}
-
-.revival-panel {
-  margin-top: 24px;
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  padding: 24px;
-  display: none;
-}
-
-.revival-panel.open {
-  display: block;
-}
-
-.revival-panel h4 {
-  font-size: 15px;
-  margin-bottom: 16px;
-}
-
-.eliminated-list {
-  list-style: none;
-}
-
-.eliminated-list li {
-  font-size: 13px;
-  padding: 12px 0;
-  border-bottom: 1px solid #f1f1f1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.revive-btn {
-  background: none;
-  border: 1px solid var(--border);
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 11px;
-  cursor: pointer;
 }
 
 /* --- Modals --- */
