@@ -1,6 +1,13 @@
 # Daily Log
 
 ## 2026-05-26
+- **於事件追蹤規劃中整合使用者評價**：
+  - **規劃評價事件與指標**：於 [event_tracking_plan.md](file:///d:/A11277/Documents/02-產品/蟑螂/event_tracking_plan.md) 中新增 `proposal_feedback` 事件追蹤規格（包含序號、名稱、正讚/倒讚/取消類型以及操作動作等屬性規格）。同時在 KPIs 指標看板增設「提案正讚率」，並於範例代碼中追加評價點讚的前端 GA4 埋點呼叫示範。
+- **提案結果卡片新增正/倒讚按鈕與微動態回饋**：
+  - **按鈕結構與交互**：於 `js/ui/Results.js` 中為每個提案卡片渲染底部的評價按鈕組 (`.feedback-actions`)，提供👍正讚與👎倒讚按鈕，並實作 `handleFeedback` 邏輯：正讚與倒讚互斥、再次點選取消高亮，並連動全局 Toast 系統發送感謝提示。
+  - **樣式與彈跳微動畫**：於 `css/main.css` 中重構底部的 `.card-actions` 為雙向排版。設計正/倒讚按鈕的現代化卡片式 Hover/Active 視覺色彩轉場，並以 `@keyframes fb-icon-pop` 實作點選高亮時的 Thumbs 圖示彈跳放大微動畫，強化按鍵回饋感。
+- **建立數據事件追蹤規格文件**：
+  - **規劃事件追蹤規格**：於根目錄新建 [event_tracking_plan.md](file:///d:/A11277/Documents/02-產品/蟑螂/event_tracking_plan.md)，針對 Scholar Coach 的核心漏斗（登入、上傳、生成、儲值）提供詳盡的事件名稱、觸發時機、事件屬性規格；並規劃了關鍵業務 KPI 指標與前端埋點（GA4 規格）的實作代碼範例。
 - **實作全局 Premium 級 Toast 提示系統與流程優化**：
   - **新增 Toast 元件**：新建 `js/utils/Toast.js` 檔案，實作 Vanilla JS Toast 控制器，提供 `showToast(message, type, duration)` 全局呼叫介面，支援定時自動關閉與手動關閉。
   - **樣式視覺升級**：於 `css/main.css` 中，實作具備磨砂玻璃效果（`backdrop-filter: blur(12px)`）的 Toast 容器與卡片，設計向右彈性滑入登場與漸變滑出淡出動畫；並針對 `success`、`error`、`warning`、`info` 四種狀態配置對應的品牌前綴圖示與左側強調線配色。

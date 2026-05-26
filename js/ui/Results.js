@@ -80,6 +80,14 @@ export function showResults() {
           </div>
         </div>
         <div class="card-actions">
+          <div class="feedback-actions">
+            <button class="like-btn" id="likebtn${i}" data-index="${i}">
+              <span class="fb-icon">👍</span> <span class="fb-text">正讚</span>
+            </button>
+            <button class="dislike-btn" id="dislikebtn${i}" data-index="${i}">
+              <span class="fb-icon">👎</span> <span class="fb-text">倒讚</span>
+            </button>
+          </div>
           <button class="copy-btn" id="copybtn${i}" data-index="${i}">
             <span>&#10697;</span> 複製提案
           </button>
@@ -96,6 +104,18 @@ export function showResults() {
     btn.onclick = (e) => {
       e.stopPropagation();
       copyProposal(btn.dataset.index);
+    };
+  });
+  list.querySelectorAll('.like-btn').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      handleFeedback(btn.dataset.index, 'like');
+    };
+  });
+  list.querySelectorAll('.dislike-btn').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      handleFeedback(btn.dataset.index, 'dislike');
     };
   });
   list.querySelectorAll('.ref-toggle-btn').forEach(btn => {
@@ -160,4 +180,28 @@ export function copyProposal(i) {
     btn.classList.remove('copied');
     btn.innerHTML = '<span>&#10697;</span> 複製提案';
   }, 2000);
+}
+
+export function handleFeedback(index, type) {
+  const likeBtn = document.getElementById('likebtn' + index);
+  const dislikeBtn = document.getElementById('dislikebtn' + index);
+  if (!likeBtn || !dislikeBtn) return;
+
+  if (type === 'like') {
+    if (likeBtn.classList.contains('active')) {
+      likeBtn.classList.remove('active');
+    } else {
+      likeBtn.classList.add('active');
+      dislikeBtn.classList.remove('active');
+      showToast("感謝您的正讚回饋！", "success", 2000);
+    }
+  } else if (type === 'dislike') {
+    if (dislikeBtn.classList.contains('active')) {
+      dislikeBtn.classList.remove('active');
+    } else {
+      dislikeBtn.classList.add('active');
+      likeBtn.classList.remove('active');
+      showToast("已收到您的倒讚回饋，我們將持續優化生成品質！", "info", 2000);
+    }
+  }
 }
