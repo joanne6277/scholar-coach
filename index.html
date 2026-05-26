@@ -344,6 +344,29 @@
               <span class="r-badge">最划算</span>
             </button>
           </div>
+          
+          <!-- 自訂儲值點數區 -->
+          <div class="custom-recharge-box">
+            <div class="custom-recharge-divider">
+              <span>或 自訂儲值點數</span>
+            </div>
+            <div class="custom-recharge-row">
+              <div class="custom-input-wrapper">
+                <input type="number" id="customPtsInput" placeholder="請輸入欲儲值點數" min="1" step="1">
+                <span class="custom-input-unit">點</span>
+              </div>
+              <div class="custom-price-info">
+                <div class="custom-price-num" id="customPriceNum">NT$ 0</div>
+                <div class="custom-price-desc">請輸入點數</div>
+              </div>
+            </div>
+            <div class="custom-rate-hint">
+              💡 階梯優惠：1-99點 NT$3/點 | 100-499點 NT$2.8/點 | 500點以上 NT$2.4/點
+            </div>
+            <button class="custom-pay-submit-btn" id="customPaySubmitBtn" disabled>
+              進行自訂點數儲值
+            </button>
+          </div>
         </div>
 
         <div class="records-section">

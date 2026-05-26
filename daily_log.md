@@ -1,6 +1,10 @@
 # Daily Log
 
 ## 2026-05-26
+- **實作自訂點數儲值與金流串接**：
+  - **HTML 結構擴充**：於 `index.html` 的 `#memberModal` 內新增自訂儲值點數區（包含輸入框、估算金額、階梯優惠提示與儲值確認按鈕）。
+  - **CSS 樣式升級**：於 `css/main.css` 中實作自訂點數儲值區樣式，包括分隔線、隱藏原生數字微調按鈕、輸入框 Focus 與按鈕啟用/停用之視覺轉場，維持與原介面一致的 Premium 質感。
+  - **金流邏輯與計價模型**：於 `js/ui/Member.js` 中擴充 `toggleMemberModal()` 確保關閉/開啟時自動清空暫存數據；並在 `initPaymentEvents()` 中實作即時監聽與防呆（自動向下取整數、過濾小於等於 0 之無效輸入），套用階梯優惠（1-99點 NT$3/點；100-499點 NT$2.8/點；500點以上 NT$2.4/點）動態折算實付金額，點擊時直接串接至現有 LINE Pay 模擬金流流程。
 - **修復模組循環依賴導致首頁「開始使用」按鈕無反應之問題**：
   - **修復 Navigation.js 與 Member.js 的循環導入**：移除 `js/ui/Navigation.js` 中對 `js/ui/Member.js` 的直接導入，將 `renderPointRecords()` 的調用改為動態檢測 `window.renderPointRecords` 屬性。
   - **全域屬性掛載**：在 `js/ui/Member.js` 中將 `renderPointRecords` 函數掛載至 `window` 全域物件，徹底解除模組間的循環引用，修復 JS 載入阻塞並恢復完整的頁面初始化流程。

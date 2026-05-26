@@ -7,7 +7,21 @@ export function toggleMemberModal(show) {
   const modal = document.getElementById('memberModal');
   if (modal) {
     modal.style.display = show ? 'flex' : 'none';
-    if (show) updateUserUI();
+    if (show) {
+      updateUserUI();
+      // 重設自訂點數儲值輸入框與金額估算
+      const customPtsInput = document.getElementById('customPtsInput');
+      const customPriceNum = document.getElementById('customPriceNum');
+      const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
+      const customPriceDesc = document.querySelector('#memberModal .custom-price-desc');
+      if (customPtsInput) customPtsInput.value = '';
+      if (customPriceNum) {
+        customPriceNum.textContent = 'NT$ 0';
+        customPriceNum.classList.remove('active');
+      }
+      if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
+      if (customPaySubmitBtn) customPaySubmitBtn.disabled = true;
+    }
   }
 }
 
@@ -210,6 +224,67 @@ export function initPaymentEvents() {
   if (paySuccessDoneBtn) {
     paySuccessDoneBtn.onclick = () => {
       closePaymentModal();
+    };
+  }
+
+  // --- 自訂儲值點數事件監聽與邏輯 ---
+  const customPtsInput = document.getElementById('customPtsInput');
+  const customPriceNum = document.getElementById('customPriceNum');
+  const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
+  const customPriceDesc = document.querySelector('#memberModal .custom-price-desc');
+
+  if (customPtsInput && customPriceNum && customPaySubmitBtn) {
+    const calculateCustomPrice = (pts) => {
+      let rate = 3.0;
+      if (pts >= 100 && pts < 500) {
+        rate = 2.8;
+      } else if (pts >= 500) {
+        rate = 2.4;
+      }
+      const price = Math.ceil(pts * rate);
+      return { price, rate };
+    };
+
+    customPtsInput.oninput = (e) => {
+      let val = e.target.value;
+      if (val === '') {
+        customPriceNum.textContent = 'NT$ 0';
+        customPriceNum.classList.remove('active');
+        if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
+        customPaySubmitBtn.disabled = true;
+        return;
+      }
+
+      let pts = parseFloat(val);
+      if (isNaN(pts) || pts <= 0) {
+        customPriceNum.textContent = 'NT$ 0';
+        customPriceNum.classList.remove('active');
+        if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
+        customPaySubmitBtn.disabled = true;
+        return;
+      }
+
+      // 如果有小數點，自動向下取整並回填輸入框
+      if (!Number.isInteger(pts)) {
+        pts = Math.floor(pts);
+        e.target.value = pts;
+      }
+
+      const { price, rate } = calculateCustomPrice(pts);
+      customPriceNum.textContent = `NT$ ${price.toLocaleString()}`;
+      customPriceNum.classList.add('active');
+      if (customPriceDesc) {
+        customPriceDesc.textContent = `(折合單價 NT$ ${rate.toFixed(1)}/點)`;
+      }
+      customPaySubmitBtn.disabled = false;
+    };
+
+    customPaySubmitBtn.onclick = () => {
+      const val = parseFloat(customPtsInput.value);
+      if (isNaN(val) || val <= 0) return;
+      const pts = Math.floor(val);
+      const { price } = calculateCustomPrice(pts);
+      openPaymentModal(pts, price);
     };
   }
 }
