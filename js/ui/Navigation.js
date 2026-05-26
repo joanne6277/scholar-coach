@@ -52,7 +52,10 @@ export function updateUserUI() {
     if (step1Note) step1Note.style.display = 'block';
 
     document.getElementById('userName').textContent = user.name;
-    document.getElementById('userStatus').textContent = user.status.replace('會員', '');
+    const userStatusEl = document.getElementById('userStatus');
+    if (userStatusEl) {
+      userStatusEl.textContent = user.status.replace('會員', '');
+    }
     document.getElementById('userPoints').textContent = user.points;
     document.getElementById('modalPoints').textContent = user.points;
     document.getElementById('profileName').textContent = user.name;

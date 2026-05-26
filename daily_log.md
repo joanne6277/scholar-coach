@@ -1,6 +1,13 @@
 # Daily Log
 
 ## 2026-05-26
+- **簡化學科領域選擇選單與移除專業版標籤**：
+  - **選單結構簡化**：在 `index.html` 移除子學科選擇器（`#subDiscipline`），並於 `js/ui/Upload.js` 將原有的雙層下拉連動改為單層 `<optgroup>` 與 `<option>` 分組結構，優化使用者的選單點擊效率。
+  - **已登入狀態標籤優化**：在 `index.html` 移除已登入狀態按鈕（`#memberBtn`）上的 `#userStatus`（專業版）標籤；同時在 `js/ui/Navigation.js` 中對該 DOM 的操作加入 null 判定防護，以確保系統穩定運作。
+- **優化自訂點數儲值樣式與互動體驗**：
+  - **HTML 結構升級**：在 `index.html` 的自訂點數儲值區新增快捷點數選擇按鈕容器 (`.custom-quick-selectors`)、動態省錢提示標籤 (`#customSavingsBadge`)，並將傳統純文字提示替換為三欄式階梯級距卡片 (`#tierBronze`、`#tierSilver`、`#tierGold`)。
+  - **CSS 樣式 Premium 化**：於 `css/main.css` 中重構自訂點數儲值樣式。實作磨砂玻璃與漸層背景卡片、`:focus-within` 焦點連動發光外框；設計快捷選擇按鈕 Hover/Active 微懸浮轉場；實作大字級 NT$ 價格藍紫漸層色；增加動態省錢標籤 bounceIn 動畫與級距卡片高亮狀態 (`.active`) 的品牌色投影；為儲值按鈕新增金屬流光掃過 (`button-shine`) 動畫。
+  - **JavaScript 互動邏輯擴充**：於 `js/ui/Member.js` 中實現快捷按鈕點擊累加與即時計價；實作 `highlightTier()` 動態判定並高亮對應的級距卡片；新增即時計算與切換顯示省錢效益；並在開啟/關閉會員 Modal 時重設快捷按鈕、高亮狀態與省錢提示。
 - **實作自訂點數儲值與金流串接**：
   - **HTML 結構擴充**：於 `index.html` 的 `#memberModal` 內新增自訂儲值點數區（包含輸入框、估算金額、階梯優惠提示與儲值確認按鈕）。
   - **CSS 樣式升級**：於 `css/main.css` 中實作自訂點數儲值區樣式，包括分隔線、隱藏原生數字微調按鈕、輸入框 Focus 與按鈕啟用/停用之視覺轉場，維持與原介面一致的 Premium 質感。

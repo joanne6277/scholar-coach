@@ -2234,11 +2234,18 @@ body {
 .custom-recharge-box {
   margin-top: 16px;
   margin-bottom: 24px;
-  padding: 16px 20px 20px 20px;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  padding: 18px 20px 20px 20px;
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(241, 245, 249, 0.7) 100%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 14px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-recharge-box:focus-within {
+  border-color: rgba(39, 82, 184, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(39, 82, 184, 0.08), 0 8px 10px -6px rgba(39, 82, 184, 0.08);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(241, 245, 249, 0.9) 100%);
 }
 
 .custom-recharge-divider {
@@ -2266,8 +2273,42 @@ body {
 .custom-recharge-divider span {
   font-size: 12px;
   color: #94a3b8;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
+}
+
+/* 快捷選擇器 */
+.custom-quick-selectors {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: space-between;
+}
+
+.quick-sel-btn {
+  flex: 1;
+  padding: 8px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.quick-sel-btn:hover {
+  color: var(--primary);
+  border-color: rgba(39, 82, 184, 0.5);
+  background: var(--primary-light);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 8px rgba(39, 82, 184, 0.08);
+}
+
+.quick-sel-btn:active {
+  transform: translateY(0);
 }
 
 .custom-recharge-row {
@@ -2287,8 +2328,8 @@ body {
   padding: 10px 32px 10px 14px;
   border: 1.5px solid #cbd5e0;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   outline: none;
   background: white;
   transition: all 0.2s ease;
@@ -2317,7 +2358,7 @@ body {
   transform: translateY(-50%);
   font-size: 13px;
   color: #64748b;
-  font-weight: 600;
+  font-weight: 700;
   pointer-events: none;
 }
 
@@ -2327,14 +2368,17 @@ body {
 }
 
 .custom-price-num {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
-  color: #64748b;
-  transition: all 0.2s ease;
+  color: #94a3b8;
+  transition: all 0.3s ease;
 }
 
 .custom-price-num.active {
-  color: #2752b8; /* 與 primary 藍色一致 */
+  background: linear-gradient(135deg, #2752b8 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(39, 82, 184, 0.1));
 }
 
 .custom-price-desc {
@@ -2343,35 +2387,158 @@ body {
   margin-top: 2px;
 }
 
-.custom-rate-hint {
-  font-size: 11px;
-  color: #64748b;
-  background: #f1f5f9;
-  padding: 8px 10px;
-  border-radius: 6px;
+/* 動態省錢提示 */
+.custom-savings-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #16a34a;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  padding: 6px 12px;
+  border-radius: 8px;
   margin-bottom: 14px;
-  line-height: 1.4;
-  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  animation: bounceIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 階梯級距卡片視覺 */
+.custom-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tier-card {
+  background: white;
+  border: 1.2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 4px;
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+}
+
+.tier-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 4px;
+  transition: color 0.2s;
+}
+
+.tier-range {
+  font-size: 10px;
+  color: #64748b;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.tier-rate {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #475569;
+  transition: color 0.2s;
+}
+
+.rate-unit {
+  font-size: 9px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+/* 階梯卡片高亮狀態（動態加上 active 類別） */
+#tierBronze.active {
+  border-color: #d97706;
+  background: #fffbeb;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.12);
+  transform: translateY(-2.5px);
+}
+#tierBronze.active .tier-name {
+  color: #d97706;
+}
+#tierBronze.active .tier-rate {
+  color: #b45309;
+}
+
+#tierSilver.active {
+  border-color: #64748b;
+  background: #f8fafc;
+  box-shadow: 0 4px 12px rgba(71, 85, 105, 0.12);
+  transform: translateY(-2.5px);
+}
+#tierSilver.active .tier-name {
+  color: #475569;
+}
+#tierSilver.active .tier-rate {
+  color: #1e293b;
+}
+
+#tierGold.active {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.16);
+  transform: translateY(-3px);
+  border-width: 1.5px;
+}
+#tierGold.active .tier-name {
+  color: #2563eb;
+}
+#tierGold.active .tier-rate {
+  color: #1d4ed8;
 }
 
 .custom-pay-submit-btn {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 13.5px;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--primary);
   color: white;
   box-shadow: 0 4px 6px -1px rgba(39, 82, 184, 0.15);
 }
 
+.custom-pay-submit-btn:not(:disabled) {
+  background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-pay-submit-btn:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  animation: button-shine 4s infinite ease-in-out;
+}
+
+@keyframes button-shine {
+  0% { left: -100%; }
+  30%, 100% { left: 150%; }
+}
+
 .custom-pay-submit-btn:hover:not(:disabled) {
-  background: #1e459a;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 12px -2px rgba(39, 82, 184, 0.25);
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 16px -2px rgba(39, 82, 184, 0.25), 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 }
 
 .custom-pay-submit-btn:disabled {

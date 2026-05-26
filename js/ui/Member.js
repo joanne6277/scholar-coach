@@ -21,6 +21,17 @@ export function toggleMemberModal(show) {
       }
       if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
       if (customPaySubmitBtn) customPaySubmitBtn.disabled = true;
+
+      // 重設自訂點數新元件狀態
+      const bronzeCard = document.getElementById('tierBronze');
+      const silverCard = document.getElementById('tierSilver');
+      const goldCard = document.getElementById('tierGold');
+      if (bronzeCard) bronzeCard.classList.remove('active');
+      if (silverCard) silverCard.classList.remove('active');
+      if (goldCard) goldCard.classList.remove('active');
+      
+      const savingsBadge = document.getElementById('customSavingsBadge');
+      if (savingsBadge) savingsBadge.style.display = 'none';
     }
   }
 }
@@ -232,6 +243,12 @@ export function initPaymentEvents() {
   const customPriceNum = document.getElementById('customPriceNum');
   const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
   const customPriceDesc = document.querySelector('#memberModal .custom-price-desc');
+  const customSavingsBadge = document.getElementById('customSavingsBadge');
+  const customSavingsAmount = document.getElementById('customSavingsAmount');
+  
+  const bronzeCard = document.getElementById('tierBronze');
+  const silverCard = document.getElementById('tierSilver');
+  const goldCard = document.getElementById('tierGold');
 
   if (customPtsInput && customPriceNum && customPaySubmitBtn) {
     const calculateCustomPrice = (pts) => {
@@ -245,22 +262,66 @@ export function initPaymentEvents() {
       return { price, rate };
     };
 
+    const highlightTier = (pts) => {
+      if (!bronzeCard || !silverCard || !goldCard) return;
+      bronzeCard.classList.remove('active');
+      silverCard.classList.remove('active');
+      goldCard.classList.remove('active');
+      
+      if (pts > 0) {
+        if (pts < 100) {
+          bronzeCard.classList.add('active');
+        } else if (pts >= 100 && pts < 500) {
+          silverCard.classList.add('active');
+        } else {
+          goldCard.classList.add('active');
+        }
+      }
+    };
+
+    const updatePriceDisplay = (pts) => {
+      const { price, rate } = calculateCustomPrice(pts);
+      customPriceNum.textContent = `NT$ ${price.toLocaleString()}`;
+      customPriceNum.classList.add('active');
+      if (customPriceDesc) {
+        customPriceDesc.textContent = `(折合單價 NT$ ${rate.toFixed(1)}/點)`;
+      }
+      
+      // 計算並顯示省了多少錢
+      const maxRate = 3.0;
+      const savings = Math.max(0, (maxRate - rate) * pts);
+      if (savings > 0 && customSavingsBadge && customSavingsAmount) {
+        customSavingsAmount.textContent = `NT$ ${Math.ceil(savings).toLocaleString()}`;
+        customSavingsBadge.style.display = 'inline-flex';
+      } else if (customSavingsBadge) {
+        customSavingsBadge.style.display = 'none';
+      }
+      
+      highlightTier(pts);
+      customPaySubmitBtn.disabled = false;
+    };
+
+    const resetCustomDisplay = () => {
+      customPriceNum.textContent = 'NT$ 0';
+      customPriceNum.classList.remove('active');
+      if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
+      if (customSavingsBadge) customSavingsBadge.style.display = 'none';
+      if (bronzeCard) bronzeCard.classList.remove('active');
+      if (silverCard) silverCard.classList.remove('active');
+      if (goldCard) goldCard.classList.remove('active');
+      customPaySubmitBtn.disabled = true;
+    };
+
     customPtsInput.oninput = (e) => {
       let val = e.target.value;
       if (val === '') {
-        customPriceNum.textContent = 'NT$ 0';
-        customPriceNum.classList.remove('active');
-        if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
-        customPaySubmitBtn.disabled = true;
+        resetCustomDisplay();
         return;
       }
 
       let pts = parseFloat(val);
       if (isNaN(pts) || pts <= 0) {
-        customPriceNum.textContent = 'NT$ 0';
-        customPriceNum.classList.remove('active');
-        if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
-        customPaySubmitBtn.disabled = true;
+        resetCustomDisplay();
         return;
       }
 
@@ -270,13 +331,7 @@ export function initPaymentEvents() {
         e.target.value = pts;
       }
 
-      const { price, rate } = calculateCustomPrice(pts);
-      customPriceNum.textContent = `NT$ ${price.toLocaleString()}`;
-      customPriceNum.classList.add('active');
-      if (customPriceDesc) {
-        customPriceDesc.textContent = `(折合單價 NT$ ${rate.toFixed(1)}/點)`;
-      }
-      customPaySubmitBtn.disabled = false;
+      updatePriceDisplay(pts);
     };
 
     customPaySubmitBtn.onclick = () => {
@@ -286,6 +341,18 @@ export function initPaymentEvents() {
       const { price } = calculateCustomPrice(pts);
       openPaymentModal(pts, price);
     };
+
+    // 快捷按鈕事件綁定 (累加邏輯)
+    const quickBtns = document.querySelectorAll('.quick-sel-btn');
+    quickBtns.forEach(btn => {
+      btn.onclick = () => {
+        let currentVal = parseInt(customPtsInput.value) || 0;
+        const addVal = parseInt(btn.dataset.pts) || 0;
+        customPtsInput.value = currentVal + addVal;
+        // 手動觸發 input 事件以更新價格與樣式
+        customPtsInput.dispatchEvent(new Event('input'));
+      };
+    });
   }
 }
 
