@@ -1,4 +1,5 @@
 import { state } from '../core/state.js';
+import { showToast } from '../utils/Toast.js';
 
 export function renderHistory() {
   const list = document.getElementById('historyList');
@@ -20,13 +21,14 @@ export function renderHistory() {
     `;
     item.onclick = () => {
        // Demo: Load this history
-       alert(`載入歷史紀錄：${h.title}`);
+       showToast(`已成功載入歷史紀錄：${h.title}`, "success");
     };
     const delBtn = item.querySelector('.history-delete-btn');
     delBtn.onclick = (e) => {
       e.stopPropagation();
       state.history = state.history.filter(item => item.id !== h.id);
       renderHistory();
+      showToast("歷史紀錄已刪除", "info");
     };
     list.appendChild(item);
   });

@@ -3,6 +3,7 @@ import { tagStyles, numStyles } from '../config/styles.js';
 import { proposals, eliminated } from '../mock/proposals.js';
 import { state } from '../core/state.js';
 import { goStep } from './Navigation.js';
+import { showToast } from '../utils/Toast.js';
 
 export function renderConditions() {
   const banner = document.getElementById('generationConditions');
@@ -118,6 +119,7 @@ export function showResults() {
       btn.style.color = '#2a7a4f';
       btn.style.borderColor = '#7fc99a';
       btn.disabled = true;
+      showToast("已成功將該方向復活，加入研究提案列表！", "success");
     };
   });
 }
@@ -153,6 +155,7 @@ export function copyProposal(i) {
   if (!btn) return;
   btn.classList.add('copied');
   btn.innerHTML = '<span>&#10003;</span> 已複製';
+  showToast("提案已複製到剪貼簿！", "success");
   setTimeout(() => {
     btn.classList.remove('copied');
     btn.innerHTML = '<span>&#10697;</span> 複製提案';

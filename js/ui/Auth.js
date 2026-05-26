@@ -1,5 +1,6 @@
 import { state } from '../core/state.js';
 import { updateUserUI } from './Navigation.js';
+import { showToast } from '../utils/Toast.js';
 
 export function toggleAuthModal(show) {
   const modal = document.getElementById('authModal');
@@ -104,6 +105,7 @@ function processLogin(name, email, avatar) {
         
         updateUserUI();
         toggleAuthModal(false);
+        showToast(`歡迎回來，${name}！`, 'success');
       }, 1800);
 
     }, 1200);

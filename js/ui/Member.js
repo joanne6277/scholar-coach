@@ -1,5 +1,6 @@
 import { state } from '../core/state.js';
 import { updateUserUI } from './Navigation.js';
+import { showToast } from '../utils/Toast.js';
 
 let currentTransaction = { pts: 0, price: 0 };
 
@@ -94,6 +95,8 @@ export function openPaymentModal(pts, price) {
   
   // 紀錄當前交易狀態到臨時變數，以便付款完成後使用
   currentTransaction = { pts, price };
+  
+  showToast("已建立儲值訂單，即將進行模擬支付...", "info", 1500);
   
   // 填寫交易明細
   document.getElementById('payGoodsName').textContent = `儲值 ${pts} 點數`;
@@ -228,6 +231,7 @@ export function initPaymentEvents() {
         updateUserUI();
         switchPayView('paySuccessView');
         triggerLpConfetti();
+        showToast(`儲值成功！已存入 ${currentTransaction.pts} 點數`, "success");
       }, 1800);
     };
   }
@@ -339,6 +343,7 @@ export function initPaymentEvents() {
       if (isNaN(val) || val <= 0) return;
       const pts = Math.floor(val);
       const { price } = calculateCustomPrice(pts);
+      showToast("即將開啟 LINE Pay 模擬支付...", "info", 1500);
       openPaymentModal(pts, price);
     };
 
@@ -351,6 +356,7 @@ export function initPaymentEvents() {
         customPtsInput.value = currentVal + addVal;
         // 手動觸發 input 事件以更新價格與樣式
         customPtsInput.dispatchEvent(new Event('input'));
+        showToast(`已加入 ${addVal} 點，目前共 ${currentVal + addVal} 點`, "info", 1500);
       };
     });
   }

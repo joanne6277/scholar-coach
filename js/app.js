@@ -1,6 +1,7 @@
 import { theories } from './config/theories.js';
 import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
+import { showToast } from './utils/Toast.js';
 import { renderTheories, updateEstimate } from './ui/Settings.js';
 import { showResults } from './ui/Results.js';
 import { advanceGeneration } from './ui/Generation.js';
@@ -48,6 +49,7 @@ function init() {
       state.isLoggedIn = false;
       toggleMemberModal(false);
       updateUserUI();
+      showToast("您已成功登出", "info");
     };
   }
 
@@ -201,9 +203,57 @@ function init() {
   window.goStep = (n) => goStep(n);
 
   window.startGeneration = () => {
+    // 1. 檢查登入
+    if (!state.isLoggedIn) {
+      showToast("請先登入帳戶！", "warning");
+      toggleAuthModal(true);
+      return;
+    }
+    
+    // 2. 檢查論文上傳
+    if (!state.fileName) {
+      showToast("請先上傳核心論文 PDF！", "warning");
+      return;
+    }
+    
+    // 3. 檢查理論勾選
+    if (state.selectedTheories.size === 0) {
+      showToast("請至少選擇一種創新理論！", "warning");
+      return;
+    }
+    
+    // 4. 計算點數與驗證點數是否足夠
+    const n = state.selectedTheories.size;
+    let pts = n + Math.max(0, (state.seeds / 5) - 1) + (state.iters - 1);
+    if (pts < 0) pts = 0;
+    
+    if (state.user.points < pts) {
+      showToast("餘額點數不足，請先儲值！", "warning");
+      toggleMemberModal(true);
+      return;
+    }
+    
+    // 扣除點數
+    state.user.points -= pts;
+    const now = new Date();
+    const pad = (num) => String(num).padStart(2, '0');
+    const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    
+    state.pointRecords.unshift({
+      type: "扣除",
+      points: -pts,
+      date: dateStr,
+      desc: `分析生成提案花費 ${pts} 點`
+    });
+    
+    // 更新 UI 上的點數顯示
+    updateUserUI();
+    showToast(`扣除 ${pts} 點，開始分析生成研究提案...`, "info");
+
     goStep(3);
     advanceGeneration(() => {
       showResults();
+      showToast("研究提案已成功生成！", "success");
     });
   };
 
