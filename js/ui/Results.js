@@ -142,6 +142,11 @@ export function showResults() {
       showToast("已成功將該方向復活，加入研究提案列表！", "success");
     };
   });
+
+  // 預設展開第一個提案卡片，方便使用者直接看見正/倒讚與複製按鈕
+  setTimeout(() => {
+    toggleProposal(0);
+  }, 100);
 }
 
 export function toggleProposal(i) {
