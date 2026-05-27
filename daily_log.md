@@ -1,6 +1,9 @@
 # Daily Log
 
 ## 2026-05-27
+- **修復 404 圖片載入錯誤與學科下拉選單 Crash Bug**：
+  - **背景圖片路徑修復**：修正 `css/main.css` 中 Landing Page 背景圖指向不存在的 `566912.jpg` 問題，改為使用正確存在的品牌圖片 `566916.jpg`，解決 404 資源載入失敗。
+  - **學科選單防禦性相容機制**：為避免瀏覽器快取舊的 `disciplines.js` 資料結構（例如鍵值對物件）導致原生 ES Modules 環境下出現 `TypeError: disciplines.forEach is not a function` 阻塞主程式運作的狀況，重構了 `js/ui/Upload.js` 中的 `renderDisciplineOptions`。加入防禦性剖析邏輯，同時相容一維陣列、分類巢狀物件等多種結構，扁平化轉換後安全輸出至學科選單，徹底消除系統崩潰。
 - **實作「重新生成」選項定價九折優惠**：
   - **計算點數折算與狀態管理**：於 `js/core/state.js` 新增 `isRegenerating` 旗標；並在 `index.html` 的「重新生成」按鈕設定 `id="redoBtn"`，由 `js/app.js` 進行事件綁定。點選重新生成時將 `isRegenerating` 設為 `true`。若重新上傳、拖放檔案或點擊分析另一篇時，自動重設為 `false`。
   - **點數與明細折價套用**：在 `js/app.js` 的 `startGeneration` 中，當判定為重新生成時，扣除點數改為原本計算點數的 90%（四捨五入計算），並在扣點歷史明細備註中加上「(九折優惠)」。
