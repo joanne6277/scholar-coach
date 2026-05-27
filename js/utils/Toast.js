@@ -15,14 +15,14 @@ function createToastContainer() {
  * @param {'success' | 'error' | 'warning' | 'info'} type 提示類型
  * @param {number} duration 顯示時間 (ms)
  */
-export function showToast(message, type = 'info', duration = 3000) {
+export function showToast(message, type = 'info', duration = 5000) {
   if (!toastContainer) {
     createToastContainer();
   }
 
   const toast = document.createElement('div');
   toast.className = `toast-item toast-${type}`;
-  
+
   // 根據類型選擇圖示
   let icon = 'ℹ️';
   if (type === 'success') icon = '✅';
@@ -54,10 +54,20 @@ export function showToast(message, type = 'info', duration = 3000) {
 function removeToast(toast) {
   if (toast.classList.contains('toast-leaving')) return;
   toast.classList.add('toast-leaving');
-  // 等待 transition 動畫完成後再移出 DOM
-  toast.addEventListener('transitionend', () => {
+
+  // 移除 forwards 動畫，確保 transition 能順利運作
+  toast.style.animation = 'none';
+
+  let removed = false;
+  const doRemove = () => {
+    if (removed) return;
+    removed = true;
     if (toast.parentNode) {
       toast.parentNode.removeChild(toast);
     }
-  });
+  };
+
+  toast.addEventListener('transitionend', doRemove);
+  // 400ms 後強制移除 (CSS transition 是 0.3s)
+  setTimeout(doRemove, 400);
 }

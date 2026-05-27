@@ -19,6 +19,7 @@ export const state = {
   fileName: '',
   researchSubject: '',
   isGenerating: false,
+  isRegenerating: false,
   user: {
     name: '林小明',
     status: '專業版會員',

@@ -1,5 +1,27 @@
 # Daily Log
 
+## 2026-05-27
+- **實作「重新生成」選項定價九折優惠**：
+  - **計算點數折算與狀態管理**：於 `js/core/state.js` 新增 `isRegenerating` 旗標；並在 `index.html` 的「重新生成」按鈕設定 `id="redoBtn"`，由 `js/app.js` 進行事件綁定。點選重新生成時將 `isRegenerating` 設為 `true`。若重新上傳、拖放檔案或點擊分析另一篇時，自動重設為 `false`。
+  - **點數與明細折價套用**：在 `js/app.js` 的 `startGeneration` 中，當判定為重新生成時，扣除點數改為原本計算點數的 90%（四捨五入計算），並在扣點歷史明細備註中加上「(九折優惠)」。
+  - **預估點數 UI 強化**：修改 `js/ui/Settings.js` 的 `updateEstimate` 函式，若處於重新生成狀態，介面上的預估扣除點數將以灰色刪除線標示原價，並高亮紅字顯示九折後的點數與「(重新生成九折)」字樣，提供清晰的優惠提示。
+  - **按鈕折扣標籤引導**：於 `index.html` 的「重新生成」按鈕內新增紅底白字「9折」的優惠指引標籤（`.redo-discount-badge`），並在 `css/main.css` 中實作其樣式，讓使用者在結果頁時能直觀了解重新生成的折扣優惠。
+- **修復與優化 Toast 自動關閉機制**：
+  - **修復消失動畫卡死 Bug**：在 `js/utils/Toast.js` 的 `removeToast` 函式中，修復了因 CSS 動畫 `toast-entrance` forwards 凍結屬性導致 transition 屬性不生效、進而使 `transitionend` 事件未觸發而導致 Toast 無法自動移除的 Bug。現在在移除時，會動態清空 element 的 animation（`style.animation = 'none'`），並加入 400 毫秒的 `setTimeout` 雙重保險強制移出 DOM，確保 Toast 絕對能準確消失。
+  - **重設預設顯示時長**：將預設的關閉時間（`duration`）設定為 3 秒（3000ms），符合使用者一般的閱讀習慣。
+- **優化 Demo 論文上傳驗證繞過體驗**：
+  - **按兩次繞過限制**：修改 `js/app.js` 中的 `goToStep2Demo` 函式，若使用者第一次沒有上傳論文時點擊「繼續設定條件」，會顯示 Toast 提示；若第二次點擊，則會跳過限制直接進入條件篩選頁面。
+  - **自動填充模擬數據**：繞過限制後自動在後台設定模擬的 `fileName` (`demo_paper.pdf`) 與 `researchSubject` (`模擬研究主題`)，並同步渲染 UI，確保後續生成及結果頁面（Step 2/3/4）流程能順暢運行不受阻礙。
+- **實作全面 Responsive Web Design (RWD) 響應式佈局調整**：
+  - **主程式與佈局自適應**：於 `css/main.css` 針對 `768px` 以下螢幕將左右雙欄佈局（`.layout-container`）轉換為垂直疊加，設定側邊欄與主內容區寬度為 `100%`，並隱藏導覽列中過長的子標題（`.nav-subtitle`）防止溢出，提供順暢的行動裝置閱讀體驗。
+  - **步驟進度條優化**：於 `520px` 以下螢幕隱藏非當前進行中步驟的文字（`span`），僅顯示 active 步驟文字，簡化連接線與數字間距，避免在極窄螢幕下發生排版重疊。
+  - **卡片與表單網格優化**：
+    - 將簡易/一般/進階套餐卡片列（`.pkg-row`）在 `640px` 以下調整為單欄（`1fr`）堆疊。
+    - 將學術理論選單網格（`.dir-items`）在 `768px` 以下調整為單欄排列，避免小螢幕時文字擠壓變形。
+    - 將自訂儲值點數的快捷按鈕（`.custom-quick-selectors`）、自訂金額列（`.custom-recharge-row`）以及套餐級距卡片網格（`.custom-tier-grid`）在小於 `520px`/`480px` 的窄螢幕下轉換為自適應折行與單欄堆疊，並將提案詳情卡片的數據欄位（`.proposal-stats`）改為垂直排列。
+  - **彈窗小螢幕滾動防護**：針對會員中心 Modal（`.modal-card`）在 `520px` 以下設定 `max-height: calc(100vh - 32px)` 並開啟 `overflow-y: auto` 垂直滾動，同時限制 LINE Pay 模擬金流彈窗（`.payment-card`）之寬度與邊距，解決行動裝置因高度溢出而無法點擊或關閉的問題。
+  - **提案交互動作列響應化**：在 `480px` 以下將提案結果底部動作按鈕（正讚、倒讚、複製提案）調整為垂直排列並設定滿寬度（`100%`），最佳化大拇指觸控點擊範圍。
+
 ## 2026-05-26
 - **修復學科配置一維陣列相容與優化系統上傳/跳轉流程**：
   - **學科選單配置修復**：配合 `disciplines.js` 資料結構變更為一維陣列，修改 `js/ui/Upload.js` 移除了 `optgroup` 邏輯，改為直接迭代渲染 `option`，排除前端 JS 因找不到 category 而阻塞之 Bug。

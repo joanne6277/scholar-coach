@@ -53,7 +53,13 @@ export function updateEstimate() {
 
   let pts = n + Math.max(0, (seeds / 5) - 1) + (iters - 1);
   if (pts < 0) pts = 0;
-  document.getElementById('pointEst').textContent = `共花費 ${pts} 點`;
+
+  if (state.isRegenerating) {
+    const discountedPts = Math.round(pts * 0.9);
+    document.getElementById('pointEst').innerHTML = `共花費 <del style="color: #aaa; margin-right: 4px;">${pts} 點</del> <span style="color: #e53e3e; font-weight: bold;">${discountedPts} 點 (重新生成九折)</span>`;
+  } else {
+    document.getElementById('pointEst').textContent = `共花費 ${pts} 點`;
+  }
 
   document.querySelectorAll('.pkg-btn').forEach(b => b.classList.remove('active'));
   // 由於數據結構改變，套裝方案的 logic 也需要調整，此處暫不更動以維持原意，僅更新 UI 狀態

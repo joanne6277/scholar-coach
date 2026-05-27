@@ -9,6 +9,8 @@ import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal,
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
 
 function init() {
+  let paperWarningShown = false;
+
   // Landing Page Start Button
   const startBtn = document.getElementById('startBtn');
   const landingPage = document.getElementById('landingPage');
@@ -101,23 +103,24 @@ function init() {
       if (e.target.files[0]) {
         const file = e.target.files[0];
         state.fileName = file.name;
+        state.isRegenerating = false;
         fileBadge.style.display = 'inline-flex';
         fileName.textContent = state.fileName;
-        
+
         // Auto-fill subject with filename (minus extension)
         state.researchSubject = file.name.replace(/\.[^/.]+$/, "");
         const subjectInput = document.getElementById('subjectInput');
         const resultSubjectInput = document.getElementById('resultSubjectInput');
         const subjectContainer = document.getElementById('subjectContainer');
-        
+
         if (subjectInput) subjectInput.value = state.researchSubject;
         if (resultSubjectInput) resultSubjectInput.value = state.researchSubject;
         if (subjectContainer) subjectContainer.style.display = 'block';
       }
     };
-    uploadZone.addEventListener('dragover', e => { 
-      e.preventDefault(); 
-      if (state.isLoggedIn) uploadZone.classList.add('dragging'); 
+    uploadZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (state.isLoggedIn) uploadZone.classList.add('dragging');
     });
     uploadZone.addEventListener('dragleave', () => {
       if (state.isLoggedIn) uploadZone.classList.remove('dragging');
@@ -128,6 +131,7 @@ function init() {
       uploadZone.classList.remove('dragging');
       if (e.dataTransfer.files[0]) {
         state.fileName = e.dataTransfer.files[0].name;
+        state.isRegenerating = false;
         fileBadge.style.display = 'inline-flex';
         fileName.textContent = state.fileName;
       }
@@ -141,10 +145,33 @@ function init() {
       toggleAuthModal(true);
       return;
     }
-    if (!state.fileName) {
+    if (!state.fileName && !paperWarningShown) {
       showToast("請先上傳核心論文 PDF！", "warning");
+      paperWarningShown = true;
       return;
     }
+
+    // 如果使用者選擇跳過，自動填入預設的模擬論文資訊
+    if (!state.fileName) {
+      state.fileName = "demo_paper.pdf";
+      state.researchSubject = "模擬研究主題";
+
+      const fileBadge = document.getElementById('fileBadge');
+      const fileName = document.getElementById('fileName');
+      const subjectInput = document.getElementById('subjectInput');
+      const resultSubjectInput = document.getElementById('resultSubjectInput');
+      const subjectContainer = document.getElementById('subjectContainer');
+
+      if (fileBadge) fileBadge.style.display = 'inline-flex';
+      if (fileName) fileName.textContent = state.fileName;
+      if (subjectInput) subjectInput.value = state.researchSubject;
+      if (resultSubjectInput) resultSubjectInput.value = state.researchSubject;
+      if (subjectContainer) subjectContainer.style.display = 'block';
+
+      showToast("為您載入模擬論文數據", "info");
+    }
+
+    paperWarningShown = false;
     goStep(2);
   };
 
@@ -212,43 +239,47 @@ function init() {
       toggleAuthModal(true);
       return;
     }
-    
+
     // 2. 檢查論文上傳
     if (!state.fileName) {
       showToast("請先上傳核心論文 PDF！", "warning");
       return;
     }
-    
+
     // 3. 檢查理論勾選
     if (state.selectedTheories.size === 0) {
       showToast("請至少選擇一種創新理論！", "warning");
       return;
     }
-    
+
     // 4. 計算點數與驗證點數是否足夠
     const n = state.selectedTheories.size;
     let pts = n + Math.max(0, (state.seeds / 5) - 1) + (state.iters - 1);
     if (pts < 0) pts = 0;
     
+    if (state.isRegenerating) {
+      pts = Math.round(pts * 0.9);
+    }
+
     if (state.user.points < pts) {
       showToast("餘額點數不足，請先儲值！", "warning");
       toggleMemberModal(true);
       return;
     }
-    
+
     // 扣除點數
     state.user.points -= pts;
     const now = new Date();
     const pad = (num) => String(num).padStart(2, '0');
     const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    
+
     state.pointRecords.unshift({
       type: "扣除",
       points: -pts,
       date: dateStr,
-      desc: `分析生成提案花費 ${pts} 點`
+      desc: state.isRegenerating ? `重新分析生成提案花費 ${pts} 點 (九折優惠)` : `分析生成提案花費 ${pts} 點`
     });
-    
+
     // 更新 UI 上的點數顯示
     updateUserUI();
     showToast(`扣除 ${pts} 點，開始分析生成研究提案...`, "info");
@@ -267,7 +298,9 @@ function init() {
       // 1. 重設上傳狀態與 UI
       state.fileName = '';
       state.researchSubject = '';
-      
+      state.isRegenerating = false;
+      paperWarningShown = false;
+
       const fileBadge = document.getElementById('fileBadge');
       const fileName = document.getElementById('fileName');
       const uploadTitle = document.getElementById('uploadTitle');
@@ -276,7 +309,7 @@ function init() {
       const resultSubjectInput = document.getElementById('resultSubjectInput');
       const subjectContainer = document.getElementById('subjectContainer');
       const mainDiscipline = document.getElementById('mainDiscipline');
-      
+
       if (fileBadge) fileBadge.style.display = 'none';
       if (fileName) fileName.textContent = '';
       if (uploadTitle) uploadTitle.textContent = '拖放 PDF 論文，或點此選取';
@@ -285,20 +318,30 @@ function init() {
       if (resultSubjectInput) resultSubjectInput.value = '';
       if (subjectContainer) subjectContainer.style.display = 'none';
       if (mainDiscipline) mainDiscipline.value = '';
-      
+
       const fileInput = document.getElementById('fileInput');
       if (fileInput) fileInput.value = '';
-      
+
       // 2. 返回第一頁
       goStep(1);
       showToast("已重設狀態，請上傳新論文", "info");
     };
   }
 
+  // 綁定「重新生成」按鈕事件
+  const redoBtn = document.getElementById('redoBtn');
+  if (redoBtn) {
+    redoBtn.onclick = () => {
+      state.isRegenerating = true;
+      updateEstimate(); // 更新預估點數顯示九折
+      goStep(2);
+    };
+  }
+
   window.rechargePoints = (pts, price) => rechargePoints(pts, price);
   window.openPaymentModal = (pts, price) => openPaymentModal(pts, price);
   window.closePaymentModal = () => closePaymentModal();
-  
+
   // 初始化登入彈窗與支付彈窗事件
   initAuthEvents();
   initPaymentEvents();
