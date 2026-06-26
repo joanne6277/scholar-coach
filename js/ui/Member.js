@@ -10,29 +10,14 @@ export function toggleMemberModal(show) {
     modal.style.display = show ? 'flex' : 'none';
     if (show) {
       updateUserUI();
-      // 重設自訂點數儲值輸入框與金額估算
       const customPtsInput = document.getElementById('customPtsInput');
       const customPriceNum = document.getElementById('customPriceNum');
+      const customPriceDesc = document.getElementById('customPriceDesc');
       const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
-      const customPriceDesc = document.querySelector('#memberModal .custom-price-desc');
       if (customPtsInput) customPtsInput.value = '';
-      if (customPriceNum) {
-        customPriceNum.textContent = 'NT$ 0';
-        customPriceNum.classList.remove('active');
-      }
+      if (customPriceNum) customPriceNum.textContent = 'NT$ 0';
       if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
       if (customPaySubmitBtn) customPaySubmitBtn.disabled = true;
-
-      // 重設自訂點數新元件狀態
-      const bronzeCard = document.getElementById('tierBronze');
-      const silverCard = document.getElementById('tierSilver');
-      const goldCard = document.getElementById('tierGold');
-      if (bronzeCard) bronzeCard.classList.remove('active');
-      if (silverCard) silverCard.classList.remove('active');
-      if (goldCard) goldCard.classList.remove('active');
-      
-      const savingsBadge = document.getElementById('customSavingsBadge');
-      if (savingsBadge) savingsBadge.style.display = 'none';
     }
   }
 }
@@ -246,95 +231,43 @@ export function initPaymentEvents() {
   const customPtsInput = document.getElementById('customPtsInput');
   const customPriceNum = document.getElementById('customPriceNum');
   const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
-  const customPriceDesc = document.querySelector('#memberModal .custom-price-desc');
-  const customSavingsBadge = document.getElementById('customSavingsBadge');
-  const customSavingsAmount = document.getElementById('customSavingsAmount');
-  
-  const bronzeCard = document.getElementById('tierBronze');
-  const silverCard = document.getElementById('tierSilver');
-  const goldCard = document.getElementById('tierGold');
+  const customPriceDesc = document.getElementById('customPriceDesc');
 
   if (customPtsInput && customPriceNum && customPaySubmitBtn) {
+    // 計算規則：盡可能使用 4點/$100 優惠包，剩餘每點 $30
     const calculateCustomPrice = (pts) => {
-      let rate = 3.0;
-      if (pts >= 100 && pts < 500) {
-        rate = 2.8;
-      } else if (pts >= 500) {
-        rate = 2.4;
-      }
-      const price = Math.ceil(pts * rate);
-      return { price, rate };
+      const bundles = Math.floor(pts / 4);
+      const remainder = pts % 4;
+      const price = bundles * 100 + remainder * 30;
+      return { price, bundles, remainder };
     };
 
-    const highlightTier = (pts) => {
-      if (!bronzeCard || !silverCard || !goldCard) return;
-      bronzeCard.classList.remove('active');
-      silverCard.classList.remove('active');
-      goldCard.classList.remove('active');
-      
-      if (pts > 0) {
-        if (pts < 100) {
-          bronzeCard.classList.add('active');
-        } else if (pts >= 100 && pts < 500) {
-          silverCard.classList.add('active');
-        } else {
-          goldCard.classList.add('active');
-        }
-      }
+    const buildBreakdown = (bundles, remainder) => {
+      const parts = [];
+      if (bundles > 0) parts.push(`加量優惠 4點 × ${bundles} (NT$ ${bundles * 100})`);
+      if (remainder > 0) parts.push(`${remainder} 點 × NT$ 30 (NT$ ${remainder * 30})`);
+      return parts.join(' + ');
     };
 
     const updatePriceDisplay = (pts) => {
-      const { price, rate } = calculateCustomPrice(pts);
+      const { price, bundles, remainder } = calculateCustomPrice(pts);
       customPriceNum.textContent = `NT$ ${price.toLocaleString()}`;
-      customPriceNum.classList.add('active');
-      if (customPriceDesc) {
-        customPriceDesc.textContent = `(折合單價 NT$ ${rate.toFixed(1)}/點)`;
-      }
-      
-      // 計算並顯示省了多少錢
-      const maxRate = 3.0;
-      const savings = Math.max(0, (maxRate - rate) * pts);
-      if (savings > 0 && customSavingsBadge && customSavingsAmount) {
-        customSavingsAmount.textContent = `NT$ ${Math.ceil(savings).toLocaleString()}`;
-        customSavingsBadge.style.display = 'inline-flex';
-      } else if (customSavingsBadge) {
-        customSavingsBadge.style.display = 'none';
-      }
-      
-      highlightTier(pts);
+      if (customPriceDesc) customPriceDesc.textContent = buildBreakdown(bundles, remainder);
       customPaySubmitBtn.disabled = false;
     };
 
     const resetCustomDisplay = () => {
       customPriceNum.textContent = 'NT$ 0';
-      customPriceNum.classList.remove('active');
       if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
-      if (customSavingsBadge) customSavingsBadge.style.display = 'none';
-      if (bronzeCard) bronzeCard.classList.remove('active');
-      if (silverCard) silverCard.classList.remove('active');
-      if (goldCard) goldCard.classList.remove('active');
       customPaySubmitBtn.disabled = true;
     };
 
     customPtsInput.oninput = (e) => {
-      let val = e.target.value;
-      if (val === '') {
-        resetCustomDisplay();
-        return;
-      }
-
+      const val = e.target.value;
+      if (val === '') { resetCustomDisplay(); return; }
       let pts = parseFloat(val);
-      if (isNaN(pts) || pts <= 0) {
-        resetCustomDisplay();
-        return;
-      }
-
-      // 如果有小數點，自動向下取整並回填輸入框
-      if (!Number.isInteger(pts)) {
-        pts = Math.floor(pts);
-        e.target.value = pts;
-      }
-
+      if (isNaN(pts) || pts <= 0) { resetCustomDisplay(); return; }
+      if (!Number.isInteger(pts)) { pts = Math.floor(pts); e.target.value = pts; }
       updatePriceDisplay(pts);
     };
 
@@ -346,19 +279,6 @@ export function initPaymentEvents() {
       showToast("即將開啟 LINE Pay 模擬支付...", "info", 1500);
       openPaymentModal(pts, price);
     };
-
-    // 快捷按鈕事件綁定 (累加邏輯)
-    const quickBtns = document.querySelectorAll('.quick-sel-btn');
-    quickBtns.forEach(btn => {
-      btn.onclick = () => {
-        let currentVal = parseInt(customPtsInput.value) || 0;
-        const addVal = parseInt(btn.dataset.pts) || 0;
-        customPtsInput.value = currentVal + addVal;
-        // 手動觸發 input 事件以更新價格與樣式
-        customPtsInput.dispatchEvent(new Event('input'));
-        showToast(`已加入 ${addVal} 點，目前共 ${currentVal + addVal} 點`, "info", 1500);
-      };
-    });
   }
 }
 

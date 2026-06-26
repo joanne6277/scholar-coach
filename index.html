@@ -119,7 +119,7 @@
           <div class="member-info">
             <div class="member-name" id="userName">林小明</div>
             <div class="member-stats">
-              <span class="member-points"><span id="userPoints">125</span> 點</span>
+              <span class="member-points"><span id="userPoints">5</span> 點</span>
             </div>
           </div>
         </div>
@@ -187,55 +187,127 @@
           <div class="section-label" style="margin-top:0">快速選擇</div>
           <div class="pkg-row">
             <button class="pkg-btn active" id="pkgSimple" onclick="setPackage('simple')">
-              <div>簡易</div>
-              <div class="pkg-desc">1理論 × 5想法 × 1迭代</div>
+              <div class="pkg-name">簡易模式</div>
+              <div class="pkg-desc">15想法 × 10理論 × 1迭代</div>
+              <div class="pkg-price">1 點</div>
             </button>
             <button class="pkg-btn" id="pkgNormal" onclick="setPackage('normal')">
-              <div>一般</div>
-              <div class="pkg-desc">3理論 × 10想法 × 1迭代</div>
-            </button>
-            <button class="pkg-btn" id="pkgAdvanced" onclick="setPackage('advanced')">
-              <div>進階</div>
-              <div class="pkg-desc">5理論 × 15想法 × 2迭代</div>
+              <div class="pkg-name">一般模式</div>
+              <div class="pkg-desc">15想法 × 10理論 × 3迭代</div>
+              <div class="pkg-price">2 點</div>
             </button>
           </div>
-
-          <div class="section-label">創新理論（可複選）</div>
-          <p class="section-subdesc">以 4 個方向、10 種經典理論框架引導 AI 發想，確保提出的研究提案有學術根據</p>
-          <div class="select-all-row">
-            <span id="theoryCount">已選 10 種</span>
-            <button class="link-btn" onclick="toggleAllTheories()">全選 / 取消全選</button>
-          </div>
-          <div class="theory-grid-container" id="theoryGrid"></div>
-
-          <div class="section-label">每種理論生成的初步創新想法數量</div>
-          <div class="row-opts" id="seedOpts">
-            <button class="opt-btn" onclick="selectOpt('seed',this,5)">5 個</button>
-            <button class="opt-btn selected" onclick="selectOpt('seed',this,10)">10 個</button>
-            <button class="opt-btn" onclick="selectOpt('seed',this,15)">15 個</button>
-          </div>
-          <p class="info-text-blue">選擇多個理論，可以透過不同層次的交叉驗證，產出兼具學術深度與創新價值的提案。</p>
-
-          <div class="section-label">迭代</div>
-          <div class="row-opts" id="iterOpts">
-            <button class="opt-btn selected" onclick="selectOpt('iter',this,1)">1 次</button>
-            <button class="opt-btn" onclick="selectOpt('iter',this,2)">2 次</button>
-            <button class="opt-btn" onclick="selectOpt('iter',this,3)">3 次</button>
-          </div>
-          <p class="info-text-blue" style="margin-bottom: 12px;">AI 以初步的創新原型為核心，透過 RAG（檢索增強生成） 技術進行循環檢索與邏輯補強，在大幅減少AI幻覺的同時，將模糊概念轉化為具備理論深度與實作可能性的研究方案。<br>迭代越多次，系統越能精準串接外部權威文獻來填補知識空白，並在不斷的自我修正中，讓創新概念蛻變成具備高度可行性與學術深度的具體提案。</p>
 
           <div class="section-label">客製化條件（選填）</div>
           <textarea class="nlp-input" id="nlpInput" placeholder="例：聚焦於台灣本土醫療情境、避免需要大型設備的實驗方法、優先考量臨床可行性..."></textarea>
+
+          <div class="supplement-divider"></div>
+
+          <div class="section-label" style="margin-top:0">創新理論說明</div>
+          <p class="section-subdesc">系統以下列 10 種經典創新理論框架，引導 AI 從多元視角進行發想，確保生成的研究提案具備紮實的學術根據。</p>
+
+          <div class="theory-info-grid">
+            <div class="theory-direction-group">
+              <div class="dir-header">
+                <div class="dir-title">科學演進與典範變遷</div>
+                <div class="dir-desc">適合關注研究在歷史與環境中的定位。</div>
+              </div>
+              <div class="dir-items">
+                <div class="theory-info-card">
+                  <div class="t-name">孔恩的典範論</div>
+                  <div class="t-subname">Kuhn's Paradigm Theory</div>
+                  <div class="t-desc">識別典範轉移的契機，當現有理論無法解釋異常現象時，推動科學革命。</div>
+                </div>
+                <div class="theory-info-card">
+                  <div class="t-name">孔恩的常規科學</div>
+                  <div class="t-subname">Kuhn's Normal Science</div>
+                  <div class="t-desc">在既有典範框架下「解謎」，透過穩定、細緻的研究工作累積漸進式知識。</div>
+                </div>
+                <div class="theory-info-card">
+                  <div class="t-name">費耶阿本的方法論多元主義</div>
+                  <div class="t-subname">Feyerabend's Methodological Pluralism</div>
+                  <div class="t-desc">反對單一僵化的研究規則，主張透過多元路徑與方法交替使用來促進學術突破。</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="theory-direction-group">
+              <div class="dir-header">
+                <div class="dir-title">理論競爭與評估基準</div>
+                <div class="dir-desc">適合研究者篩選並維護高品質的學術假說。</div>
+              </div>
+              <div class="dir-items">
+                <div class="theory-info-card">
+                  <div class="t-name">波普爾的可證偽性</div>
+                  <div class="t-subname">Popper's Falsificationism</div>
+                  <div class="t-desc">以能否被推翻作為科學與非科學的界線，主張透過不斷挑戰假說來趨近真理。</div>
+                </div>
+                <div class="theory-info-card">
+                  <div class="t-name">拉卡托斯的科學研究綱領</div>
+                  <div class="t-subname">Lakatos's Research Programme</div>
+                  <div class="t-desc">保護核心信念不被輕易動搖，透過修正周邊細節來優化理論。</div>
+                </div>
+                <div class="theory-info-card">
+                  <div class="t-name">勞丹的問題解決模型</div>
+                  <div class="t-subname">Laudan's Problem-Solving Model</div>
+                  <div class="t-desc">以解決經驗與概念問題的效率作為指標，評估理論在學術競爭中的優劣。</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="theory-direction-group">
+              <div class="dir-header">
+                <div class="dir-title">邏輯推理與分析工具</div>
+                <div class="dir-desc">適合提供研究實務上的思考模組與分析框架。</div>
+              </div>
+              <div class="dir-items">
+                <div class="theory-info-card">
+                  <div class="t-name">皮爾斯的溯因推理</div>
+                  <div class="t-subname">Peirce's Abductive Reasoning</div>
+                  <div class="t-desc">針對意外現象提出「最佳解釋假說」的推理過程，是科學發現與創新的起源。</div>
+                </div>
+                <div class="theory-info-card">
+                  <div class="t-name">韋伯的理想類型</div>
+                  <div class="t-subname">Weber's Ideal Type</div>
+                  <div class="t-desc">建構純粹的理想化模型作為分析基準，藉此比較並理解複雜社會現象的特徵。</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="theory-direction-group">
+              <div class="dir-header">
+                <div class="dir-title">決策限制與視野整合</div>
+                <div class="dir-desc">適合引導研究者在現實約束中尋求跨界創新。</div>
+              </div>
+              <div class="dir-items">
+                <div class="theory-info-card">
+                  <div class="t-name">賽蒙的有限理性</div>
+                  <div class="t-subname">Simon's Bounded Rationality</div>
+                  <div class="t-desc">承認認知與資訊的局限，在現實約束下尋求「滿意解」而非理想中的「最優解」。</div>
+                </div>
+                <div class="theory-info-card">
+                  <div class="t-name">跨領域整合</div>
+                  <div class="t-subname">Interdisciplinary Integration</div>
+                  <div class="t-desc">融合不同學科的理論視角與工具，透過知識互補產生單一領域無法達成的創新。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">迭代說明</div>
+          <p class="info-text-blue" style="margin-bottom: 0;">AI 以初步的創新原型為核心，透過 RAG（檢索增強生成） 技術進行循環檢索與邏輯補強，在大幅減少AI幻覺的同時，將模糊概念轉化為具備理論深度與實作可能性的研究方案。<br>迭代越多次，系統越能精準串接外部權威文獻來填補知識空白，並在不斷的自我修正中，讓創新概念蛻變成具備高度可行性與學術深度的具體提案。</p>
+
+          <div class="supplement-divider"></div>
 
           <div class="time-estimate">
             <div>
               <div style="font-size:12px;color:#888;margin-bottom:3px">預估生成時間（部份情況可能出現偏差）</div>
               <div style="font-size:16px;font-weight:500" id="timeEst">約 4 分鐘</div>
-              <div style="font-size:12px;color:#aaa;margin-top:3px" id="estDetail">10 理論 × 10 想法 × 1 迭代</div>
+              <div style="font-size:12px;color:#aaa;margin-top:3px" id="estDetail">10 理論 × 15 想法 × 1 迭代</div>
             </div>
             <div class="pts-display">
               <span class="pts-icon">P</span>
-              <span id="pointEst">共花費 10 點</span>
+              <span id="pointEst">1 點</span>
             </div>
           </div>
 
@@ -288,10 +360,6 @@
           <div id="proposalList"></div>
           <div class="bottom-actions">
             <div class="action-item">
-               <button class="redo-btn" id="redoBtn">&#8635; 重新生成 <span class="redo-discount-badge">9折</span></button>
-              <p class="action-desc">調整設定條件，重新對目前使用的文獻生成研究提案（可能會出現部分相似的提案）</p>
-            </div>
-            <div class="action-item">
               <button class="analyze-another-btn" id="analyzeAnotherBtn">&#10227; 分析另一篇</button>
               <p class="action-desc">返回上傳頁面，上傳其他文獻以生成全新主題的研究提案</p>
             </div>
@@ -319,75 +387,40 @@
 
         <div class="balance-card">
           <div class="balance-label">剩餘點數</div>
-          <div class="balance-value"><span id="modalPoints">125</span> <small>Pts</small></div>
+          <div class="balance-value"><span id="modalPoints">5</span> <small>Pts</small></div>
         </div>
 
         <div class="recharge-section">
-          <h4>儲值點數套餐</h4>
+          <h4>儲值點數</h4>
+          <p class="recharge-rate-note">1 點 = NT$ 30　·　簡易模式消耗 1 點　·　一般模式消耗 2 點</p>
           <div class="recharge-grid">
-            <button class="recharge-btn" onclick="openPaymentModal(100, 299)">
-              <div class="r-pts">100 點</div>
-              <div class="r-price">NT$ 299</div>
+            <button class="recharge-btn" onclick="openPaymentModal(1, 30)">
+              <div class="r-pts">1 點</div>
+              <div class="r-price">NT$ 30</div>
             </button>
-            <button class="recharge-btn active" onclick="openPaymentModal(500, 1200)">
-              <div class="r-pts">500 點</div>
-              <div class="r-price">NT$ 1,200</div>
-              <span class="r-badge">最划算</span>
+            <button class="recharge-btn active" onclick="openPaymentModal(4, 100)">
+              <div class="r-pts">4 點</div>
+              <div class="r-price">NT$ 100</div>
+              <span class="r-badge">加量優惠</span>
             </button>
           </div>
-          
-          <!-- 自訂儲值點數區 -->
+          <p class="recharge-offer-note">加量優惠：NT$ 100 獲得 4 點，等同每點 NT$ 25，省下 NT$ 20。</p>
+
           <div class="custom-recharge-box">
             <div class="custom-recharge-divider">
               <span>或 自訂儲值點數</span>
             </div>
-            
-            <!-- 快捷點數選擇器 -->
-            <div class="custom-quick-selectors">
-              <button class="quick-sel-btn" data-pts="50">+50 點</button>
-              <button class="quick-sel-btn" data-pts="200">+200 點</button>
-              <button class="quick-sel-btn" data-pts="500">+500 點</button>
-              <button class="quick-sel-btn" data-pts="1000">+1000 點</button>
-            </div>
-
             <div class="custom-recharge-row">
               <div class="custom-input-wrapper">
-                <input type="number" id="customPtsInput" placeholder="請輸入欲儲值點數" min="1" step="1">
+                <input type="number" id="customPtsInput" placeholder="輸入點數" min="1" step="1">
                 <span class="custom-input-unit">點</span>
               </div>
               <div class="custom-price-info">
                 <div class="custom-price-num" id="customPriceNum">NT$ 0</div>
-                <div class="custom-price-desc">請輸入點數</div>
+                <div class="custom-price-desc" id="customPriceDesc">請輸入點數</div>
               </div>
             </div>
-
-            <!-- 動態省錢提示 -->
-            <div class="custom-savings-badge" id="customSavingsBadge" style="display: none;">
-              <span class="savings-icon">💰</span> 已為您省下 <span id="customSavingsAmount">NT$ 0</span>
-            </div>
-
-            <!-- 階梯優惠卡片視覺 -->
-            <div class="custom-tier-grid">
-              <div class="tier-card" id="tierBronze">
-                <div class="tier-name">銅級級距</div>
-                <div class="tier-range">1 - 99 點</div>
-                <div class="tier-rate">NT$ 3.0<span class="rate-unit">/點</span></div>
-              </div>
-              <div class="tier-card" id="tierSilver">
-                <div class="tier-name">銀級級距</div>
-                <div class="tier-range">100 - 499 點</div>
-                <div class="tier-rate">NT$ 2.8<span class="rate-unit">/點</span></div>
-              </div>
-              <div class="tier-card" id="tierGold">
-                <div class="tier-name">金級級距</div>
-                <div class="tier-range">500 點以上</div>
-                <div class="tier-rate">NT$ 2.4<span class="rate-unit">/點</span></div>
-              </div>
-            </div>
-
-            <button class="custom-pay-submit-btn" id="customPaySubmitBtn" disabled>
-              進行自訂點數儲值
-            </button>
+            <button class="custom-pay-submit-btn" id="customPaySubmitBtn" disabled>前往儲值</button>
           </div>
         </div>
 

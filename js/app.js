@@ -1,8 +1,8 @@
-import { theories } from './config/theories.js';
 import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
 import { showToast } from './utils/Toast.js';
-import { renderTheories, updateEstimate } from './ui/Settings.js';
+import { updateEstimate } from './ui/Settings.js';
+import { renderDisciplineOptions } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
 import { advanceGeneration } from './ui/Generation.js';
 import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
@@ -81,7 +81,7 @@ function init() {
   }
 
   // Initial render
-  renderTheories(updateEstimate);
+  renderDisciplineOptions();
   updateEstimate();
   updateUserUI();
 
@@ -176,50 +176,13 @@ function init() {
   };
 
   window.setPackage = (type) => {
-    let count = 0, s = 5, it = 1;
-    if (type === 'simple') { count = 1; s = 5; it = 1; }
-    else if (type === 'normal') { count = 3; s = 10; it = 1; }
-    else if (type === 'advanced') { count = 5; s = 15; it = 2; }
+    state.seeds = 15;
+    state.iters = type === 'normal' ? 3 : 1;
 
-    state.selectedTheories.clear();
-    let added = 0;
-    for (let di = 0; di < theories.length; di++) {
-      for (let ti = 0; ti < theories[di].items.length; ti++) {
-        if (added < count) {
-          state.selectedTheories.add(`${di}-${ti}`);
-          added++;
-        }
-      }
-    }
+    document.querySelectorAll('.pkg-btn').forEach(b => b.classList.remove('active'));
+    const target = document.getElementById(type === 'normal' ? 'pkgNormal' : 'pkgSimple');
+    if (target) target.classList.add('active');
 
-    state.seeds = s;
-    state.iters = it;
-
-    // Update UI
-    document.querySelectorAll('#seedOpts .opt-btn').forEach(b => {
-      b.classList.toggle('selected', b.textContent.includes(s + ' 個'));
-    });
-    document.querySelectorAll('#iterOpts .opt-btn').forEach(b => {
-      b.classList.toggle('selected', b.textContent.includes(it + ' 次'));
-    });
-
-    renderTheories(updateEstimate);
-    updateEstimate();
-  };
-
-  const totalTheoriesCount = theories.reduce((acc, dir) => acc + dir.items.length, 0);
-
-  window.toggleAllTheories = () => {
-    if (state.selectedTheories.size === totalTheoriesCount) {
-      state.selectedTheories.clear();
-    } else {
-      theories.forEach((dir, di) => {
-        dir.items.forEach((_, ti) => {
-          state.selectedTheories.add(`${di}-${ti}`);
-        });
-      });
-    }
-    renderTheories(updateEstimate);
     updateEstimate();
   };
 
@@ -246,43 +209,31 @@ function init() {
       return;
     }
 
-    // 3. 檢查理論勾選
-    if (state.selectedTheories.size === 0) {
-      showToast("請至少選擇一種創新理論！", "warning");
-      return;
-    }
+    // 3. 計算點數消耗
+    const cost = state.iters >= 3 ? 2 : 1;
 
-    // 4. 計算點數與驗證點數是否足夠
-    const n = state.selectedTheories.size;
-    let pts = n + Math.max(0, (state.seeds / 5) - 1) + (state.iters - 1);
-    if (pts < 0) pts = 0;
-    
-    if (state.isRegenerating) {
-      pts = Math.round(pts * 0.9);
-    }
-
-    if (state.user.points < pts) {
+    if (state.user.points < cost) {
       showToast("餘額點數不足，請先儲值！", "warning");
       toggleMemberModal(true);
       return;
     }
 
     // 扣除點數
-    state.user.points -= pts;
+    state.user.points -= cost;
     const now = new Date();
     const pad = (num) => String(num).padStart(2, '0');
     const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
     state.pointRecords.unshift({
       type: "扣除",
-      points: -pts,
+      points: -cost,
       date: dateStr,
-      desc: state.isRegenerating ? `重新分析生成提案花費 ${pts} 點 (九折優惠)` : `分析生成提案花費 ${pts} 點`
+      desc: `分析生成提案花費 ${cost} 點`
     });
 
     // 更新 UI 上的點數顯示
     updateUserUI();
-    showToast(`扣除 ${pts} 點，開始分析生成研究提案...`, "info");
+    showToast(`扣除 ${cost} 點，開始分析生成研究提案...`, "info");
 
     goStep(3);
     advanceGeneration(() => {
