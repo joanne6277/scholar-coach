@@ -10,14 +10,6 @@ export function toggleMemberModal(show) {
     modal.style.display = show ? 'flex' : 'none';
     if (show) {
       updateUserUI();
-      const customPtsInput = document.getElementById('customPtsInput');
-      const customPriceNum = document.getElementById('customPriceNum');
-      const customPriceDesc = document.getElementById('customPriceDesc');
-      const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
-      if (customPtsInput) customPtsInput.value = '';
-      if (customPriceNum) customPriceNum.textContent = 'NT$ 0';
-      if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
-      if (customPaySubmitBtn) customPaySubmitBtn.disabled = true;
     }
   }
 }
@@ -224,60 +216,6 @@ export function initPaymentEvents() {
   if (paySuccessDoneBtn) {
     paySuccessDoneBtn.onclick = () => {
       closePaymentModal();
-    };
-  }
-
-  // --- 自訂儲值點數事件監聽與邏輯 ---
-  const customPtsInput = document.getElementById('customPtsInput');
-  const customPriceNum = document.getElementById('customPriceNum');
-  const customPaySubmitBtn = document.getElementById('customPaySubmitBtn');
-  const customPriceDesc = document.getElementById('customPriceDesc');
-
-  if (customPtsInput && customPriceNum && customPaySubmitBtn) {
-    // 計算規則：盡可能使用 4點/$100 優惠包，剩餘每點 $30
-    const calculateCustomPrice = (pts) => {
-      const bundles = Math.floor(pts / 4);
-      const remainder = pts % 4;
-      const price = bundles * 100 + remainder * 30;
-      return { price, bundles, remainder };
-    };
-
-    const buildBreakdown = (bundles, remainder) => {
-      const parts = [];
-      if (bundles > 0) parts.push(`加量優惠 4點 × ${bundles} (NT$ ${bundles * 100})`);
-      if (remainder > 0) parts.push(`${remainder} 點 × NT$ 30 (NT$ ${remainder * 30})`);
-      return parts.join(' + ');
-    };
-
-    const updatePriceDisplay = (pts) => {
-      const { price, bundles, remainder } = calculateCustomPrice(pts);
-      customPriceNum.textContent = `NT$ ${price.toLocaleString()}`;
-      if (customPriceDesc) customPriceDesc.textContent = buildBreakdown(bundles, remainder);
-      customPaySubmitBtn.disabled = false;
-    };
-
-    const resetCustomDisplay = () => {
-      customPriceNum.textContent = 'NT$ 0';
-      if (customPriceDesc) customPriceDesc.textContent = '請輸入點數';
-      customPaySubmitBtn.disabled = true;
-    };
-
-    customPtsInput.oninput = (e) => {
-      const val = e.target.value;
-      if (val === '') { resetCustomDisplay(); return; }
-      let pts = parseFloat(val);
-      if (isNaN(pts) || pts <= 0) { resetCustomDisplay(); return; }
-      if (!Number.isInteger(pts)) { pts = Math.floor(pts); e.target.value = pts; }
-      updatePriceDisplay(pts);
-    };
-
-    customPaySubmitBtn.onclick = () => {
-      const val = parseFloat(customPtsInput.value);
-      if (isNaN(val) || val <= 0) return;
-      const pts = Math.floor(val);
-      const { price } = calculateCustomPrice(pts);
-      showToast("即將開啟 LINE Pay 模擬支付...", "info", 1500);
-      openPaymentModal(pts, price);
     };
   }
 }
