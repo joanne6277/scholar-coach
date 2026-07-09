@@ -17,6 +17,7 @@
           <img src="demo附圖/566916.jpg" alt="Scholar Coach Brand" class="hero-brand-img">
         </div>
         <button id="startBtn" class="btn-start">開始使用</button>
+        <p class="free-trial-note">首次使用免費</p>
       </div>
 
       <div class="landing-section">
@@ -175,6 +176,9 @@
             <div id="fileBadge" style="display:none" class="file-badge">
               <span>&#10003;</span><span id="fileName">paper.pdf</span>
             </div>
+            <div id="uploadErrorText" style="display:none" class="upload-error-text">
+              <span>&#9888;</span><span id="uploadErrorMsg"></span>
+            </div>
           </div>
           <input type="file" id="fileInput" accept=".pdf" style="display:none">
           <div class="cta-row" id="step1Cta" style="display: none;">
@@ -186,7 +190,7 @@
         <div class="step card" id="step2">
           <div class="section-label" style="margin-top:0">快速選擇</div>
           <div class="pkg-row">
-            <button class="pkg-btn active" id="pkgSimple" onclick="setPackage('simple')">
+            <button class="pkg-btn" id="pkgSimple" onclick="setPackage('simple')">
               <div class="pkg-name">簡易模式</div>
               <div class="pkg-price">1 點</div>
               <div class="pkg-features">
@@ -194,7 +198,7 @@
                 <span class="pkg-feature-tag">速度較快</span>
               </div>
             </button>
-            <button class="pkg-btn" id="pkgNormal" onclick="setPackage('normal')">
+            <button class="pkg-btn active" id="pkgNormal" onclick="setPackage('normal')">
               <div class="pkg-name">一般模式</div>
               <div class="pkg-price">2 點</div>
               <div class="pkg-features">
@@ -309,7 +313,6 @@
             <div>
               <div style="font-size:12px;color:#888;margin-bottom:3px">預估生成時間（部份情況可能出現偏差）</div>
               <div style="font-size:16px;font-weight:500" id="timeEst">約 4 分鐘</div>
-              <div style="font-size:12px;color:#aaa;margin-top:3px" id="estDetail">10 理論 × 15 想法 × 1 迭代</div>
             </div>
             <div class="pts-display">
               <span class="pts-icon">P</span>
@@ -350,7 +353,6 @@
         </div>
 
         <div class="step" id="step4">
-          <div id="generationConditions" class="conditions-banner"></div>
           <div class="results-header">
             <div style="flex:1">
               <div class="source-paper-tag">原始論文：<span id="displayPaperName">paper.pdf</span></div>
@@ -358,8 +360,7 @@
                 <input type="text" id="resultSubjectInput" class="subject-edit-input" placeholder="未命名研究主題">
                 <span class="edit-icon">&#9998;</span>
               </div>
-              <p style="font-size:12px;color:#888;margin-top:3px">共生成 10 個提案，已過濾 <span id="filteredCount">23</span>
-                個重複方向</p>
+              <p style="font-size:12px;color:#888;margin-top:3px">共生成 10 個研究提案</p>
             </div>
             <span class="badge">Demo 輸出</span>
           </div>
@@ -386,7 +387,7 @@
           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="avatar" class="profile-avatar large">
           <div class="profile-details">
             <h4 id="profileName">林小明</h4>
-            <p class="member-id">ID: 88273645</p>
+            <p class="member-id" id="profileEmail">xiaoming.lin@gmail.com</p>
             <button class="logout-btn" id="logoutBtn">登出帳戶</button>
           </div>
         </div>
@@ -399,18 +400,23 @@
         <div class="recharge-section">
           <h4>儲值點數</h4>
           <p class="recharge-rate-note">1 點 = NT$ 30　·　簡易模式消耗 1 點　·　一般模式消耗 2 點</p>
-          <div class="recharge-grid">
-            <button class="recharge-btn" onclick="openPaymentModal(1, 30)">
+          <div class="recharge-grid recharge-grid-3">
+            <button class="recharge-btn" data-pts="1" data-price="30">
               <div class="r-pts">1 點</div>
               <div class="r-price">NT$ 30</div>
             </button>
-            <button class="recharge-btn active" onclick="openPaymentModal(4, 100)">
+            <button class="recharge-btn" data-pts="2" data-price="60">
+              <div class="r-pts">2 點</div>
+              <div class="r-price">NT$ 60</div>
+            </button>
+            <button class="recharge-btn active" data-pts="4" data-price="100">
               <div class="r-pts">4 點</div>
               <div class="r-price">NT$ 100</div>
               <span class="r-badge">加量優惠</span>
             </button>
           </div>
           <p class="recharge-offer-note">加量優惠：NT$ 100 獲得 4 點，等同每點 NT$ 25，省下 NT$ 20。</p>
+          <button class="recharge-submit-btn" id="rechargeSubmitBtn">前往儲值</button>
         </div>
 
         <div class="records-section">
@@ -431,8 +437,9 @@
         </div>
         <button class="close-modal" id="closePaymentBtn">&times;</button>
       </div>
+      <p class="lp-demo-note">以下為 LINE Pay 模擬儲值畫面</p>
       <div class="modal-body payment-body">
-        
+
         <!-- View 1: Order Summary (訂單確認) -->
         <div id="paySummaryView" class="pay-view active">
           <h4 class="pay-title">確認交易明細</h4>
@@ -622,6 +629,7 @@
             <p class="auth-subtitle">從現有論文自動生成具創新性的後續研究提案</p>
           </div>
           <p class="auth-desc-text">歡迎使用 Scholar Coach。本系統僅提供 Google 帳戶快速第三方登入與註冊。</p>
+          <p class="auth-free-note">首次使用免費</p>
           <button class="google-btn" id="googleLoginBtn">
             <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -727,6 +735,20 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal (Generic) -->
+  <div id="confirmModal" class="modal-overlay" style="display:none">
+    <div class="modal-card confirm-card">
+      <div class="confirm-body">
+        <h4 id="confirmTitle">確定要執行此操作嗎？</h4>
+        <p id="confirmDesc"></p>
+      </div>
+      <div class="confirm-actions">
+        <button class="btn-secondary" id="confirmCancelBtn">取消</button>
+        <button class="btn-danger" id="confirmOkBtn">確定刪除</button>
       </div>
     </div>
   </div>

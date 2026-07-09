@@ -155,6 +155,26 @@ export function initPaymentEvents() {
   const lpTabLoginBtn = document.getElementById('lpTabLoginBtn');
   const lpSubmitPayBtn = document.getElementById('lpSubmitPayBtn');
   const paySuccessDoneBtn = document.getElementById('paySuccessDoneBtn');
+  const rechargeButtons = document.querySelectorAll('.recharge-grid .recharge-btn');
+  const rechargeSubmitBtn = document.getElementById('rechargeSubmitBtn');
+
+  let selectedRecharge = { pts: 4, price: 100 };
+  rechargeButtons.forEach(btn => {
+    if (btn.classList.contains('active')) {
+      selectedRecharge = { pts: Number(btn.dataset.pts), price: Number(btn.dataset.price) };
+    }
+    btn.onclick = () => {
+      rechargeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedRecharge = { pts: Number(btn.dataset.pts), price: Number(btn.dataset.price) };
+    };
+  });
+
+  if (rechargeSubmitBtn) {
+    rechargeSubmitBtn.onclick = () => {
+      openPaymentModal(selectedRecharge.pts, selectedRecharge.price);
+    };
+  }
 
   if (closePaymentBtn) {
     closePaymentBtn.onclick = () => {
@@ -202,7 +222,7 @@ export function initPaymentEvents() {
           type: "儲值",
           points: currentTransaction.pts,
           date: dateStr,
-          desc: `LINE Pay 儲值 ${currentTransaction.pts} 點`
+          desc: "LINE Pay 儲值"
         });
         
         updateUserUI();

@@ -100,6 +100,7 @@ function processLogin(name, email, avatar) {
           name: name,
           status: '專業版會員',
           points: state.user.points || 125, // 保留或重設點數
+          email: email,
           avatar: avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`
         };
         

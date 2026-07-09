@@ -7,6 +7,7 @@ import { showResults } from './ui/Results.js';
 import { advanceGeneration } from './ui/Generation.js';
 import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
+import { initConfirmModal } from './utils/Confirm.js';
 
 function init() {
   let paperWarningShown = false;
@@ -90,6 +91,48 @@ function init() {
   const fileInput = document.getElementById('fileInput');
   const fileBadge = document.getElementById('fileBadge');
   const fileName = document.getElementById('fileName');
+  const uploadErrorText = document.getElementById('uploadErrorText');
+  const uploadErrorMsg = document.getElementById('uploadErrorMsg');
+
+  const showUploadError = (msg) => {
+    state.fileName = '';
+    fileBadge.style.display = 'none';
+    if (uploadErrorMsg) uploadErrorMsg.textContent = msg;
+    if (uploadErrorText) uploadErrorText.style.display = 'inline-flex';
+    uploadZone.classList.add('error');
+  };
+
+  const clearUploadError = () => {
+    if (uploadErrorText) uploadErrorText.style.display = 'none';
+    uploadZone.classList.remove('error');
+  };
+
+  const isValidPaperFile = (file) => {
+    return file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  };
+
+  const handleUploadedFile = (file) => {
+    if (!isValidPaperFile(file)) {
+      showUploadError('檔案格式錯誤，請上傳 PDF 格式的論文文件');
+      return;
+    }
+
+    clearUploadError();
+    state.fileName = file.name;
+    state.isRegenerating = false;
+    fileBadge.style.display = 'inline-flex';
+    fileName.textContent = state.fileName;
+
+    // Auto-fill subject with filename (minus extension)
+    state.researchSubject = file.name.replace(/\.[^/.]+$/, "");
+    const subjectInput = document.getElementById('subjectInput');
+    const resultSubjectInput = document.getElementById('resultSubjectInput');
+    const subjectContainer = document.getElementById('subjectContainer');
+
+    if (subjectInput) subjectInput.value = state.researchSubject;
+    if (resultSubjectInput) resultSubjectInput.value = state.researchSubject;
+    if (subjectContainer) subjectContainer.style.display = 'block';
+  };
 
   if (uploadZone && fileInput) {
     uploadZone.onclick = () => {
@@ -101,21 +144,7 @@ function init() {
     };
     fileInput.onchange = e => {
       if (e.target.files[0]) {
-        const file = e.target.files[0];
-        state.fileName = file.name;
-        state.isRegenerating = false;
-        fileBadge.style.display = 'inline-flex';
-        fileName.textContent = state.fileName;
-
-        // Auto-fill subject with filename (minus extension)
-        state.researchSubject = file.name.replace(/\.[^/.]+$/, "");
-        const subjectInput = document.getElementById('subjectInput');
-        const resultSubjectInput = document.getElementById('resultSubjectInput');
-        const subjectContainer = document.getElementById('subjectContainer');
-
-        if (subjectInput) subjectInput.value = state.researchSubject;
-        if (resultSubjectInput) resultSubjectInput.value = state.researchSubject;
-        if (subjectContainer) subjectContainer.style.display = 'block';
+        handleUploadedFile(e.target.files[0]);
       }
     };
     uploadZone.addEventListener('dragover', e => {
@@ -130,10 +159,7 @@ function init() {
       if (!state.isLoggedIn) return; // 未登入不可拖放
       uploadZone.classList.remove('dragging');
       if (e.dataTransfer.files[0]) {
-        state.fileName = e.dataTransfer.files[0].name;
-        state.isRegenerating = false;
-        fileBadge.style.display = 'inline-flex';
-        fileName.textContent = state.fileName;
+        handleUploadedFile(e.dataTransfer.files[0]);
       }
     });
   }
@@ -228,7 +254,7 @@ function init() {
       type: "扣除",
       points: -cost,
       date: dateStr,
-      desc: `分析生成提案花費 ${cost} 點`
+      desc: "分析生成提案"
     });
 
     // 更新 UI 上的點數顯示
@@ -273,6 +299,10 @@ function init() {
       const fileInput = document.getElementById('fileInput');
       if (fileInput) fileInput.value = '';
 
+      const uploadErrorText = document.getElementById('uploadErrorText');
+      if (uploadErrorText) uploadErrorText.style.display = 'none';
+      if (uploadZone) uploadZone.classList.remove('error');
+
       // 2. 返回第一頁
       goStep(1);
       showToast("已重設狀態，請上傳新論文", "info");
@@ -296,6 +326,7 @@ function init() {
   // 初始化登入彈窗與支付彈窗事件
   initAuthEvents();
   initPaymentEvents();
+  initConfirmModal();
 }
 
 document.addEventListener('DOMContentLoaded', init);

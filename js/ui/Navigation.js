@@ -59,6 +59,8 @@ export function updateUserUI() {
     document.getElementById('userPoints').textContent = user.points;
     document.getElementById('modalPoints').textContent = user.points;
     document.getElementById('profileName').textContent = user.name;
+    const profileEmailEl = document.getElementById('profileEmail');
+    if (profileEmailEl) profileEmailEl.textContent = user.email || '';
     
     if (window.renderPointRecords) {
       window.renderPointRecords();

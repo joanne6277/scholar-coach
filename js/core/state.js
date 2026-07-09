@@ -15,7 +15,7 @@ export const state = {
   currentStep: 1,
   selectedTheories: new Set(allTheories),
   seeds: 15,
-  iters: 1,
+  iters: 3,
   fileName: '',
   researchSubject: '',
   isGenerating: false,
@@ -24,6 +24,7 @@ export const state = {
     name: '林小明',
     status: '專業版會員',
     points: 5,
+    email: 'xiaoming.lin@gmail.com',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'
   },
   pointRecords: [...pointRecords],

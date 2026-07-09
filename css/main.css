@@ -90,6 +90,13 @@ body {
   background: #1e3d8a;
 }
 
+.free-trial-note {
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2752b8;
+}
+
 .landing-section {
   margin-bottom: 100px;
 }
@@ -508,6 +515,11 @@ body {
   background: var(--primary-light);
 }
 
+.upload-zone.error {
+  border-color: #e53e3e;
+  background: #fff5f5;
+}
+
 .upload-zone h3 {
   font-size: 16px;
   margin-bottom: 8px;
@@ -528,6 +540,19 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+.upload-error-text {
+  margin-top: 16px;
+  background: #fde8e8;
+  color: #c53030;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
 }
 
 .cta-row {
@@ -895,22 +920,6 @@ body {
 }
 
 /* --- Results (Step 4) --- */
-.conditions-banner {
-  background: #2d3748;
-  color: #a0aec0;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 12px;
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
-.condition-label {
-  color: #fff;
-  margin-right: 4px;
-}
-
 .results-header {
   display: flex;
   justify-content: space-between;
@@ -1251,6 +1260,52 @@ body {
   padding: 24px;
 }
 
+.confirm-card {
+  max-width: 380px;
+}
+
+.confirm-body {
+  padding: 28px 24px 8px;
+  text-align: center;
+}
+
+.confirm-body h4 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.confirm-body p {
+  font-size: 13.5px;
+  color: #888;
+  line-height: 1.6;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+}
+
+.confirm-actions .btn-secondary,
+.confirm-actions .btn-danger {
+  flex: 1;
+  padding: 11px;
+}
+
+.btn-danger {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #c53030;
+}
+
 .profile-section {
   display: flex;
   align-items: center;
@@ -1325,7 +1380,11 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+}
+
+.recharge-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .recharge-btn {
@@ -1336,10 +1395,31 @@ body {
   text-align: center;
   cursor: pointer;
   position: relative;
+  transition: all 0.2s ease;
 }
 
 .recharge-btn.active {
   border-color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(39, 82, 184, 0.15);
+}
+
+.recharge-submit-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+  margin-bottom: 32px;
+  transition: all 0.2s ease;
+}
+
+.recharge-submit-btn:hover {
+  background: var(--primary-dark);
 }
 
 .r-pts {
@@ -1448,6 +1528,17 @@ body {
   text-align: center;
   margin-bottom: 28px;
   line-height: 1.5;
+}
+
+.auth-free-note {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2752b8;
+  background: var(--primary-light);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin: -16px 0 20px;
 }
 
 /* Google Button Style */
@@ -1778,6 +1869,15 @@ body {
   color: var(--line-pay-green);
   font-size: 18px;
   margin-left: 2px;
+}
+
+.lp-demo-note {
+  text-align: center;
+  font-size: 11px;
+  color: #94a3b8;
+  background: #f8fafc;
+  padding: 6px 24px;
+  border-bottom: 1px solid #edf2f7;
 }
 
 .payment-body {
@@ -2405,37 +2505,42 @@ body {
 }
 
 .like-btn, .dislike-btn {
-  padding: 8px 14px;
-  font-size: 13.5px;
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 600;
-  border-radius: 8px;
-  border: 1.2px solid #e2e8f0;
-  background: white;
+  border-radius: 999px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
   color: #64748b;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+}
+
+.fb-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 
 .like-btn:hover {
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.04);
+  background: rgba(16, 185, 129, 0.08);
   transform: translateY(-1px);
 }
 
 .dislike-btn:hover {
   color: #ef4444;
   border-color: rgba(239, 68, 68, 0.4);
-  background: rgba(239, 68, 68, 0.04);
+  background: rgba(239, 68, 68, 0.08);
   transform: translateY(-1px);
 }
 
 .like-btn:active, .dislike-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.97);
 }
 
 /* 啟用狀態樣式 */
@@ -2443,16 +2548,14 @@ body {
   background: #10b981;
   color: white;
   border-color: #10b981;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
 
 .dislike-btn.active {
   background: #ef4444;
   color: white;
   border-color: #ef4444;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
 }
 
 /* 圖示點擊微彈跳動畫 */

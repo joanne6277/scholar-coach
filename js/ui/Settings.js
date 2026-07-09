@@ -8,7 +8,6 @@ export function updateEstimate() {
   const { seeds, iters } = state;
   const mins = Math.max(1, Math.round((10 * seeds * iters * 0.4 + 60) / 60));
   document.getElementById('timeEst').textContent = `約 ${mins} 分鐘`;
-  document.getElementById('estDetail').textContent = `10 理論 × ${seeds} 想法 × ${iters} 迭代`;
 
   const pts = iters >= 3 ? 2 : 1;
 
