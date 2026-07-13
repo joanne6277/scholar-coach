@@ -156,16 +156,20 @@ export function toggleReferences(i) {
 export function copyProposal(i) {
   const p = proposals[i];
   const text = `【${p.title}】\n\n問題闡述：${p.problem}\n\n現有方法比較：${p.comparison}\n\n研究動機：${p.motivation}\n\n提案方法：${p.method}\n\n試驗計畫：${p.experiment}`;
-  navigator.clipboard.writeText(text).catch(() => { });
   const btn = document.getElementById('copybtn' + i);
-  if (!btn) return;
-  btn.classList.add('copied');
-  btn.innerHTML = '<span>&#10003;</span> 已複製';
-  showToast("提案已複製到剪貼簿！", "success");
-  setTimeout(() => {
-    btn.classList.remove('copied');
-    btn.innerHTML = '<span>&#10697;</span> 複製提案';
-  }, 2000);
+
+  navigator.clipboard.writeText(text).then(() => {
+    if (!btn) return;
+    btn.classList.add('copied');
+    btn.innerHTML = '<span>&#10003;</span> 已複製';
+    showToast("提案已複製到剪貼簿！", "success");
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<span>&#10697;</span> 複製提案';
+    }, 2000);
+  }).catch(() => {
+    showToast("複製失敗，請手動選取文字複製", "error");
+  });
 }
 
 export function handleFeedback(index, type) {

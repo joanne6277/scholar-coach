@@ -177,7 +177,8 @@
               <span>&#10003;</span><span id="fileName">paper.pdf</span>
             </div>
             <div id="uploadErrorText" style="display:none" class="upload-error-text">
-              <span>&#9888;</span><span id="uploadErrorMsg"></span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span id="uploadErrorMsg"></span>
             </div>
           </div>
           <input type="file" id="fileInput" accept=".pdf" style="display:none">
@@ -307,6 +308,25 @@
           <div class="section-label">迭代說明</div>
           <p class="info-text-blue" style="margin-bottom: 0;">AI 以初步的創新原型為核心，透過 RAG（檢索增強生成） 技術進行循環檢索與邏輯補強，在大幅減少AI幻覺的同時，將模糊概念轉化為具備理論深度與實作可能性的研究方案。<br>迭代越多次，系統越能精準串接外部權威文獻來填補知識空白，並在不斷的自我修正中，讓創新概念蛻變成具備高度可行性與學術深度的具體提案。</p>
 
+          <div class="section-label">如何解讀提案分數</div>
+          <p class="section-subdesc">每個生成的研究提案都會標示以下兩項分數，幫助你快速判斷這個構想值不值得深入發展。</p>
+          <div class="metric-info-grid">
+            <div class="metric-info-card">
+              <div class="metric-info-icon" style="background:#eef7f0;color:#27500a">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6l-6.3 4.4L8 13.8 2 9.4h7.6z"/></svg>
+              </div>
+              <div class="metric-info-title">新穎性 <span class="metric-info-sub">Novelty</span></div>
+              <div class="metric-info-desc">系統會把這個提案拿去跟該領域大量既有文獻比對，計算主題重疊的程度。分數越高，代表這個構想跟目前已發表的研究差異越大，越有機會做出別人還沒做過的題目。</div>
+            </div>
+            <div class="metric-info-card">
+              <div class="metric-info-icon" style="background:#eef2fd;color:#2752b8">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H3v2a4 4 0 0 0 4 3.65M17 5h4v2a4 4 0 0 1-4 3.65"/></svg>
+              </div>
+              <div class="metric-info-title">勝場數 <span class="metric-info-sub">Tournament Wins</span></div>
+              <div class="metric-info-desc">所有提案會進行「瑞士制錦標賽」——就像西洋棋比賽一樣兩兩配對對戰，由 AI 評審依動機、方法、嚴謹度逐輪 PK。每贏過一個對手就多一場勝場，勝場數越高，代表這個提案在多輪比較中持續勝出，整體品質相對更穩定可靠。</div>
+            </div>
+          </div>
+
           <div class="supplement-divider"></div>
 
           <div class="time-estimate">
@@ -349,6 +369,17 @@
                 <div class="step-dot"></div>生成結構化研究提案
               </li>
             </ul>
+          </div>
+          <div class="generation-error-view" id="generationErrorView" style="display:none;">
+            <div class="gen-error-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h3 class="gen-error-title">生成失敗</h3>
+            <p class="gen-error-desc">系統暫時無法完成分析，可能是網路不穩定或伺服器忙碌，請稍後再試一次。</p>
+            <div class="gen-error-actions">
+              <button class="btn-secondary" id="genErrorBackBtn">‹ 返回設定</button>
+              <button class="btn-primary" id="genErrorRetryBtn">重新生成 ›</button>
+            </div>
           </div>
         </div>
 
@@ -416,7 +447,7 @@
             </button>
           </div>
           <p class="recharge-offer-note">加量優惠：NT$ 100 獲得 4 點，等同每點 NT$ 25，省下 NT$ 20。</p>
-          <button class="recharge-submit-btn" id="rechargeSubmitBtn">前往儲值</button>
+          <button class="recharge-submit-btn" id="rechargeSubmitBtn">儲值</button>
         </div>
 
         <div class="records-section">
@@ -750,6 +781,17 @@
         <button class="btn-secondary" id="confirmCancelBtn">取消</button>
         <button class="btn-danger" id="confirmOkBtn">確定刪除</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Demo 錯誤畫面測試面板（僅供展示用，正式環境可移除） -->
+  <div id="demoPanel" class="demo-panel collapsed">
+    <button id="demoPanelToggle" class="demo-panel-toggle" title="錯誤畫面 Demo 面板">🐞</button>
+    <div class="demo-panel-body">
+      <div class="demo-panel-header">錯誤畫面 Demo</div>
+      <button class="demo-panel-btn" id="demoErrPdf">上傳：非 PDF 格式</button>
+      <button class="demo-panel-btn" id="demoErrSize">上傳：檔案過大</button>
+      <button class="demo-panel-btn" id="demoErrGen">生成失敗畫面</button>
     </div>
   </div>
 

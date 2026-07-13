@@ -1,4 +1,26 @@
 import { disciplines } from '../config/disciplines.js';
+import { state } from '../core/state.js';
+
+export function showUploadError(msg) {
+  const uploadZone = document.getElementById('uploadZone');
+  const fileBadge = document.getElementById('fileBadge');
+  const uploadErrorText = document.getElementById('uploadErrorText');
+  const uploadErrorMsg = document.getElementById('uploadErrorMsg');
+
+  state.fileName = '';
+  if (fileBadge) fileBadge.style.display = 'none';
+  if (uploadErrorMsg) uploadErrorMsg.textContent = msg;
+  if (uploadErrorText) uploadErrorText.style.display = 'inline-flex';
+  if (uploadZone) uploadZone.classList.add('error');
+}
+
+export function clearUploadError() {
+  const uploadZone = document.getElementById('uploadZone');
+  const uploadErrorText = document.getElementById('uploadErrorText');
+
+  if (uploadErrorText) uploadErrorText.style.display = 'none';
+  if (uploadZone) uploadZone.classList.remove('error');
+}
 
 export function renderDisciplineOptions() {
   const main = document.getElementById('mainDiscipline');

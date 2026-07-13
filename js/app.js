@@ -2,12 +2,13 @@ import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
 import { showToast } from './utils/Toast.js';
 import { updateEstimate } from './ui/Settings.js';
-import { renderDisciplineOptions } from './ui/Upload.js';
+import { renderDisciplineOptions, showUploadError, clearUploadError } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
-import { advanceGeneration } from './ui/Generation.js';
+import { advanceGeneration, initGenerationErrorEvents } from './ui/Generation.js';
 import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
 import { initConfirmModal } from './utils/Confirm.js';
+import { initDemoPanel } from './ui/DemoPanel.js';
 
 function init() {
   let paperWarningShown = false;
@@ -91,21 +92,6 @@ function init() {
   const fileInput = document.getElementById('fileInput');
   const fileBadge = document.getElementById('fileBadge');
   const fileName = document.getElementById('fileName');
-  const uploadErrorText = document.getElementById('uploadErrorText');
-  const uploadErrorMsg = document.getElementById('uploadErrorMsg');
-
-  const showUploadError = (msg) => {
-    state.fileName = '';
-    fileBadge.style.display = 'none';
-    if (uploadErrorMsg) uploadErrorMsg.textContent = msg;
-    if (uploadErrorText) uploadErrorText.style.display = 'inline-flex';
-    uploadZone.classList.add('error');
-  };
-
-  const clearUploadError = () => {
-    if (uploadErrorText) uploadErrorText.style.display = 'none';
-    uploadZone.classList.remove('error');
-  };
 
   const isValidPaperFile = (file) => {
     return file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
@@ -299,9 +285,7 @@ function init() {
       const fileInput = document.getElementById('fileInput');
       if (fileInput) fileInput.value = '';
 
-      const uploadErrorText = document.getElementById('uploadErrorText');
-      if (uploadErrorText) uploadErrorText.style.display = 'none';
-      if (uploadZone) uploadZone.classList.remove('error');
+      clearUploadError();
 
       // 2. 返回第一頁
       goStep(1);
@@ -327,6 +311,8 @@ function init() {
   initAuthEvents();
   initPaymentEvents();
   initConfirmModal();
+  initGenerationErrorEvents();
+  initDemoPanel();
 }
 
 document.addEventListener('DOMContentLoaded', init);
