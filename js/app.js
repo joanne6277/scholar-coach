@@ -1,7 +1,7 @@
 import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
 import { showToast } from './utils/Toast.js';
-import { updateEstimate } from './ui/Settings.js';
+import { updateEstimate, getGenerationCost } from './ui/Settings.js';
 import { renderDisciplineOptions, showUploadError, clearUploadError } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
 import { advanceGeneration, initGenerationErrorEvents } from './ui/Generation.js';
@@ -222,7 +222,7 @@ function init() {
     }
 
     // 3. 計算點數消耗
-    const cost = state.iters >= 3 ? 2 : 1;
+    const cost = getGenerationCost();
 
     if (state.user.points < cost) {
       showToast("餘額點數不足，請先儲值！", "warning");

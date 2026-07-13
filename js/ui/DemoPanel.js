@@ -1,6 +1,8 @@
-import { goStep } from './Navigation.js';
+import { state } from '../core/state.js';
+import { goStep, updateUserUI } from './Navigation.js';
 import { showUploadError } from './Upload.js';
 import { showGenerationFailure } from './Generation.js';
+import { getGenerationCost } from './Settings.js';
 
 function ensureMainAppVisible() {
   const landingPage = document.getElementById('landingPage');
@@ -40,8 +42,25 @@ export function initDemoPanel() {
   if (errGen) {
     errGen.onclick = () => {
       ensureMainAppVisible();
+      const cost = getGenerationCost();
+
+      // 模擬真實生成流程：先扣點，失敗後才由「返回設定」退還
+      if (state.user.points >= cost) {
+        state.user.points -= cost;
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+        state.pointRecords.unshift({
+          type: "扣除",
+          points: -cost,
+          date: dateStr,
+          desc: "分析生成提案"
+        });
+        updateUserUI();
+      }
+
       goStep(3);
-      showGenerationFailure();
+      showGenerationFailure(cost);
     };
   }
 }
