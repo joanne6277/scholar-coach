@@ -14,8 +14,8 @@ export const state = {
   isLoggedIn: false,
   currentStep: 1,
   selectedTheories: new Set(allTheories),
-  seeds: 10,
-  iters: 1,
+  seeds: 15,
+  iters: 3,
   fileName: '',
   researchSubject: '',
   isGenerating: false,
@@ -23,7 +23,8 @@ export const state = {
   user: {
     name: '林小明',
     status: '專業版會員',
-    points: 125,
+    points: 5,
+    email: 'xiaoming.lin@gmail.com',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'
   },
   pointRecords: [...pointRecords],

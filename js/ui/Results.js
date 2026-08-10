@@ -1,38 +1,17 @@
-import { theories } from '../config/theories.js';
 import { tagStyles, numStyles } from '../config/styles.js';
 import { proposals, eliminated } from '../mock/proposals.js';
 import { state } from '../core/state.js';
 import { goStep } from './Navigation.js';
 import { showToast } from '../utils/Toast.js';
 
-export function renderConditions() {
-  const banner = document.getElementById('generationConditions');
-  if (!banner) return;
-  const { selectedTheories, seeds, iters } = state;
-
-  // 根據 "di-ti" 格式解索理論名稱
-  const theoryNames = Array.from(selectedTheories).map(key => {
-    const [di, ti] = key.split('-').map(Number);
-    return theories[di]?.items[ti]?.name;
-  }).filter(Boolean).join('、');
-
-  banner.innerHTML = `
-    <div class="condition-item"><span class="condition-label">所選理論：</span><span class="condition-value">${theoryNames}</span></div>
-    <div class="condition-item"><span class="condition-label">種子數：</span><span class="condition-value">${seeds} 個</span></div>
-    <div class="condition-item"><span class="condition-label">迭代：</span><span class="condition-value">${iters} 次</span></div>
-  `;
-}
-
 export function showResults() {
   goStep(4);
-  renderConditions();
   const paperDisplay = document.getElementById('displayPaperName');
   if (paperDisplay) paperDisplay.textContent = state.fileName || 'research_paper_demo.pdf';
 
   const resultSubjectInput = document.getElementById('resultSubjectInput');
   if (resultSubjectInput) resultSubjectInput.value = state.researchSubject || '未命名研究主題';
 
-  document.getElementById('filteredCount').textContent = eliminated.length + 19;
   const list = document.getElementById('proposalList');
   if (!list) return;
   list.innerHTML = '';
@@ -82,10 +61,12 @@ export function showResults() {
         <div class="card-actions">
           <div class="feedback-actions">
             <button class="like-btn" id="likebtn${i}" data-index="${i}">
-              <span class="fb-icon">👍</span>
+              <svg class="fb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h6.29a2 2 0 0 1 1.94 2.5l-2.66 8A2 2 0 0 1 17.63 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h.94a2 2 0 0 1 2 2.1z"/></svg>
+              <span>有幫助</span>
             </button>
             <button class="dislike-btn" id="dislikebtn${i}" data-index="${i}">
-              <span class="fb-icon">👎</span>
+              <svg class="fb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"/><path d="M9 18.12 10 14H3.71a2 2 0 0 1-1.94-2.5l2.66-8A2 2 0 0 1 6.37 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h-.94a2 2 0 0 1-2-2.1z"/></svg>
+              <span>沒幫助</span>
             </button>
           </div>
           <button class="copy-btn" id="copybtn${i}" data-index="${i}">
@@ -175,16 +156,20 @@ export function toggleReferences(i) {
 export function copyProposal(i) {
   const p = proposals[i];
   const text = `【${p.title}】\n\n問題闡述：${p.problem}\n\n現有方法比較：${p.comparison}\n\n研究動機：${p.motivation}\n\n提案方法：${p.method}\n\n試驗計畫：${p.experiment}`;
-  navigator.clipboard.writeText(text).catch(() => { });
   const btn = document.getElementById('copybtn' + i);
-  if (!btn) return;
-  btn.classList.add('copied');
-  btn.innerHTML = '<span>&#10003;</span> 已複製';
-  showToast("提案已複製到剪貼簿！", "success");
-  setTimeout(() => {
-    btn.classList.remove('copied');
-    btn.innerHTML = '<span>&#10697;</span> 複製提案';
-  }, 2000);
+
+  navigator.clipboard.writeText(text).then(() => {
+    if (!btn) return;
+    btn.classList.add('copied');
+    btn.innerHTML = '<span>&#10003;</span> 已複製';
+    showToast("提案已複製到剪貼簿！", "success");
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<span>&#10697;</span> 複製提案';
+    }, 2000);
+  }).catch(() => {
+    showToast("複製失敗，請手動選取文字複製", "error");
+  });
 }
 
 export function handleFeedback(index, type) {

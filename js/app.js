@@ -1,12 +1,14 @@
-import { theories } from './config/theories.js';
 import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
 import { showToast } from './utils/Toast.js';
-import { renderTheories, updateEstimate } from './ui/Settings.js';
+import { updateEstimate, getGenerationCost } from './ui/Settings.js';
+import { renderDisciplineOptions, showUploadError, clearUploadError } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
-import { advanceGeneration } from './ui/Generation.js';
+import { advanceGeneration, initGenerationErrorEvents } from './ui/Generation.js';
 import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
+import { initConfirmModal } from './utils/Confirm.js';
+import { initDemoPanel } from './ui/DemoPanel.js';
 
 function init() {
   let paperWarningShown = false;
@@ -81,7 +83,7 @@ function init() {
   }
 
   // Initial render
-  renderTheories(updateEstimate);
+  renderDisciplineOptions();
   updateEstimate();
   updateUserUI();
 
@@ -90,6 +92,33 @@ function init() {
   const fileInput = document.getElementById('fileInput');
   const fileBadge = document.getElementById('fileBadge');
   const fileName = document.getElementById('fileName');
+
+  const isValidPaperFile = (file) => {
+    return file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  };
+
+  const handleUploadedFile = (file) => {
+    if (!isValidPaperFile(file)) {
+      showUploadError('檔案格式錯誤，請上傳 PDF 格式的論文文件');
+      return;
+    }
+
+    clearUploadError();
+    state.fileName = file.name;
+    state.isRegenerating = false;
+    fileBadge.style.display = 'inline-flex';
+    fileName.textContent = state.fileName;
+
+    // Auto-fill subject with filename (minus extension)
+    state.researchSubject = file.name.replace(/\.[^/.]+$/, "");
+    const subjectInput = document.getElementById('subjectInput');
+    const resultSubjectInput = document.getElementById('resultSubjectInput');
+    const subjectContainer = document.getElementById('subjectContainer');
+
+    if (subjectInput) subjectInput.value = state.researchSubject;
+    if (resultSubjectInput) resultSubjectInput.value = state.researchSubject;
+    if (subjectContainer) subjectContainer.style.display = 'block';
+  };
 
   if (uploadZone && fileInput) {
     uploadZone.onclick = () => {
@@ -101,21 +130,7 @@ function init() {
     };
     fileInput.onchange = e => {
       if (e.target.files[0]) {
-        const file = e.target.files[0];
-        state.fileName = file.name;
-        state.isRegenerating = false;
-        fileBadge.style.display = 'inline-flex';
-        fileName.textContent = state.fileName;
-
-        // Auto-fill subject with filename (minus extension)
-        state.researchSubject = file.name.replace(/\.[^/.]+$/, "");
-        const subjectInput = document.getElementById('subjectInput');
-        const resultSubjectInput = document.getElementById('resultSubjectInput');
-        const subjectContainer = document.getElementById('subjectContainer');
-
-        if (subjectInput) subjectInput.value = state.researchSubject;
-        if (resultSubjectInput) resultSubjectInput.value = state.researchSubject;
-        if (subjectContainer) subjectContainer.style.display = 'block';
+        handleUploadedFile(e.target.files[0]);
       }
     };
     uploadZone.addEventListener('dragover', e => {
@@ -130,10 +145,7 @@ function init() {
       if (!state.isLoggedIn) return; // 未登入不可拖放
       uploadZone.classList.remove('dragging');
       if (e.dataTransfer.files[0]) {
-        state.fileName = e.dataTransfer.files[0].name;
-        state.isRegenerating = false;
-        fileBadge.style.display = 'inline-flex';
-        fileName.textContent = state.fileName;
+        handleUploadedFile(e.dataTransfer.files[0]);
       }
     });
   }
@@ -176,50 +188,13 @@ function init() {
   };
 
   window.setPackage = (type) => {
-    let count = 0, s = 5, it = 1;
-    if (type === 'simple') { count = 1; s = 5; it = 1; }
-    else if (type === 'normal') { count = 3; s = 10; it = 1; }
-    else if (type === 'advanced') { count = 5; s = 15; it = 2; }
+    state.seeds = 15;
+    state.iters = type === 'normal' ? 3 : 1;
 
-    state.selectedTheories.clear();
-    let added = 0;
-    for (let di = 0; di < theories.length; di++) {
-      for (let ti = 0; ti < theories[di].items.length; ti++) {
-        if (added < count) {
-          state.selectedTheories.add(`${di}-${ti}`);
-          added++;
-        }
-      }
-    }
+    document.querySelectorAll('.pkg-btn').forEach(b => b.classList.remove('active'));
+    const target = document.getElementById(type === 'normal' ? 'pkgNormal' : 'pkgSimple');
+    if (target) target.classList.add('active');
 
-    state.seeds = s;
-    state.iters = it;
-
-    // Update UI
-    document.querySelectorAll('#seedOpts .opt-btn').forEach(b => {
-      b.classList.toggle('selected', b.textContent.includes(s + ' 個'));
-    });
-    document.querySelectorAll('#iterOpts .opt-btn').forEach(b => {
-      b.classList.toggle('selected', b.textContent.includes(it + ' 次'));
-    });
-
-    renderTheories(updateEstimate);
-    updateEstimate();
-  };
-
-  const totalTheoriesCount = theories.reduce((acc, dir) => acc + dir.items.length, 0);
-
-  window.toggleAllTheories = () => {
-    if (state.selectedTheories.size === totalTheoriesCount) {
-      state.selectedTheories.clear();
-    } else {
-      theories.forEach((dir, di) => {
-        dir.items.forEach((_, ti) => {
-          state.selectedTheories.add(`${di}-${ti}`);
-        });
-      });
-    }
-    renderTheories(updateEstimate);
     updateEstimate();
   };
 
@@ -246,43 +221,31 @@ function init() {
       return;
     }
 
-    // 3. 檢查理論勾選
-    if (state.selectedTheories.size === 0) {
-      showToast("請至少選擇一種創新理論！", "warning");
-      return;
-    }
+    // 3. 計算點數消耗
+    const cost = getGenerationCost();
 
-    // 4. 計算點數與驗證點數是否足夠
-    const n = state.selectedTheories.size;
-    let pts = n + Math.max(0, (state.seeds / 5) - 1) + (state.iters - 1);
-    if (pts < 0) pts = 0;
-    
-    if (state.isRegenerating) {
-      pts = Math.round(pts * 0.9);
-    }
-
-    if (state.user.points < pts) {
+    if (state.user.points < cost) {
       showToast("餘額點數不足，請先儲值！", "warning");
       toggleMemberModal(true);
       return;
     }
 
     // 扣除點數
-    state.user.points -= pts;
+    state.user.points -= cost;
     const now = new Date();
     const pad = (num) => String(num).padStart(2, '0');
     const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
     state.pointRecords.unshift({
       type: "扣除",
-      points: -pts,
+      points: -cost,
       date: dateStr,
-      desc: state.isRegenerating ? `重新分析生成提案花費 ${pts} 點 (九折優惠)` : `分析生成提案花費 ${pts} 點`
+      desc: "分析生成提案"
     });
 
     // 更新 UI 上的點數顯示
     updateUserUI();
-    showToast(`扣除 ${pts} 點，開始分析生成研究提案...`, "info");
+    showToast(`扣除 ${cost} 點，開始分析生成研究提案...`, "info");
 
     goStep(3);
     advanceGeneration(() => {
@@ -322,6 +285,8 @@ function init() {
       const fileInput = document.getElementById('fileInput');
       if (fileInput) fileInput.value = '';
 
+      clearUploadError();
+
       // 2. 返回第一頁
       goStep(1);
       showToast("已重設狀態，請上傳新論文", "info");
@@ -345,6 +310,9 @@ function init() {
   // 初始化登入彈窗與支付彈窗事件
   initAuthEvents();
   initPaymentEvents();
+  initConfirmModal();
+  initGenerationErrorEvents();
+  initDemoPanel();
 }
 
 document.addEventListener('DOMContentLoaded', init);

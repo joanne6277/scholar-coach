@@ -1,5 +1,6 @@
 import { state } from '../core/state.js';
 import { showToast } from '../utils/Toast.js';
+import { showConfirm } from '../utils/Confirm.js';
 
 export function renderHistory() {
   const list = document.getElementById('historyList');
@@ -26,9 +27,15 @@ export function renderHistory() {
     const delBtn = item.querySelector('.history-delete-btn');
     delBtn.onclick = (e) => {
       e.stopPropagation();
-      state.history = state.history.filter(item => item.id !== h.id);
-      renderHistory();
-      showToast("歷史紀錄已刪除", "info");
+      showConfirm(
+        `確定要刪除「${h.title}」這筆歷史紀錄嗎？此動作無法復原。`,
+        () => {
+          state.history = state.history.filter(item => item.id !== h.id);
+          renderHistory();
+          showToast("歷史紀錄已刪除", "info");
+        },
+        '刪除歷史紀錄'
+      );
     };
     list.appendChild(item);
   });
