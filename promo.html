@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scholar Coach ｜即將上線・搶先登記</title>
+  <meta name="description" content="從一篇論文，生成十個具備學術根據的創新研究提案。Scholar Coach 即將上線，搶先登記獲取上線通知，首次使用完全免費。">
+  <style>
+    /* ---------- Design tokens (與 Scholar Coach 主產品一致) ---------- */
+    :root {
+      --primary: #2752b8;
+      --primary-light: #eef2fd;
+      --primary-dark: #1e3d8a;
+      --bg: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-main: #1a1a18;
+      --text-sub: #666666;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* ---------- Top bar ---------- */
+    .promo-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .promo-nav-brand {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      color: #1a2a4a;
+    }
+
+    .promo-nav-brand .brand-o {
+      color: var(--primary);
+    }
+
+    .promo-nav-cta {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s ease;
+    }
+
+    .promo-nav-cta:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ---------- Shared section layout ---------- */
+    .section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-eyebrow {
+      text-align: center;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a2a4a;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 15px;
+      color: var(--text-sub);
+      max-width: 560px;
+      margin: 0 auto 48px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: linear-gradient(rgba(248, 249, 252, 0.9), rgba(238, 242, 253, 0.9)), url('demo附圖/566916.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--primary);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 800;
+      color: #1a2a4a;
+      max-width: 880px;
+      margin: 0 auto 20px;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    .hero h1 .accent {
+      color: var(--primary);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-sub);
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .btn-hero-primary {
+      background: #1a2a4a;
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      font-size: 16.5px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(26, 42, 74, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(26, 42, 74, 0.3);
+      background: #1e3d8a;
+    }
+
+    .hero-free-note {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* ---------- Trust strip ---------- */
+    .trust-strip {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .trust-grid {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 36px 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .trust-item .trust-num {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .trust-item .trust-label {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* ---------- Feature grid ---------- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 32px 22px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .f-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #1a2a4a;
+    }
+
+    .feature-card p {
+      font-size: 13.5px;
+      color: #64748b;
+    }
+
+    /* ---------- Theory library ---------- */
+    .theory-dir-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .theory-dir-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .theory-dir-title {
+      font-weight: 700;
+      font-size: 15.5px;
+      color: #1a2a4a;
+      margin-bottom: 6px;
+    }
+
+    .theory-dir-desc {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    .theory-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .theory-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    /* ---------- Steps ---------- */
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .step-item {
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 18px;
+    }
+
+    .step-num {
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--primary);
+      opacity: 0.18;
+      margin-bottom: -8px;
+    }
+
+    .step-item h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a2a4a;
+    }
+
+    .step-item p {
+      font-size: 13.5px;
+      color: #64748b;
+    }
+
+    /* ---------- Metric explainer ---------- */
+    .metric-section {
+      background: white;
+    }
+
+    .metric-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .metric-info-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 26px;
+      border-radius: 16px;
+    }
+
+    .metric-info-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .metric-info-title {
+      font-weight: 700;
+      font-size: 15.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .metric-info-sub {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--primary);
+      font-style: italic;
+    }
+
+    .metric-info-desc {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.7;
+    }
+
+    /* ---------- Pricing ---------- */
+    .pricing-card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 44px 36px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .pricing-highlight-num {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .pricing-highlight-desc {
+      font-size: 14.5px;
+      color: var(--text-sub);
+    }
+
+    /* ---------- Signup ---------- */
+    .signup-section {
+      background: linear-gradient(135deg, #1a2a4a 0%, #1e3d8a 100%);
+      color: white;
+      border-radius: 28px;
+      max-width: 1080px;
+      margin: 0 auto 80px;
+      padding: 64px 32px;
+      text-align: center;
+    }
+
+    .signup-section .section-title,
+    .signup-section .section-subtitle {
+      color: white;
+    }
+
+    .signup-section .section-subtitle {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .signup-form {
+      max-width: 440px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .signup-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: none;
+      font-size: 14.5px;
+      outline: none;
+    }
+
+    .signup-input:focus {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+    }
+
+    .signup-btn {
+      background: white;
+      color: var(--primary-dark);
+      border: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .signup-btn:hover {
+      background: #eef2fd;
+      transform: translateY(-1px);
+    }
+
+    .signup-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .signup-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .signup-error {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #fecaca;
+      display: none;
+    }
+
+    .signup-success {
+      display: none;
+      max-width: 440px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .signup-success h4 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .signup-success p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* ---------- Footer ---------- */
+    .promo-footer {
+      text-align: center;
+      padding: 32px 24px 48px;
+      font-size: 12.5px;
+      color: #999;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .trust-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .theory-dir-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 56px 20px;
+      }
+
+      .signup-section {
+        padding: 48px 20px;
+        border-radius: 20px;
+      }
+    }
+  </style>
+
+  <!-- Mixpanel -->
+  <script type="text/javascript">
+    (function(e,c){if(!c.__SV){var l,h;window.mixpanel=c;c._i=[];c.init=function(q,r,f){function t(d,a){var g=a.split(".");2==g.length&&(d=d[g[0]],a=g[1]);d[a]=function(){d.push([a].concat(Array.prototype.slice.call(arguments,0)))}}var b=c;"undefined"!==typeof f?b=c[f]=[]:f="mixpanel";b.people=b.people||[];b.toString=function(d){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);d||(a+=" (stub)");return a};b.people.toString=function(){return b.toString(1)+".people (stub)"};l="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders start_session_recording stop_session_recording people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+    for(h=0;h<l.length;h++)t(b,l[h]);var n="set set_once union unset remove delete".split(" ");b.get_group=function(){function d(p){a[p]=function(){b.push([g,[p].concat(Array.prototype.slice.call(arguments,0))])}}for(var a={},g=["get_group"].concat(Array.prototype.slice.call(arguments,0)),m=0;m<n.length;m++)d(n[m]);return a};c._i.push([q,r,f])};c.__SV=1.2;var k=e.createElement("script");k.type="text/javascript";k.async=!0;k.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===
+    e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=e.getElementsByTagName("script")[0];e.parentNode.insertBefore(k,e)}})(document,window.mixpanel||[])
+
+    mixpanel.init('aa2f2fce94f1715d46274d3a360d9a33', {
+      autocapture: true,
+      record_sessions_percent: 100,
+    })
+  </script>
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <nav class="promo-nav">
+    <span class="promo-nav-brand">SCHOLAR C<span class="brand-o">O</span>ACH</span>
+    <a href="#signup" class="promo-nav-cta">搶先登記</a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-badge"><span class="dot"></span>即將上線・搶先開放登記</div>
+    <h1>把一篇論文，變成 <span class="accent">十個</span> 具體的研究提案</h1>
+    <p class="hero-desc">Scholar Coach 讀懂你上傳的核心文獻，套用 10 種經典學術理論框架交叉發想，並自動比對既有文獻過濾重複題目，產出具備學術根據的創新研究提案。</p>
+    <div class="hero-cta-row">
+      <a href="#signup" class="btn-hero-primary">搶先登記，取得免費使用額度</a>
+    </div>
+    <p class="hero-free-note">支援 LINE Pay，一鍵儲值免綁卡</p>
+  </header>
+
+  <!-- Trust strip -->
+  <div class="trust-strip">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-num">數週 → 數小時</div>
+        <div class="trust-label">研究前期準備時間大幅縮短</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">10 種</div>
+        <div class="trust-label">經典學術創新理論框架引導發想</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">10 個</div>
+        <div class="trust-label">每次生成研究提案</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="section">
+    <div class="section-eyebrow">Why Scholar Coach</div>
+    <h2 class="section-title">為什麼選擇 Scholar Coach</h2>
+    <p class="section-subtitle">不只是摘要工具，而是真正協助你找到下一個研究方向的創新夥伴。</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="f-icon" style="background:#eef2fd;color:#2752b8">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <h3>自動化結構分析</h3>
+        <p>深入提取論文中的核心理論與方法論，精準識別現有研究的創新基石。</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon" style="background:#f5f0ff;color:#9b51e0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </div>
+        <h3>多維度理論套用</h3>
+        <p>內建十種學術創新模型，引導您從尺度轉換、類比遷移等多元視角切入。</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon" style="background:#e6f9ed;color:#27ae60">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
+        </div>
+        <h3>新穎性過濾機制</h3>
+        <p>自動比對現有學術庫資料，排除重複方向，確保生成的提案具備實質研究新意。</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon" style="background:#fff4e6;color:#f39c12">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+        </div>
+        <h3>結構化計畫草案</h3>
+        <p>一鍵生成包含研究動機與預期目標的結構化大綱，大幅提升專案撰寫效率。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Theory library -->
+  <section class="section" style="padding-top:0">
+    <div class="section-eyebrow">Theory Library</div>
+    <h2 class="section-title">10 種經典學術理論，交叉引導創新</h2>
+    <p class="section-subtitle">系統從 4 個方向切入，讓 AI 用不同的學術視角幫你發想，確保生成的提案有紮實的理論根據。</p>
+    <div class="theory-dir-grid">
+      <div class="theory-dir-card">
+        <div class="theory-dir-title">科學演進與典範變遷</div>
+        <p class="theory-dir-desc">適合關注研究在歷史與環境中的定位。</p>
+        <div class="theory-tag-row">
+          <span class="theory-tag">孔恩的典範論</span>
+          <span class="theory-tag">孔恩的常規科學</span>
+          <span class="theory-tag">費耶阿本的方法論多元主義</span>
+        </div>
+      </div>
+      <div class="theory-dir-card">
+        <div class="theory-dir-title">理論競爭與評估基準</div>
+        <p class="theory-dir-desc">適合研究者篩選並維護高品質的學術假說。</p>
+        <div class="theory-tag-row">
+          <span class="theory-tag">波普爾的可證偽性</span>
+          <span class="theory-tag">拉卡托斯的科學研究綱領</span>
+          <span class="theory-tag">勞丹的問題解決模型</span>
+        </div>
+      </div>
+      <div class="theory-dir-card">
+        <div class="theory-dir-title">邏輯推理與分析工具</div>
+        <p class="theory-dir-desc">適合提供研究實務上的思考模組與分析框架。</p>
+        <div class="theory-tag-row">
+          <span class="theory-tag">皮爾斯的溯因推理</span>
+          <span class="theory-tag">韋伯的理想類型</span>
+        </div>
+      </div>
+      <div class="theory-dir-card">
+        <div class="theory-dir-title">決策限制與視野整合</div>
+        <p class="theory-dir-desc">適合引導研究者在現實約束中尋求跨界創新。</p>
+        <div class="theory-tag-row">
+          <span class="theory-tag">賽蒙的有限理性</span>
+          <span class="theory-tag">跨領域整合</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" style="padding-top:0">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-title">簡單三步驟，產出高品質提案</h2>
+    <p class="section-subtitle">不用重新學習複雜工具，三個步驟就能拿到下一篇論文的方向。</p>
+    <div class="step-grid">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h3>上傳核心論文</h3>
+        <p>上傳單篇 PDF 論文，讓系統在幾秒鐘內讀懂其理論結構與研究侷限。</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h3>配置創新路徑</h3>
+        <p>根據你的研究偏好，選擇簡易或一般模式，設定客製化生成條件。</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h3>獲取研究藍圖</h3>
+        <p>檢視生成的創新想法，並產出具備完整邏輯架構的研究提案大綱。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metric explainer -->
+  <section class="section metric-section">
+    <div class="section-eyebrow">Trust the score</div>
+    <h2 class="section-title">每個提案，都有分數可以判斷</h2>
+    <p class="section-subtitle">不是憑感覺挑題目，兩項分數幫你快速判斷這個構想值不值得深入發展。</p>
+    <div class="metric-info-grid">
+      <div class="metric-info-card">
+        <div class="metric-info-icon" style="background:#eef7f0;color:#27500a">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6l-6.3 4.4L8 13.8 2 9.4h7.6z"/></svg>
+        </div>
+        <div class="metric-info-title">新穎性 <span class="metric-info-sub">Novelty</span></div>
+        <div class="metric-info-desc">系統會把這個提案拿去跟該領域大量既有文獻比對，計算主題重疊的程度。分數越高，代表這個構想跟目前已發表的研究差異越大，越有機會做出別人還沒做過的題目。</div>
+      </div>
+      <div class="metric-info-card">
+        <div class="metric-info-icon" style="background:#eef2fd;color:#2752b8">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H3v2a4 4 0 0 0 4 3.65M17 5h4v2a4 4 0 0 1-4 3.65"/></svg>
+        </div>
+        <div class="metric-info-title">勝場數 <span class="metric-info-sub">Tournament Wins</span></div>
+        <div class="metric-info-desc">所有提案會進行「瑞士制錦標賽」——就像西洋棋比賽一樣兩兩配對對戰，由 AI 評審依動機、方法、嚴謹度逐輪 PK。勝場數越高，代表這個提案在多輪比較中持續勝出，品質相對更穩定可靠。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">用多少，付多少</h2>
+    <p class="section-subtitle">沒有訂閱綁約，用完再儲值就好，首次使用完全免費。</p>
+    <div class="pricing-card">
+      <div class="pricing-highlight-num">最低 NT$ 25</div>
+      <p class="pricing-highlight-desc">就能換一個具備學術根據的創新研究提案，比一杯手搖飲還划算。</p>
+    </div>
+  </section>
+
+  <!-- Signup -->
+  <section class="section" id="signup" style="padding-top:0">
+    <div class="signup-section">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,0.7)">Early Access</div>
+      <h2 class="section-title">搶先登記，上線第一時間通知你</h2>
+      <p class="section-subtitle">留下 Email，我們會在正式上線時通知你，首次使用完全免費。</p>
+
+      <form class="signup-form" id="signupForm" novalidate>
+        <input type="email" id="signupEmail" class="signup-input" placeholder="輸入你的 Email" required autocomplete="email">
+        <button type="submit" class="signup-btn" id="signupBtn">搶先登記</button>
+      </form>
+      <p class="signup-error" id="signupError">請輸入有效的 Email 地址</p>
+      <p class="signup-note" id="signupNote">我們只會寄送上線通知，不會有其他垃圾郵件。</p>
+
+      <div class="signup-success" id="signupSuccess">
+        <h4>🎉 登記成功！</h4>
+        <p>上線時我們會第一時間 Email 通知你，敬請期待。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="promo-footer">
+    <div>© 2026 Scholar Coach. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // ------------------------------------------------------------------
+    // 早鳥登記表單：目前僅將 Email 暫存於瀏覽器 localStorage，
+    // 尚未串接真正的後端 / 郵件服務（例如 Mailchimp、Google Sheets、
+    // 自建 API 等）。正式上線前，請將下方 saveSignup() 換成實際的
+    // API 呼叫，例如：
+    //
+    //   await fetch('https://your-api.example.com/signup', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ email })
+    //   });
+    // ------------------------------------------------------------------
+    function saveSignup(email) {
+      const key = 'scholarCoachEarlyBirdSignups';
+      const list = JSON.parse(localStorage.getItem(key) || '[]');
+      if (!list.includes(email)) {
+        list.push(email);
+        localStorage.setItem(key, JSON.stringify(list));
+      }
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    const form = document.getElementById('signupForm');
+    const emailInput = document.getElementById('signupEmail');
+    const errorText = document.getElementById('signupError');
+    const noteText = document.getElementById('signupNote');
+    const submitBtn = document.getElementById('signupBtn');
+    const successBox = document.getElementById('signupSuccess');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+
+      if (!isValidEmail(email)) {
+        errorText.style.display = 'block';
+        emailInput.focus();
+        return;
+      }
+
+      errorText.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = '登記中...';
+
+      // 模擬送出流程（實際串接時改為等待 API 回應）
+      setTimeout(() => {
+        saveSignup(email);
+        form.style.display = 'none';
+        noteText.style.display = 'none';
+        successBox.style.display = 'block';
+      }, 500);
+    });
+  </script>
+
+</body>
+
+</html>
