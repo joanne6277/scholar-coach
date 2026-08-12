@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服務條款與隱私權政策｜Scholar Coach</title>
+  <style>
+    :root {
+      --primary: #2752b8;
+      --primary-light: #eef2fd;
+      --primary-dark: #1e3d8a;
+      --bg: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-main: #1a1a18;
+      --text-sub: #666666;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--primary);
+    }
+
+    /* ---------- Top bar ---------- */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: 0.5px;
+      color: #1a2a4a;
+      text-decoration: none;
+    }
+
+    .nav-brand .brand-o {
+      color: var(--primary);
+    }
+
+    .back-link {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: var(--primary);
+    }
+
+    /* ---------- Page layout ---------- */
+    .page-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1a2a4a;
+      margin-bottom: 8px;
+    }
+
+    .page-meta {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+    }
+
+    .draft-banner {
+      background: #fff7e6;
+      border: 1px solid #f5d999;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 13.5px;
+      color: #8a5b00;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .toc-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .toc ol {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .toc a {
+      font-size: 14.5px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .doc-section {
+      margin-bottom: 56px;
+    }
+
+    .doc-section-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #1a2a4a;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-light);
+      margin-bottom: 20px;
+      scroll-margin-top: 80px;
+    }
+
+    .doc-sub {
+      margin-bottom: 22px;
+    }
+
+    .doc-sub h3 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #1a2a4a;
+      margin-bottom: 6px;
+    }
+
+    .doc-sub p,
+    .doc-sub li {
+      font-size: 14.5px;
+      color: #3a3a38;
+    }
+
+    .doc-sub ul {
+      padding-left: 20px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .contact-box {
+      background: var(--primary-light);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      font-size: 14.5px;
+    }
+
+    .contact-box a {
+      font-weight: 700;
+    }
+
+    footer.page-footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-sub);
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-nav">
+    <a href="index.html" class="nav-brand">SCHOLAR C<span class="brand-o">O</span>ACH</a>
+    <a href="index.html" class="back-link">‹ 返回首頁</a>
+  </div>
+
+  <div class="page-wrap">
+    <h1 class="page-title">服務條款與隱私權政策</h1>
+    <p class="page-meta">最後更新日期：2026 年 8 月 12 日（草稿版本）</p>
+
+    <div class="draft-banner">
+      ⚠️ 本頁內容目前為<strong>示意用模擬文字</strong>，僅供介面展示與內部審閱之用，並非正式生效的法律文件，尚未經法務審核。正式上線前將由團隊補上完整、正確的條款內容。
+    </div>
+
+    <div class="toc">
+      <div class="toc-title">目錄</div>
+      <ol>
+        <li><a href="#terms">一、服務條款</a></li>
+        <li><a href="#privacy">二、隱私權政策</a></li>
+      </ol>
+    </div>
+
+    <section class="doc-section" id="terms">
+      <h2 class="doc-section-title">一、服務條款</h2>
+
+      <div class="doc-sub">
+        <h3>1. 服務說明</h3>
+        <p>Scholar Coach（以下稱「本服務」）是一套協助使用者上傳學術論文、並自動產出後續研究提案構想的輔助工具。本服務所生成之內容係透過人工智慧模型分析與推論產出，僅供研究發想與參考，不保證內容之正確性、完整性或學術嚴謹度，使用者仍須自行查證並負最終學術與研究倫理責任。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>2. 帳號註冊與使用資格</h3>
+        <p>使用者須以真實有效之第三方帳號（如 Google 帳戶）完成登入方可使用本服務。使用者應確保註冊資訊之正確性，並妥善保管帳號存取權限；因帳號遭他人不當使用所生之損害，本服務不予負責。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>3. 使用者責任與行為規範</h3>
+        <ul>
+          <li>不得上傳非法取得、侵害他人著作權或含有機密資訊之文獻。</li>
+          <li>不得利用本服務從事任何違反法令、學術倫理或第三方權益之行為。</li>
+          <li>不得以自動化方式大量擷取、重製或轉售本服務之生成內容。</li>
+        </ul>
+      </div>
+
+      <div class="doc-sub">
+        <h3>4. 點數與付費服務</h3>
+        <p>本服務採點數制計費，使用者可透過站內儲值功能購買點數以兌換生成額度。點數一經儲值原則上不予退還，如遇系統計費錯誤，使用者得於 7 個工作日內聯繫客服協助處理。實際計費規則、優惠方案與退款機制以正式上線公告版本為準。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>5. 智慧財產權</h3>
+        <p>本服務之介面設計、系統邏輯與品牌內容之智慧財產權歸屬於本服務所有；使用者上傳之論文檔案，其著作權仍歸原著作權人所有。使用者透過本服務生成之研究提案構想，於支付對應點數後，得由使用者自由運用於後續研究。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>6. 免責聲明</h3>
+        <p>本服務以「現況」提供，不對生成內容之學術原創性、可發表性或不侵權保證負責。因使用本服務所生之任何直接或間接損失，本服務於法令允許之最大範圍內不負賠償責任。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>7. 服務變更與終止</h3>
+        <p>本服務保留隨時修改、暫停或終止部分或全部服務內容之權利，並將於合理期間內以站內公告或電子郵件通知使用者。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>8. 準據法與管轄法院</h3>
+        <p>本條款之解釋與適用，以中華民國法律為準據法，如生爭議，雙方同意以台灣台北地方法院為第一審管轄法院。</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="privacy">
+      <h2 class="doc-section-title">二、隱私權政策</h2>
+
+      <div class="doc-sub">
+        <h3>1. 我們蒐集哪些資訊</h3>
+        <ul>
+          <li>帳號資訊：透過第三方登入取得之姓名、電子郵件與大頭貼照。</li>
+          <li>使用內容：您上傳之論文檔案、輸入之客製化條件文字、生成之研究提案紀錄。</li>
+          <li>行為與裝置資訊：透過 Google Tag Manager、Mixpanel 等工具蒐集之操作行為、裝置類型與造訪紀錄，用於產品分析。</li>
+          <li>交易資訊：點數儲值與消費紀錄（不含實際信用卡卡號等敏感金流資訊）。</li>
+        </ul>
+      </div>
+
+      <div class="doc-sub">
+        <h3>2. 資訊如何被使用</h3>
+        <p>我們蒐集之資訊將用於提供、維護與改善本服務功能，包含論文解析、提案生成、點數計費、客服支援，以及透過匿名化之行為數據優化產品體驗，不會將您上傳之論文內容用於訓練與本服務無關之第三方模型。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>3. Cookie 與追蹤技術</h3>
+        <p>本服務使用 Cookie 及類似技術（含 Google Tag Manager、Mixpanel）以記錄使用行為、辨識登入狀態並進行產品分析。您可透過瀏覽器設定管理或封鎖 Cookie，惟部分功能可能因此無法正常運作。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>4. 資料保存與安全</h3>
+        <p>我們採取合理之技術與管理措施保護您的個人資料，避免遭未經授權之存取、洩漏或竄改。您的資料將於帳號存續期間內保存，帳號刪除後將依法令要求之期限保存或刪除相關紀錄。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>5. 第三方服務</h3>
+        <p>本服務整合 Google（第三方登入）、LINE Pay（金流服務，目前為模擬展示）等第三方服務，該等服務所蒐集之資訊將依各自之隱私權政策處理，建議您一併參閱。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>6. 使用者權利</h3>
+        <p>您得依個人資料保護法規定，向我們請求查詢、閱覽、補充、更正、複製本人資料，或請求停止蒐集、處理、利用及刪除。相關請求請透過下方客服信箱與我們聯繫。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>7. 政策修訂</h3>
+        <p>我們可能不定期修訂本政策，修訂後將更新本頁面之「最後更新日期」，重大變更將另以站內公告或電子郵件通知。</p>
+      </div>
+
+      <div class="doc-sub">
+        <h3>8. 聯絡我們</h3>
+        <div class="contact-box">
+          若您對本服務條款或隱私權政策有任何疑問，歡迎透過客服信箱與我們聯繫：<br>
+          <a href="mailto:support@scholarcoach.tw">support@scholarcoach.tw</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      &copy; 2026 Scholar Coach（學術教練） · <a href="index.html">返回首頁</a>
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -2873,5 +2873,40 @@ body {
   border-color: rgba(39, 82, 184, 0.3);
 }
 
+/* --- Site Footer --- */
+.site-footer {
+  padding: 24px 20px;
+  text-align: center;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.footer-links a {
+  color: var(--text-sub);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.footer-sep {
+  margin: 0 8px;
+  color: var(--border);
+}
+
 
 
