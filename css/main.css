@@ -33,7 +33,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
-  background: linear-gradient(rgba(248, 249, 252, 0.85), rgba(238, 242, 253, 0.85)), url('../demo附圖/566916.jpg');
+  background: linear-gradient(rgba(248, 249, 252, 0.85), rgba(238, 242, 253, 0.85)), url('img/566916.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

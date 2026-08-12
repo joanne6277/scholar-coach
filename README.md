@@ -21,7 +21,8 @@ Scholar Coach（學術教練）是一個前端原型（Prototype），讓使用�
 .
 ├── index.html              # 主應用頁面（Landing Page + 主流程 App，Demo 用）
 ├── css/
-│   └── main.css             # 全站樣式
+│   ├── main.css              # 全站樣式
+│   └── img/566916.jpg        # 品牌主視覺圖（首頁、promo 頁共用）
 ├── js/
 │   ├── app.js                # 應用進入點，流程控制與事件綁定
 │   ├── core/
@@ -30,18 +31,24 @@ Scholar Coach（學術教練）是一個前端原型（Prototype），讓使用�
 │   ├── mock/                  # 模擬資料（提案、歷史紀錄、點數紀錄）
 │   ├── ui/                    # 各功能模組的 UI 邏輯（登入、上傳、生成、結果、會員中心等）
 │   └── utils/                 # 共用工具（Toast 提示、確認彈窗）
-├── demo附圖/                 # 展示用圖片與範例結果（Demo 用）
 ├── promo/                   # 上線前導廣告頁（獨立打包，供 IT 部署用）
 │   ├── index.html
 │   └── img/566916.jpg
-└── docs/                    # 專案文件
-    ├── event_tracking_plan.md  # 事件追蹤與數據埋點規劃書
-    └── daily_log.md             # 開發日誌
+└── docs/                    # 專案文件與素材
+    ├── event_tracking_plan.md      # 事件追蹤與數據埋點規劃書
+    ├── daily_log.md                 # 開發日誌
+    ├── demo截圖/                    # 早期 MyIdea 概念demo 與現行 Landing Page 截圖
+    ├── 測試結果與交付/
+    │   ├── baseline-遺囑處分特留分扣減/  # 單篇論文的基準測試結果
+    │   └── 模型比較測試-20260618/        # 多模型（GPT/Gemini/DeepSeek）跨論文比較測試交付包
+    └── 簡報/                        # 產品介紹、行銷頁說明、產學合作成果報告等簡報檔
 ```
 
 > `promo/` 是完全獨立、自包含的靜態頁面（CSS/JS 皆內嵌於 `index.html`），可以整個資料夾單獨打包交給 IT 部署，不依賴專案其他部分。
 >
-> 根目錄其餘檔案（`index.html`、`css/`、`js/`、`demo附圖/`）為主流程的 Demo 原型，僅供內部展示，不對外上線。
+> 根目錄其餘檔案（`index.html`、`css/`、`js/`）為主流程的 Demo 原型，僅供內部展示，不對外上線。
+>
+> `docs/` 下除了兩份規劃文件外，其餘都是內部素材（demo 截圖、測試交付成果、簡報），僅供團隊/IT 參考，不是程式碼的一部分。
 >
 > `.claude/` 為 Claude Code 工具設定（本地開發伺服器啟動設定等），非專案功能程式碼，一般會被作業系統/編輯器視為隱藏資料夾。
 
