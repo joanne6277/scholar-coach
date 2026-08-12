@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", ".", "-p", "5500", "--no-clipboard"],
       "port": 5500
+    },
+    {
+      "name": "promo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "promo", "-p", "5501", "--no-clipboard"],
+      "port": 5501
     }
   ]
 }
