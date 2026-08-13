@@ -559,6 +559,25 @@ body {
   flex-shrink: 0;
 }
 
+.upload-notice {
+  margin-top: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #fff7e6;
+  border: 1px solid #f5d999;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #8a5b00;
+}
+
+.upload-notice svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 .cta-row {
   margin-top: 32px;
   display: flex;
