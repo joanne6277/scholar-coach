@@ -9,6 +9,7 @@ import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal,
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
 import { initConfirmModal } from './utils/Confirm.js';
 import { initDemoPanel } from './ui/DemoPanel.js';
+import { initCookieConsent } from './ui/CookieConsent.js';
 
 function init() {
   let paperWarningShown = false;
@@ -356,6 +357,7 @@ function init() {
   initConfirmModal();
   initGenerationErrorEvents();
   initDemoPanel();
+  initCookieConsent();
 }
 
 document.addEventListener('DOMContentLoaded', init);
