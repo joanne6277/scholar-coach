@@ -17,6 +17,7 @@ export const state = {
   seeds: 15,
   iters: 3,
   fileName: '',
+  fileSize: 0,
   researchSubject: '',
   isGenerating: false,
   isRegenerating: false,

@@ -2,7 +2,7 @@ import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
 import { showToast } from './utils/Toast.js';
 import { updateEstimate, getGenerationCost } from './ui/Settings.js';
-import { renderDisciplineOptions, showUploadError, clearUploadError } from './ui/Upload.js';
+import { renderDisciplineOptions, showUploadError, clearUploadError, checkPaperStructure, showStructureError, hideStructureError } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
 import { advanceGeneration, initGenerationErrorEvents } from './ui/Generation.js';
 import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
@@ -105,6 +105,7 @@ function init() {
 
     clearUploadError();
     state.fileName = file.name;
+    state.fileSize = file.size;
     state.isRegenerating = false;
     fileBadge.style.display = 'inline-flex';
     fileName.textContent = state.fileName;
@@ -163,9 +164,10 @@ function init() {
       return;
     }
 
-    // 如果使用者選擇跳過，自動填入預設的模擬論文資訊
+    // 如果使用者選擇跳過，自動填入預設的模擬論文資訊（略過初步分析，視為合格範例論文）
     if (!state.fileName) {
       state.fileName = "demo_paper.pdf";
+      state.fileSize = 500 * 1024; // 視為結構完整的合格範例論文
       state.researchSubject = "模擬研究主題";
 
       const fileBadge = document.getElementById('fileBadge');
@@ -181,10 +183,22 @@ function init() {
       if (subjectContainer) subjectContainer.style.display = 'block';
 
       showToast("為您載入模擬論文數據", "info");
+      paperWarningShown = false;
+      goStep(2);
+      return;
     }
 
+    // 已上傳真實檔案：先進行一次初步分析，確認檔案包含標題與摘要
     paperWarningShown = false;
-    goStep(2);
+    showToast("正在進行初步分析...", "info", 1200);
+
+    setTimeout(() => {
+      if (!checkPaperStructure(state.fileSize)) {
+        showStructureError();
+        return;
+      }
+      goStep(2);
+    }, 700);
   };
 
   window.setPackage = (type) => {
@@ -260,6 +274,7 @@ function init() {
     analyzeAnotherBtn.onclick = () => {
       // 1. 重設上傳狀態與 UI
       state.fileName = '';
+      state.fileSize = 0;
       state.researchSubject = '';
       state.isRegenerating = false;
       paperWarningShown = false;
@@ -290,6 +305,34 @@ function init() {
       // 2. 返回第一頁
       goStep(1);
       showToast("已重設狀態，請上傳新論文", "info");
+    };
+  }
+
+  // 綁定「初步分析失敗」畫面的「重新上傳」按鈕事件
+  const uploadAnalysisRetryBtn = document.getElementById('uploadAnalysisRetryBtn');
+  if (uploadAnalysisRetryBtn) {
+    uploadAnalysisRetryBtn.onclick = () => {
+      state.fileName = '';
+      state.fileSize = 0;
+      state.researchSubject = '';
+
+      const fileBadge = document.getElementById('fileBadge');
+      const fileNameEl = document.getElementById('fileName');
+      const subjectInput = document.getElementById('subjectInput');
+      const resultSubjectInput = document.getElementById('resultSubjectInput');
+      const subjectContainer = document.getElementById('subjectContainer');
+      const fileInputEl = document.getElementById('fileInput');
+
+      if (fileBadge) fileBadge.style.display = 'none';
+      if (fileNameEl) fileNameEl.textContent = '';
+      if (subjectInput) subjectInput.value = '';
+      if (resultSubjectInput) resultSubjectInput.value = '';
+      if (subjectContainer) subjectContainer.style.display = 'none';
+      if (fileInputEl) fileInputEl.value = '';
+
+      clearUploadError();
+      hideStructureError();
+      showToast("請重新上傳符合條件的論文檔案", "info");
     };
   }
 

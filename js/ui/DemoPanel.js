@@ -1,6 +1,6 @@
 import { state } from '../core/state.js';
 import { goStep, updateUserUI } from './Navigation.js';
-import { showUploadError } from './Upload.js';
+import { showUploadError, showStructureError } from './Upload.js';
 import { showGenerationFailure } from './Generation.js';
 import { getGenerationCost } from './Settings.js';
 
@@ -35,6 +35,15 @@ export function initDemoPanel() {
       ensureMainAppVisible();
       goStep(1);
       showUploadError('檔案大小超過 50MB 上限，請壓縮後再試');
+    };
+  }
+
+  const errStructure = document.getElementById('demoErrStructure');
+  if (errStructure) {
+    errStructure.onclick = () => {
+      ensureMainAppVisible();
+      goStep(1);
+      showStructureError();
     };
   }
 
