@@ -31,18 +31,33 @@ export function checkPaperStructure(fileSize) {
   return typeof fileSize === 'number' && fileSize >= MIN_STRUCTURED_FILE_SIZE;
 }
 
-export function showStructureError() {
-  const normalView = document.getElementById('step1NormalView');
+// Step2（確認論文資訊）內兩個互斥子畫面：確認標題摘要(confirm) / 分析失敗(error)
+export function showStep2SubView(view) {
+  const confirmView = document.getElementById('paperConfirmView');
   const errorView = document.getElementById('uploadAnalysisErrorView');
-  if (normalView) normalView.style.display = 'none';
-  if (errorView) errorView.style.display = 'block';
+
+  if (confirmView) confirmView.style.display = view === 'confirm' ? 'block' : 'none';
+  if (errorView) errorView.style.display = view === 'error' ? 'block' : 'none';
 }
 
-export function hideStructureError() {
-  const normalView = document.getElementById('step1NormalView');
-  const errorView = document.getElementById('uploadAnalysisErrorView');
-  if (errorView) errorView.style.display = 'none';
-  if (normalView) normalView.style.display = 'block';
+export function showStructureError() {
+  showStep2SubView('error');
+}
+
+// Demo 用：依論文標題產生一段示意摘要，模擬系統初步分析後萃取的結果
+export function buildDemoAbstract(subject) {
+  const topic = subject || '本篇上傳論文';
+  return `本文針對「${topic}」進行探討，系統性回顧其研究背景、採用之方法論與主要發現，並指出目前文獻中尚待補強之研究缺口，作為後續延伸研究之基礎。`;
+}
+
+export function showPaperConfirmView() {
+  const titleInput = document.getElementById('confirmTitleInput');
+  const abstractInput = document.getElementById('confirmAbstractInput');
+
+  if (titleInput) titleInput.value = state.researchSubject;
+  if (abstractInput) abstractInput.value = buildDemoAbstract(state.researchSubject);
+
+  showStep2SubView('confirm');
 }
 
 export function renderDisciplineOptions() {
@@ -54,10 +69,10 @@ export function renderDisciplineOptions() {
 
   // 防禦性處理：相容一維陣列、二維物件或類別物件等多種快取/新舊資料格式
   const list = [];
-  const source = Array.isArray(disciplines) 
-    ? disciplines 
+  const source = Array.isArray(disciplines)
+    ? disciplines
     : (disciplines && typeof disciplines === 'object' ? Object.values(disciplines).flat() : []);
-    
+
   source.forEach(item => {
     if (typeof item === 'string') {
       list.push(item);

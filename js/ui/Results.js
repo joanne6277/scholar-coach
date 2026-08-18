@@ -5,7 +5,7 @@ import { goStep } from './Navigation.js';
 import { showToast } from '../utils/Toast.js';
 
 export function showResults() {
-  goStep(4);
+  goStep(5);
   const paperDisplay = document.getElementById('displayPaperName');
   if (paperDisplay) paperDisplay.textContent = state.fileName || 'research_paper_demo.pdf';
 

@@ -1,11 +1,11 @@
 import { state } from './core/state.js';
 import { goStep, updateUserUI } from './ui/Navigation.js';
 import { showToast } from './utils/Toast.js';
-import { updateEstimate, getGenerationCost } from './ui/Settings.js';
-import { renderDisciplineOptions, showUploadError, clearUploadError, checkPaperStructure, showStructureError, hideStructureError } from './ui/Upload.js';
+import { updateEstimate, getGenerationPrice } from './ui/Settings.js';
+import { renderDisciplineOptions, showUploadError, clearUploadError, checkPaperStructure, showStructureError, showPaperConfirmView } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
-import { advanceGeneration, initGenerationErrorEvents } from './ui/Generation.js';
-import { toggleMemberModal, rechargePoints, openPaymentModal, closePaymentModal, initPaymentEvents } from './ui/Member.js';
+import { advanceGeneration } from './ui/Generation.js';
+import { toggleMemberModal, openPaymentModal, initPaymentEvents } from './ui/Member.js';
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
 import { initConfirmModal } from './utils/Confirm.js';
 import { initDemoPanel } from './ui/DemoPanel.js';
@@ -185,6 +185,7 @@ function init() {
 
       showToast("為您載入模擬論文數據", "info");
       paperWarningShown = false;
+      showPaperConfirmView();
       goStep(2);
       return;
     }
@@ -196,8 +197,10 @@ function init() {
     setTimeout(() => {
       if (!checkPaperStructure(state.fileSize)) {
         showStructureError();
+        goStep(2);
         return;
       }
+      showPaperConfirmView();
       goStep(2);
     }, 700);
   };
@@ -222,6 +225,20 @@ function init() {
 
   window.goStep = (n) => goStep(n);
 
+  function formatNow() {
+    const now = new Date();
+    const pad = (num) => String(num).padStart(2, '0');
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
+
+  function runGeneration() {
+    goStep(4);
+    advanceGeneration(() => {
+      showResults();
+      showToast("研究提案已成功生成！", "success");
+    });
+  }
+
   window.startGeneration = () => {
     // 1. 檢查登入
     if (!state.isLoggedIn) {
@@ -236,36 +253,39 @@ function init() {
       return;
     }
 
-    // 3. 計算點數消耗
-    const cost = getGenerationCost();
+    const modeLabel = state.iters >= 3 ? "一般模式" : "簡易模式";
+    const usageDesc = `${state.isRegenerating ? "重新生成研究提案" : "分析生成研究提案"}（${modeLabel}）`;
+    const price = getGenerationPrice();
 
-    if (state.user.points < cost) {
-      showToast("餘額點數不足，請先儲值！", "warning");
-      toggleMemberModal(true);
+    // 3. 首次使用免費，直接放行生成
+    if (!state.user.hasUsedFreeTrial) {
+      state.user.hasUsedFreeTrial = true;
+      state.usageRecords.unshift({
+        type: "免費",
+        amount: 0,
+        date: formatNow(),
+        desc: `${usageDesc}（首次免費）`
+      });
+      updateUserUI();
+      showToast("首次使用免費，開始分析生成研究提案...", "info");
+      runGeneration();
       return;
     }
 
-    // 扣除點數
-    state.user.points -= cost;
-    const now = new Date();
-    const pad = (num) => String(num).padStart(2, '0');
-    const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
-
-    state.pointRecords.unshift({
-      type: "扣除",
-      points: -cost,
-      date: dateStr,
-      desc: "分析生成提案"
-    });
-
-    // 更新 UI 上的點數顯示
-    updateUserUI();
-    showToast(`扣除 ${cost} 點，開始分析生成研究提案...`, "info");
-
-    goStep(3);
-    advanceGeneration(() => {
-      showResults();
-      showToast("研究提案已成功生成！", "success");
+    // 4. 非首次使用：點擊「開始生成」時開啟付款視窗，完成付款才開始生成
+    openPaymentModal({
+      amount: price,
+      desc: usageDesc,
+      onSuccess: () => {
+        state.usageRecords.unshift({
+          type: "付費",
+          amount: price,
+          date: formatNow(),
+          desc: usageDesc
+        });
+        updateUserUI();
+        runGeneration();
+      }
     });
   };
 
@@ -309,7 +329,7 @@ function init() {
     };
   }
 
-  // 綁定「初步分析失敗」畫面的「重新上傳」按鈕事件
+  // 綁定「初步分析失敗」畫面（Step2）的「重新上傳」按鈕事件
   const uploadAnalysisRetryBtn = document.getElementById('uploadAnalysisRetryBtn');
   if (uploadAnalysisRetryBtn) {
     uploadAnalysisRetryBtn.onclick = () => {
@@ -332,8 +352,24 @@ function init() {
       if (fileInputEl) fileInputEl.value = '';
 
       clearUploadError();
-      hideStructureError();
+      goStep(1);
       showToast("請重新上傳符合條件的論文檔案", "info");
+    };
+  }
+
+  // 綁定「確認論文資訊」畫面（Step2）事件
+  // 標題與摘要僅供核對、無法修改，因此直接沿用分析階段已寫入 state 的內容進入 Step3
+  const confirmContinueBtn = document.getElementById('confirmContinueBtn');
+  if (confirmContinueBtn) {
+    confirmContinueBtn.onclick = () => {
+      goStep(3);
+    };
+  }
+
+  const confirmBackBtn = document.getElementById('confirmBackBtn');
+  if (confirmBackBtn) {
+    confirmBackBtn.onclick = () => {
+      goStep(1);
     };
   }
 
@@ -342,20 +378,14 @@ function init() {
   if (redoBtn) {
     redoBtn.onclick = () => {
       state.isRegenerating = true;
-      updateEstimate(); // 更新預估點數顯示九折
-      goStep(2);
+      goStep(3);
     };
   }
-
-  window.rechargePoints = (pts, price) => rechargePoints(pts, price);
-  window.openPaymentModal = (pts, price) => openPaymentModal(pts, price);
-  window.closePaymentModal = () => closePaymentModal();
 
   // 初始化登入彈窗與支付彈窗事件
   initAuthEvents();
   initPaymentEvents();
   initConfirmModal();
-  initGenerationErrorEvents();
   initDemoPanel();
   initCookieConsent();
 }

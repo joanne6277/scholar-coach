@@ -2,7 +2,7 @@ import { state } from '../core/state.js';
 import { updateUserUI } from './Navigation.js';
 import { showToast } from '../utils/Toast.js';
 
-let currentTransaction = { pts: 0, price: 0 };
+let currentTransaction = { amount: 0, desc: '', onSuccess: null };
 
 export function toggleMemberModal(show) {
   const modal = document.getElementById('memberModal');
@@ -14,27 +14,24 @@ export function toggleMemberModal(show) {
   }
 }
 
-export function rechargePoints(pts, price) {
-  // 轉接至新版金流彈窗
-  openPaymentModal(pts, price);
-}
-
-export function renderPointRecords() {
-  const list = document.getElementById('pointRecordsList');
+export function renderUsageRecords() {
+  const list = document.getElementById('usageRecordsList');
   if (!list) return;
   list.innerHTML = '';
-  state.pointRecords.forEach(r => {
+  state.usageRecords.forEach(r => {
     const item = document.createElement('div');
     item.className = 'record-item';
+    const isFree = r.type === '免費';
+    const amountLabel = isFree ? '免費使用' : `-NT$ ${r.amount}`;
     item.innerHTML = `
       <div class="record-desc">${r.desc}</div>
-      <div class="record-pts ${r.points > 0 ? 'plus' : 'minus'}">${r.points > 0 ? '+' : ''}${r.points} Pts</div>
+      <div class="record-pts ${isFree ? 'plus' : 'minus'}">${amountLabel}</div>
       <div class="record-date">${r.date}</div>
     `;
     list.appendChild(item);
   });
 }
-window.renderPointRecords = renderPointRecords;
+window.renderUsageRecords = renderUsageRecords;
 
 function switchPayView(viewId) {
   const views = document.querySelectorAll('.pay-view');
@@ -48,7 +45,7 @@ export function switchLpTab(tab) {
   const loginBtn = document.getElementById('lpTabLoginBtn');
   const qrContent = document.getElementById('lpTabQr');
   const loginContent = document.getElementById('lpTabLogin');
-  
+
   if (tab === 'qr') {
     if (qrBtn) qrBtn.classList.add('active');
     if (loginBtn) loginBtn.classList.remove('active');
@@ -62,60 +59,49 @@ export function switchLpTab(tab) {
   }
 }
 
-export function openPaymentModal(pts, price) {
-  // 1. 關閉會員 Modal
-  toggleMemberModal(false);
-  
-  // 2. 顯示支付 Modal 並重設各步驟視圖
+// 開啟付款視窗：本服務為單次收費（非首次使用依所選模式計費）
+// amount: 應付金額；desc: 服務項目說明；onSuccess: 付款成功後要執行的動作（開始生成）
+export function openPaymentModal({ amount, desc, onSuccess }) {
   const paymentModal = document.getElementById('paymentModal');
   if (!paymentModal) return;
-  
-  // 紀錄當前交易狀態到臨時變數，以便付款完成後使用
-  currentTransaction = { pts, price };
-  
-  showToast("已建立儲值訂單，即將進行模擬支付...", "info", 1500);
-  
-  // 填寫交易明細
-  document.getElementById('payGoodsName').textContent = `儲值 ${pts} 點數`;
-  document.getElementById('payAmount').textContent = `NT$ ${price.toLocaleString()}`;
-  document.getElementById('lpPhoneAmount').textContent = `NT$ ${price.toLocaleString()}`;
-  document.getElementById('lpSuccessPts').textContent = pts;
-  document.getElementById('lpReceiptGoods').textContent = `儲值 ${pts} 點數`;
-  document.getElementById('lpReceiptAmount').textContent = `NT$ ${price.toLocaleString()}`;
-  
+
+  currentTransaction = { amount, desc, onSuccess };
+
+  showToast("已建立訂單，即將進行模擬支付...", "info", 1500);
+
+  document.getElementById('payGoodsName').textContent = desc;
+  document.getElementById('payAmount').textContent = `NT$ ${amount.toLocaleString()}`;
+  document.getElementById('lpPhoneAmount').textContent = `NT$ ${amount.toLocaleString()}`;
+  document.getElementById('lpReceiptGoods').textContent = desc;
+  document.getElementById('lpReceiptAmount').textContent = `NT$ ${amount.toLocaleString()}`;
+
   // 產生模擬交易編號
   const now = new Date();
-  const dateStr = now.getFullYear() + 
-                  String(now.getMonth() + 1).padStart(2, '0') + 
-                  String(now.getDate()).padStart(2, '0') + 
-                  String(now.getHours()).padStart(2, '0') + 
-                  String(now.getMinutes()).padStart(2, '0') + 
+  const dateStr = now.getFullYear() +
+                  String(now.getMonth() + 1).padStart(2, '0') +
+                  String(now.getDate()).padStart(2, '0') +
+                  String(now.getHours()).padStart(2, '0') +
+                  String(now.getMinutes()).padStart(2, '0') +
                   String(now.getSeconds()).padStart(2, '0');
   const randomStr = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
   document.getElementById('payTradeNo').textContent = `LP${dateStr}${randomStr}`;
-  
-  // 重設為第一個視圖
+
   switchPayView('paySummaryView');
-  
-  // 重設 LINE Pay tab 為 QR 掃描
   switchLpTab('qr');
-  
-  // 顯示 Modal
+
   paymentModal.style.display = 'flex';
 }
 
 export function closePaymentModal() {
   const paymentModal = document.getElementById('paymentModal');
   if (paymentModal) paymentModal.style.display = 'none';
-  // 重新開啟會員帳戶中心，好讓使用者看到更新後的點數
-  toggleMemberModal(true);
 }
 
 function triggerLpConfetti() {
   const container = document.getElementById('lpConfettiContainer');
   if (!container) return;
   container.innerHTML = '';
-  
+
   // LINE Pay 綠色風格的彩紙 (以綠色、金黃色、橘黃色、白色為主)
   const colors = ['#06C755', '#05b04b', '#ffd700', '#ffffff', '#e6f9ed', '#f39c12'];
   const count = 50;
@@ -123,7 +109,7 @@ function triggerLpConfetti() {
   for (let i = 0; i < count; i++) {
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
-    
+
     const size = Math.random() * 8 + 6;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const left = Math.random() * 100;
@@ -155,40 +141,19 @@ export function initPaymentEvents() {
   const lpTabLoginBtn = document.getElementById('lpTabLoginBtn');
   const lpSubmitPayBtn = document.getElementById('lpSubmitPayBtn');
   const paySuccessDoneBtn = document.getElementById('paySuccessDoneBtn');
-  const rechargeButtons = document.querySelectorAll('.recharge-grid .recharge-btn');
-  const rechargeSubmitBtn = document.getElementById('rechargeSubmitBtn');
 
-  let selectedRecharge = { pts: 4, price: 100 };
-  rechargeButtons.forEach(btn => {
-    if (btn.classList.contains('active')) {
-      selectedRecharge = { pts: Number(btn.dataset.pts), price: Number(btn.dataset.price) };
-    }
-    btn.onclick = () => {
-      rechargeButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedRecharge = { pts: Number(btn.dataset.pts), price: Number(btn.dataset.price) };
-    };
-  });
-
-  if (rechargeSubmitBtn) {
-    rechargeSubmitBtn.onclick = () => {
-      openPaymentModal(selectedRecharge.pts, selectedRecharge.price);
-    };
-  }
+  const cancelTransaction = () => {
+    currentTransaction = { amount: 0, desc: '', onSuccess: null };
+    closePaymentModal();
+  };
 
   if (closePaymentBtn) {
-    closePaymentBtn.onclick = () => {
-      if (paymentModal) paymentModal.style.display = 'none';
-      toggleMemberModal(true);
-    };
+    closePaymentBtn.onclick = cancelTransaction;
   }
 
   if (paymentModal) {
     paymentModal.onclick = (e) => {
-      if (e.target === paymentModal) {
-        paymentModal.style.display = 'none';
-        toggleMemberModal(true);
-      }
+      if (e.target === paymentModal) cancelTransaction();
     };
   }
 
@@ -209,34 +174,22 @@ export function initPaymentEvents() {
   if (lpSubmitPayBtn) {
     lpSubmitPayBtn.onclick = () => {
       switchPayView('payProcessingView');
-      
-      // 模擬金流加載 1.8 秒
+
+      // 模擬金流加載 1.8 秒（Demo 中一律模擬付款成功）
       setTimeout(() => {
-        state.user.points += currentTransaction.pts;
-        
-        const now = new Date();
-        const pad = (n) => String(n).padStart(2, '0');
-        const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
-        
-        state.pointRecords.unshift({
-          type: "儲值",
-          points: currentTransaction.pts,
-          date: dateStr,
-          desc: "LINE Pay 儲值"
-        });
-        
-        updateUserUI();
         switchPayView('paySuccessView');
         triggerLpConfetti();
-        showToast(`儲值成功！已存入 ${currentTransaction.pts} 點數`, "success");
+        showToast("付款成功！即將開始為您分析生成研究提案...", "success");
       }, 1800);
     };
   }
 
   if (paySuccessDoneBtn) {
     paySuccessDoneBtn.onclick = () => {
+      const onSuccess = currentTransaction.onSuccess;
+      currentTransaction = { amount: 0, desc: '', onSuccess: null };
       closePaymentModal();
+      if (onSuccess) onSuccess();
     };
   }
 }
-
