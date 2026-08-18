@@ -99,7 +99,7 @@ function processLogin(name, email, avatar) {
         state.user = {
           name: name,
           status: '專業版會員',
-          points: state.user.points || 125, // 保留或重設點數
+          hasUsedFreeTrial: typeof state.user.hasUsedFreeTrial === 'boolean' ? state.user.hasUsedFreeTrial : true,
           email: email,
           avatar: avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`
         };

@@ -1,5 +1,5 @@
 import { theories } from '../config/theories.js';
-import { pointRecords } from '../mock/pointRecords.js';
+import { usageRecords } from '../mock/usageRecords.js';
 import { initialHistory } from '../mock/history.js';
 
 // 將嵌套的理論扁平化，方便狀態管理（例如：'0-0' 代表第一個方向的第一個理論）
@@ -24,11 +24,11 @@ export const state = {
   user: {
     name: '林小明',
     status: '專業版會員',
-    points: 5,
+    hasUsedFreeTrial: true, // 此 demo 帳號預設已用過首次免費額度，可於右下角 Demo 面板切換情境
     email: 'xiaoming.lin@gmail.com',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'
   },
-  pointRecords: [...pointRecords],
+  usageRecords: [...usageRecords],
   history: [...initialHistory]
 };
 

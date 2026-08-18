@@ -1,6 +1,7 @@
 import { state } from '../core/state.js';
 import { renderHistory } from './History.js';
 import { renderDisciplineOptions } from './Upload.js';
+import { updateEstimate } from './Settings.js';
 
 export function goStep(n) {
   state.currentStep = n;
@@ -8,13 +9,17 @@ export function goStep(n) {
   const targetStep = document.getElementById('step' + n);
   if (targetStep) targetStep.classList.add('active');
 
-  ['ps1', 'ps2', 'ps3', 'ps4'].forEach((id, i) => {
+  ['ps1', 'ps2', 'ps3', 'ps4', 'ps5'].forEach((id, i) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove('active', 'done');
     if (i + 1 === n) el.classList.add('active');
     else if (i + 1 < n) el.classList.add('done');
   });
+
+  // Step3（設定條件）進入時，依當前首次免費/已使用過狀態即時更新費用預覽
+  if (n === 3) updateEstimate();
+
   window.scrollTo(0, 0);
 }
 
@@ -56,14 +61,12 @@ export function updateUserUI() {
     if (userStatusEl) {
       userStatusEl.textContent = user.status.replace('會員', '');
     }
-    document.getElementById('userPoints').textContent = user.points;
-    document.getElementById('modalPoints').textContent = user.points;
     document.getElementById('profileName').textContent = user.name;
     const profileEmailEl = document.getElementById('profileEmail');
     if (profileEmailEl) profileEmailEl.textContent = user.email || '';
-    
-    if (window.renderPointRecords) {
-      window.renderPointRecords();
+
+    if (window.renderUsageRecords) {
+      window.renderUsageRecords();
     }
     renderHistory();
     renderDisciplineOptions();

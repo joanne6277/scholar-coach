@@ -1,8 +1,7 @@
 import { state } from '../core/state.js';
 import { goStep, updateUserUI } from './Navigation.js';
 import { showUploadError, showStructureError } from './Upload.js';
-import { showGenerationFailure } from './Generation.js';
-import { getGenerationCost } from './Settings.js';
+import { showToast } from '../utils/Toast.js';
 
 function ensureMainAppVisible() {
   const landingPage = document.getElementById('landingPage');
@@ -38,38 +37,43 @@ export function initDemoPanel() {
     };
   }
 
+  const errPages = document.getElementById('demoErrPages');
+  if (errPages) {
+    errPages.onclick = () => {
+      ensureMainAppVisible();
+      goStep(1);
+      showUploadError('檔案頁數超過 200 頁上限，請確認為單篇論文後再試');
+    };
+  }
+
   const errStructure = document.getElementById('demoErrStructure');
   if (errStructure) {
     errStructure.onclick = () => {
       ensureMainAppVisible();
-      goStep(1);
       showStructureError();
+      goStep(2);
     };
   }
 
-  const errGen = document.getElementById('demoErrGen');
-  if (errGen) {
-    errGen.onclick = () => {
+  const freeTrialBtn = document.getElementById('demoFreeTrial');
+  if (freeTrialBtn) {
+    freeTrialBtn.onclick = () => {
       ensureMainAppVisible();
-      const cost = getGenerationCost();
+      state.user.hasUsedFreeTrial = false;
+      state.usageRecords = [];
+      updateUserUI();
+      goStep(1);
+      showToast('已切換為「首次使用者」情境，下次生成將免費', 'info');
+    };
+  }
 
-      // 模擬真實生成流程：先扣點，失敗後才由「返回設定」退還
-      if (state.user.points >= cost) {
-        state.user.points -= cost;
-        const now = new Date();
-        const pad = (n) => String(n).padStart(2, '0');
-        const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
-        state.pointRecords.unshift({
-          type: "扣除",
-          points: -cost,
-          date: dateStr,
-          desc: "分析生成提案"
-        });
-        updateUserUI();
-      }
-
-      goStep(3);
-      showGenerationFailure(cost);
+  const paidUserBtn = document.getElementById('demoPaidUser');
+  if (paidUserBtn) {
+    paidUserBtn.onclick = () => {
+      ensureMainAppVisible();
+      state.user.hasUsedFreeTrial = true;
+      updateUserUI();
+      showToast('已切換為「已使用過」情境，下次生成需依所選模式付款', 'info');
     };
   }
 }
