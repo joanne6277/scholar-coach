@@ -1,6 +1,7 @@
 import { state } from '../core/state.js';
 import { goStep, updateUserUI } from './Navigation.js';
 import { showUploadError, showStructureError } from './Upload.js';
+import { showGenerationError } from './Generation.js';
 import { showToast } from '../utils/Toast.js';
 
 function ensureMainAppVisible() {
@@ -52,6 +53,15 @@ export function initDemoPanel() {
       ensureMainAppVisible();
       showStructureError();
       goStep(2);
+    };
+  }
+
+  const errGenNetwork = document.getElementById('demoErrGenNetwork');
+  if (errGenNetwork) {
+    errGenNetwork.onclick = () => {
+      ensureMainAppVisible();
+      goStep(4);
+      showGenerationError();
     };
   }
 

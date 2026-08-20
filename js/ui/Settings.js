@@ -16,12 +16,28 @@ export function updateEstimate() {
   const mins = Math.max(1, Math.round((10 * seeds * iters * 0.4 + 60) / 60));
   document.getElementById('timeEst').textContent = `約 ${mins} 分鐘`;
 
-  const pointEst = document.getElementById('pointEst');
-  if (!pointEst) return;
+  const isFree = !state.user.hasUsedFreeTrial;
 
-  if (state.user.hasUsedFreeTrial) {
-    pointEst.textContent = `NT$ ${getGenerationPrice()}`;
-  } else {
-    pointEst.innerHTML = `<span style="color:#2a7a4f;font-weight:bold;">首次免費</span>`;
+  const pointEst = document.getElementById('pointEst');
+  if (pointEst) {
+    if (isFree) {
+      pointEst.innerHTML = `<span style="color:#2a7a4f;font-weight:bold;">首次免費</span>`;
+    } else {
+      pointEst.textContent = `NT$ ${getGenerationPrice()}`;
+    }
   }
+
+  // 首次免費情境下，兩個方案卡片同時保留原價（劃線）與特價 $0
+  updatePkgPriceDisplay('pkgSimple', PRICE_SIMPLE, isFree);
+  updatePkgPriceDisplay('pkgNormal', PRICE_NORMAL, isFree);
+}
+
+function updatePkgPriceDisplay(prefix, price, isFree) {
+  const originalEl = document.getElementById(`${prefix}PriceOriginal`);
+  const specialEl = document.getElementById(`${prefix}PriceSpecial`);
+  if (!originalEl || !specialEl) return;
+
+  originalEl.textContent = `$${price}`;
+  originalEl.classList.toggle('struck', isFree);
+  specialEl.style.display = isFree ? 'inline' : 'none';
 }

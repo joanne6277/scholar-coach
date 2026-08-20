@@ -40,25 +40,6 @@ function switchPayView(viewId) {
   if (activeView) activeView.classList.add('active');
 }
 
-export function switchLpTab(tab) {
-  const qrBtn = document.getElementById('lpTabQrBtn');
-  const loginBtn = document.getElementById('lpTabLoginBtn');
-  const qrContent = document.getElementById('lpTabQr');
-  const loginContent = document.getElementById('lpTabLogin');
-
-  if (tab === 'qr') {
-    if (qrBtn) qrBtn.classList.add('active');
-    if (loginBtn) loginBtn.classList.remove('active');
-    if (qrContent) qrContent.style.display = 'block';
-    if (loginContent) loginContent.style.display = 'none';
-  } else {
-    if (loginBtn) loginBtn.classList.add('active');
-    if (qrBtn) qrBtn.classList.remove('active');
-    if (loginContent) loginContent.style.display = 'block';
-    if (qrContent) qrContent.style.display = 'none';
-  }
-}
-
 // 開啟付款視窗：本服務為單次收費（非首次使用依所選模式計費）
 // amount: 應付金額；desc: 服務項目說明；onSuccess: 付款成功後要執行的動作（開始生成）
 export function openPaymentModal({ amount, desc, onSuccess }) {
@@ -71,7 +52,6 @@ export function openPaymentModal({ amount, desc, onSuccess }) {
 
   document.getElementById('payGoodsName').textContent = desc;
   document.getElementById('payAmount').textContent = `NT$ ${amount.toLocaleString()}`;
-  document.getElementById('lpPhoneAmount').textContent = `NT$ ${amount.toLocaleString()}`;
   document.getElementById('lpReceiptGoods').textContent = desc;
   document.getElementById('lpReceiptAmount').textContent = `NT$ ${amount.toLocaleString()}`;
 
@@ -84,10 +64,9 @@ export function openPaymentModal({ amount, desc, onSuccess }) {
                   String(now.getMinutes()).padStart(2, '0') +
                   String(now.getSeconds()).padStart(2, '0');
   const randomStr = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
-  document.getElementById('payTradeNo').textContent = `LP${dateStr}${randomStr}`;
+  document.getElementById('payTradeNo').textContent = `TXN${dateStr}${randomStr}`;
 
   switchPayView('paySummaryView');
-  switchLpTab('qr');
 
   paymentModal.style.display = 'flex';
 }
@@ -102,7 +81,7 @@ function triggerLpConfetti() {
   if (!container) return;
   container.innerHTML = '';
 
-  // LINE Pay 綠色風格的彩紙 (以綠色、金黃色、橘黃色、白色為主)
+  // 付款成功慶祝彩紙 (以綠色、金黃色、橘黃色、白色為主)
   const colors = ['#06C755', '#05b04b', '#ffd700', '#ffffff', '#e6f9ed', '#f39c12'];
   const count = 50;
 
@@ -137,8 +116,6 @@ export function initPaymentEvents() {
   const closePaymentBtn = document.getElementById('closePaymentBtn');
   const paymentModal = document.getElementById('paymentModal');
   const startPayBtn = document.getElementById('startPayBtn');
-  const lpTabQrBtn = document.getElementById('lpTabQrBtn');
-  const lpTabLoginBtn = document.getElementById('lpTabLoginBtn');
   const lpSubmitPayBtn = document.getElementById('lpSubmitPayBtn');
   const paySuccessDoneBtn = document.getElementById('paySuccessDoneBtn');
 
@@ -161,14 +138,6 @@ export function initPaymentEvents() {
     startPayBtn.onclick = () => {
       switchPayView('payCheckoutView');
     };
-  }
-
-  if (lpTabQrBtn) {
-    lpTabQrBtn.onclick = () => switchLpTab('qr');
-  }
-
-  if (lpTabLoginBtn) {
-    lpTabLoginBtn.onclick = () => switchLpTab('login');
   }
 
   if (lpSubmitPayBtn) {
