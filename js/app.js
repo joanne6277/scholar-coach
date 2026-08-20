@@ -4,7 +4,7 @@ import { showToast } from './utils/Toast.js';
 import { updateEstimate, getGenerationPrice } from './ui/Settings.js';
 import { renderDisciplineOptions, showUploadError, clearUploadError, checkPaperStructure, showStructureError, showPaperConfirmView } from './ui/Upload.js';
 import { showResults } from './ui/Results.js';
-import { advanceGeneration } from './ui/Generation.js';
+import { advanceGeneration, hideGenerationError } from './ui/Generation.js';
 import { toggleMemberModal, openPaymentModal, initPaymentEvents } from './ui/Member.js';
 import { toggleAuthModal, initAuthEvents } from './ui/Auth.js';
 import { initConfirmModal } from './utils/Confirm.js';
@@ -232,6 +232,7 @@ function init() {
   }
 
   function runGeneration() {
+    hideGenerationError();
     goStep(4);
     advanceGeneration(() => {
       showResults();
@@ -378,6 +379,15 @@ function init() {
   if (redoBtn) {
     redoBtn.onclick = () => {
       state.isRegenerating = true;
+      goStep(3);
+    };
+  }
+
+  // 綁定「生成中系統錯誤」畫面的「返回設定」按鈕事件
+  const genErrorBackBtn = document.getElementById('genErrorBackBtn');
+  if (genErrorBackBtn) {
+    genErrorBackBtn.onclick = () => {
+      hideGenerationError();
       goStep(3);
     };
   }

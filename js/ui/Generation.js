@@ -29,3 +29,18 @@ export function advanceGeneration(onComplete) {
   }
   step();
 }
+
+// 生成過程中因網路或伺服器異常中斷（僅供 Demo 面板觸發展示，非正式流程中的隨機失敗）
+export function showGenerationError() {
+  const generatingView = document.getElementById('generatingView');
+  const errorView = document.getElementById('generationErrorView');
+  if (generatingView) generatingView.style.display = 'none';
+  if (errorView) errorView.style.display = 'block';
+}
+
+export function hideGenerationError() {
+  const generatingView = document.getElementById('generatingView');
+  const errorView = document.getElementById('generationErrorView');
+  if (errorView) errorView.style.display = 'none';
+  if (generatingView) generatingView.style.display = 'block';
+}

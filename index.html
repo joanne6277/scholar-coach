@@ -248,7 +248,10 @@
           <div class="pkg-row">
             <button class="pkg-btn" id="pkgSimple" onclick="setPackage('simple')">
               <div class="pkg-name">簡易模式</div>
-              <div class="pkg-price">$30</div>
+              <div class="pkg-price">
+                <span class="pkg-price-original" id="pkgSimplePriceOriginal">$30</span>
+                <span class="pkg-price-special" id="pkgSimplePriceSpecial" style="display:none;">$0</span>
+              </div>
               <div class="pkg-features">
                 <span class="pkg-feature-tag">較少迭代次數</span>
                 <span class="pkg-feature-tag">速度較快</span>
@@ -256,7 +259,10 @@
             </button>
             <button class="pkg-btn active" id="pkgNormal" onclick="setPackage('normal')">
               <div class="pkg-name">一般模式</div>
-              <div class="pkg-price">$60</div>
+              <div class="pkg-price">
+                <span class="pkg-price-original" id="pkgNormalPriceOriginal">$60</span>
+                <span class="pkg-price-special" id="pkgNormalPriceSpecial" style="display:none;">$0</span>
+              </div>
               <div class="pkg-features">
                 <span class="pkg-feature-tag">較多迭代次數</span>
                 <span class="pkg-feature-tag">研究提案品質更高</span>
@@ -403,7 +409,7 @@
 
         <!-- Step 4: Generating -->
         <div class="step card" id="step4">
-          <div class="generating-view">
+          <div class="generating-view" id="generatingView">
             <div class="spinner" id="spinner"></div>
             <h3 style="font-size:16px;font-weight:500;margin-bottom:6px" id="genTitle">正在分析論文...</h3>
             <p style="font-size:13px;color:#888" id="genSub">萃取詮釋資料與研究方法論</p>
@@ -424,6 +430,19 @@
                 <div class="step-dot"></div>生成結構化研究提案
               </li>
             </ul>
+          </div>
+
+          <!-- 系統錯誤：生成過程中因網路或伺服器異常中斷（僅供 Demo 展示） -->
+          <div class="generation-error-view" id="generationErrorView" style="display:none;">
+            <div class="gen-error-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h3 class="gen-error-title">系統發生錯誤</h3>
+            <p class="gen-error-desc">很抱歉，因網路連線或伺服器暫時異常，本次無法完成生成。請稍後再試一次；若問題持續發生，請聯絡客服協助處理。</p>
+            <div class="gen-error-actions">
+              <button class="btn-secondary" id="genErrorBackBtn">‹ 返回設定</button>
+              <a class="btn-primary" href="mailto:scholarcoach.ai@gmail.com" id="genErrorContactBtn">聯絡客服</a>
+            </div>
           </div>
         </div>
 
@@ -477,16 +496,14 @@
     </div>
   </div>
 
-  <!-- Payment Modal (LINE Pay Simulation) -->
+  <!-- Payment Modal (第三方支付通道 Demo 模擬，實際串接對象未定) -->
   <div id="paymentModal" class="modal-overlay" style="display:none">
     <div class="modal-card payment-card">
       <div class="modal-header payment-header">
-        <div class="line-pay-logo-badge">
-          <span class="lp-l">LINE</span><span class="lp-p">Pay</span>
-        </div>
+        <h3>確認付款</h3>
         <button class="close-modal" id="closePaymentBtn">&times;</button>
       </div>
-      <p class="lp-demo-note">以下為 LINE Pay 模擬付款畫面</p>
+      <p class="lp-demo-note">以下為付款流程 Demo 模擬畫面，正式上線後將導向實際簽約之第三方支付服務商</p>
       <div class="modal-body payment-body">
 
         <!-- View 1: Order Summary (訂單確認) -->
@@ -514,13 +531,9 @@
           <div class="pay-method-section">
             <h5>付款方式</h5>
             <div class="pay-method-option active">
-              <div class="pay-method-logo">
-                <!-- Inline LINE Pay green style logo representation -->
-                <div class="lp-mini-logo">LP</div>
-              </div>
               <div class="pay-method-info">
-                <div class="pay-method-title">LINE Pay</div>
-                <div class="pay-method-desc">透過 LINE Pay 帳戶或綁定信用卡快速支付</div>
+                <div class="pay-method-title">第三方支付通道</div>
+                <div class="pay-method-desc">確認付款後將導向第三方支付服務商頁面完成付款</div>
               </div>
               <div class="pay-method-radio">
                 <div class="radio-dot"></div>
@@ -528,85 +541,18 @@
             </div>
           </div>
 
-          <button class="btn-primary lp-btn-pay" id="startPayBtn">確認付款 (前往 LINE Pay)</button>
+          <button class="btn-primary lp-btn-pay" id="startPayBtn">確認付款</button>
         </div>
 
-        <!-- View 2: LINE Pay Payment Screen (LINE Pay 模擬收銀台) -->
+        <!-- View 2: 連接付款通道 -->
         <div id="payCheckoutView" class="pay-view">
-          <div class="lp-phone-frame">
-            <div class="lp-phone-header">
-              <span class="lp-merchant">Scholar Coach</span>
-              <span class="lp-amount-badge" id="lpPhoneAmount">NT$ 30</span>
+          <div class="lp-processing-container">
+            <div class="lp-loading-wrapper">
+              <div class="lp-spinner"></div>
             </div>
-            
-            <div class="lp-tabs">
-              <button class="lp-tab-btn active" id="lpTabQrBtn">掃描條碼</button>
-              <button class="lp-tab-btn" id="lpTabLoginBtn">帳號登入</button>
-            </div>
-
-            <!-- Tab content 1: QR Code -->
-            <div id="lpTabQr" class="lp-tab-content active">
-              <div class="lp-qr-container">
-                <div class="lp-qr-box">
-                  <!-- Custom SVG Mock QR Code -->
-                  <svg width="140" height="140" viewBox="0 0 100 100" class="lp-qr-svg">
-                    <rect x="5" y="5" width="25" height="25" fill="#111" />
-                    <rect x="9" y="9" width="17" height="17" fill="#fff" />
-                    <rect x="13" y="13" width="9" height="9" fill="#06C755" />
-                    
-                    <rect x="70" y="5" width="25" height="25" fill="#111" />
-                    <rect x="74" y="9" width="17" height="17" fill="#fff" />
-                    <rect x="78" y="13" width="9" height="9" fill="#06C755" />
-                    
-                    <rect x="5" y="70" width="25" height="25" fill="#111" />
-                    <rect x="9" y="74" width="17" height="17" fill="#fff" />
-                    <rect x="13" y="78" width="9" height="9" fill="#06C755" />
-                    
-                    <rect x="35" y="5" width="8" height="8" fill="#111" />
-                    <rect x="50" y="12" width="12" height="6" fill="#111" />
-                    <rect x="40" y="25" width="15" height="8" fill="#06C755" />
-                    <rect x="5" y="40" width="10" height="15" fill="#111" />
-                    <rect x="25" y="50" width="12" height="12" fill="#111" />
-                    <rect x="50" y="45" width="18" height="8" fill="#111" />
-                    <rect x="75" y="40" width="12" height="18" fill="#06C755" />
-                    
-                    <rect x="40" y="70" width="10" height="10" fill="#111" />
-                    <rect x="55" y="80" width="15" height="15" fill="#111" />
-                    <rect x="35" y="85" width="8" height="8" fill="#06C755" />
-                    <rect x="80" y="80" width="15" height="8" fill="#111" />
-                  </svg>
-                  <div class="lp-qr-laser"></div>
-                </div>
-                <p class="lp-qr-hint">請使用手機 LINE 內建的「掃描」功能付款</p>
-              </div>
-            </div>
-
-            <!-- Tab content 2: Login -->
-            <div id="lpTabLogin" class="lp-tab-content">
-              <div class="lp-login-form">
-                <div class="lp-input-group">
-                  <input type="text" id="lpEmail" placeholder="LINE Pay 帳號 (Email/手機)" autocomplete="off">
-                </div>
-                <div class="lp-input-group">
-                  <input type="password" id="lpPassword" placeholder="密碼">
-                </div>
-                <p class="lp-login-hint">本頁面為金流模擬，請勿輸入真實的個人帳密</p>
-              </div>
-            </div>
-
-            <div class="lp-action-bar">
-              <button class="btn-primary lp-submit-btn" id="lpSubmitPayBtn">
-                <span class="lp-fingerprint-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2a10 10 0 0 0-10 10v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a5 5 0 0 1 10 0v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a10 10 0 0 0-10-10z"/>
-                    <path d="M8 12a4 4 0 0 1 8 0"/>
-                    <path d="M6 15a6 6 0 0 0 12 0"/>
-                    <path d="M10 18a2 2 0 0 1 4 0v3"/>
-                  </svg>
-                </span>
-                一鍵模擬付款 (Demo 快速完成)
-              </button>
-            </div>
+            <h4 class="lp-proc-title">正在連接付款通道...</h4>
+            <p class="lp-proc-desc">請勿關閉視窗，系統正在為您導向第三方支付服務</p>
+            <button class="btn-primary" id="lpSubmitPayBtn" style="margin-top:20px;">模擬付款完成（Demo）</button>
           </div>
         </div>
 
@@ -615,17 +561,9 @@
           <div class="lp-processing-container">
             <div class="lp-loading-wrapper">
               <div class="lp-spinner"></div>
-              <div class="lp-fingerprint-active">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#06C755" stroke-width="2" class="lp-fp-anim">
-                  <path d="M12 2a10 10 0 0 0-10 10v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a5 5 0 0 1 10 0v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a10 10 0 0 0-10-10z"/>
-                  <path d="M8 12a4 4 0 0 1 8 0"/>
-                  <path d="M6 15a6 6 0 0 0 12 0"/>
-                  <path d="M10 18a2 2 0 0 1 4 0v3"/>
-                </svg>
-              </div>
             </div>
-            <h4 class="lp-proc-title">正在授權交易中...</h4>
-            <p class="lp-proc-desc">請勿關閉視窗，正在與 LINE Pay 安全伺服器連線</p>
+            <h4 class="lp-proc-title">正在確認交易結果...</h4>
+            <p class="lp-proc-desc">請勿關閉視窗</p>
           </div>
         </div>
 
@@ -646,7 +584,7 @@
               </div>
               <div class="lp-receipt-row">
                 <span>支付方式</span>
-                <span>LINE Pay</span>
+                <span>第三方支付</span>
               </div>
               <div class="lp-receipt-row">
                 <span>實付金額</span>
@@ -811,6 +749,7 @@
       <button class="demo-panel-btn" id="demoErrSize">上傳：檔案過大</button>
       <button class="demo-panel-btn" id="demoErrPages">上傳：頁數超過200頁</button>
       <button class="demo-panel-btn" id="demoErrStructure">確認頁：論文分析失敗</button>
+      <button class="demo-panel-btn" id="demoErrGenNetwork">生成中：網路/伺服器錯誤</button>
       <div class="demo-panel-header" style="margin-top:8px;">計價情境 Demo</div>
       <button class="demo-panel-btn" id="demoFreeTrial">情境：首次免費使用</button>
       <button class="demo-panel-btn" id="demoPaidUser">情境：已使用過（需付費）</button>

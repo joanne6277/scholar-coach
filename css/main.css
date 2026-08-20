@@ -676,10 +676,30 @@ body {
 }
 
 .pkg-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pkg-price-original {
   font-size: 18px;
   font-weight: 700;
-  margin-top: 8px;
   color: var(--primary);
+}
+
+.pkg-price-original.struck {
+  font-size: 14px;
+  font-weight: 500;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.pkg-price-special {
+  font-size: 18px;
+  font-weight: 800;
+  color: #2a7a4f;
 }
 
 .pkg-features {
@@ -1054,6 +1074,11 @@ body {
   justify-content: center;
   gap: 12px;
   margin-top: 28px;
+}
+
+.gen-error-actions a.btn-primary {
+  display: inline-block;
+  text-decoration: none;
 }
 
 /* --- Results (Step 4) --- */
@@ -1854,11 +1879,11 @@ body {
   }
 }
 
-/* --- LINE Pay Payment Modal & Simulation --- */
+/* --- Payment Modal & Simulation (第三方支付通道，串接對象未定) --- */
 :root {
-  --line-pay-green: #06C755;
-  --line-pay-green-hover: #05b04b;
-  --line-pay-green-light: #e6f9ed;
+  --pay-accent: #06C755;
+  --pay-accent-hover: #05b04b;
+  --pay-accent-light: #e6f9ed;
 }
 
 .payment-card {
@@ -1875,30 +1900,10 @@ body {
   border-bottom: 1px solid #edf2f7;
 }
 
-.line-pay-logo-badge {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-}
-
-.line-pay-logo-badge .lp-l {
-  color: #111;
-  background: var(--line-pay-green);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.line-pay-logo-badge .lp-p {
-  color: var(--line-pay-green);
-  font-size: 18px;
-  margin-left: 2px;
+.payment-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
 }
 
 .lp-demo-note {
@@ -1978,7 +1983,7 @@ body {
 .pay-detail-row.total-row .price-val {
   font-size: 20px;
   font-weight: 800;
-  color: var(--line-pay-green);
+  color: var(--pay-accent);
 }
 
 .pay-method-section h5 {
@@ -1993,31 +1998,12 @@ body {
   align-items: center;
   gap: 14px;
   padding: 14px;
-  border: 2px solid var(--line-pay-green);
-  background: var(--line-pay-green-light);
+  border: 2px solid var(--pay-accent);
+  background: var(--pay-accent-light);
   border-radius: 12px;
   cursor: pointer;
   margin-bottom: 24px;
   transition: all 0.2s ease;
-}
-
-.pay-method-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: var(--line-pay-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.lp-mini-logo {
-  color: white;
-  font-weight: 900;
-  font-size: 14px;
-  font-family: sans-serif;
-  letter-spacing: -1px;
 }
 
 .pay-method-info {
@@ -2040,7 +2026,7 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid var(--line-pay-green);
+  border: 2px solid var(--pay-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2050,12 +2036,12 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--line-pay-green);
+  background: var(--pay-accent);
 }
 
 .lp-btn-pay {
   width: 100%;
-  background: var(--line-pay-green) !important;
+  background: var(--pay-accent) !important;
   color: white;
   font-weight: 700;
   padding: 14px;
@@ -2068,209 +2054,12 @@ body {
 }
 
 .lp-btn-pay:hover {
-  background: var(--line-pay-green-hover) !important;
+  background: var(--pay-accent-hover) !important;
   box-shadow: 0 6px 16px rgba(6, 199, 85, 0.3);
   transform: translateY(-1px);
 }
 
-/* Phone Mockup Frame for LINE Pay checkout */
-.lp-phone-frame {
-  background: #f4f5f7;
-  border-radius: 24px;
-  border: 6px solid #e2e8f0;
-  padding: 16px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.lp-phone-header {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  text-align: center;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
-
-.lp-merchant {
-  display: block;
-  font-size: 12px;
-  color: #64748b;
-  margin-bottom: 6px;
-}
-
-.lp-amount-badge {
-  font-size: 24px;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.lp-tabs {
-  display: flex;
-  background: #e2e8f0;
-  padding: 4px;
-  border-radius: 10px;
-  margin-bottom: 16px;
-}
-
-.lp-tab-btn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.lp-tab-btn.active {
-  background: white;
-  color: var(--line-pay-green);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.lp-tab-content {
-  display: none;
-}
-
-.lp-tab-content.active {
-  display: block;
-}
-
-/* QR Code Section */
-.lp-qr-container {
-  background: white;
-  border-radius: 16px;
-  padding: 24px 16px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
-
-.lp-qr-box {
-  position: relative;
-  width: 160px;
-  height: 160px;
-  margin: 0 auto 16px;
-  padding: 10px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.lp-qr-svg {
-  transition: transform 0.3s ease;
-}
-
-.lp-qr-box:hover .lp-qr-svg {
-  transform: scale(1.03);
-}
-
-.lp-qr-laser {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, rgba(6,199,85,0) 0%, rgba(6,199,85,1) 50%, rgba(6,199,85,0) 100%);
-  box-shadow: 0 0 8px var(--line-pay-green);
-  animation: qr-laser 2.5s ease-in-out infinite;
-}
-
-@keyframes qr-laser {
-  0% { top: 5%; }
-  50% { top: 90%; }
-  100% { top: 5%; }
-}
-
-.lp-qr-hint {
-  font-size: 12px;
-  color: #64748b;
-  line-height: 1.4;
-}
-
-/* Login Form Section */
-.lp-login-form {
-  background: white;
-  border-radius: 16px;
-  padding: 20px 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
-
-.lp-input-group {
-  margin-bottom: 12px;
-}
-
-.lp-input-group:last-child {
-  margin-bottom: 0;
-}
-
-.lp-input-group input {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-  font-size: 13px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.lp-input-group input:focus {
-  border-color: var(--line-pay-green);
-  box-shadow: 0 0 0 3px rgba(6, 199, 85, 0.15);
-}
-
-.lp-login-hint {
-  font-size: 11px;
-  color: #94a3b8;
-  text-align: center;
-  margin-top: 12px;
-}
-
-.lp-action-bar {
-  margin-top: 16px;
-}
-
-.lp-submit-btn {
-  width: 100%;
-  background: var(--line-pay-green) !important;
-  color: white;
-  font-weight: 700;
-  padding: 13px;
-  border-radius: 12px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(6, 199, 85, 0.15);
-}
-
-.lp-submit-btn:hover {
-  background: var(--line-pay-green-hover) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(6, 199, 85, 0.25);
-}
-
-.lp-fingerprint-icon {
-  display: inline-flex;
-  animation: lp-pulse 1.5s infinite;
-}
-
-@keyframes lp-pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.15); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Processing View */
+/* Processing View（連接付款通道／確認交易結果共用） */
 .lp-processing-container {
   display: flex;
   flex-direction: column;
@@ -2296,28 +2085,12 @@ body {
   height: 100%;
   border-radius: 50%;
   border: 4px solid #f1f5f9;
-  border-top-color: var(--line-pay-green);
+  border-top-color: var(--pay-accent);
   animation: lp-spin 1s linear infinite;
 }
 
 @keyframes lp-spin {
   to { transform: rotate(360deg); }
-}
-
-.lp-fingerprint-active {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.lp-fp-anim {
-  animation: lp-fp-glow 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes lp-fp-glow {
-  0% { opacity: 0.5; transform: scale(0.95); filter: drop-shadow(0 0 2px rgba(6,199,85,0.2)); }
-  100% { opacity: 1; transform: scale(1.05); filter: drop-shadow(0 0 8px rgba(6,199,85,0.6)); }
 }
 
 .lp-proc-title {
@@ -2347,7 +2120,7 @@ body {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--line-pay-green);
+  background: var(--pay-accent);
   display: flex;
   align-items: center;
   justify-content: center;
