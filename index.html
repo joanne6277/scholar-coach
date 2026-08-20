@@ -200,7 +200,7 @@
             </div>
             <div class="upload-notice">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span>上傳須知：檔案請至少包含標題與摘要（簡介），頁數上限 200 頁</span>
+              <span>上傳須知：檔案請至少包含標題與摘要（簡介）</span>
             </div>
             <input type="file" id="fileInput" accept=".pdf" style="display:none">
             <div class="cta-row" id="step1Cta" style="display: none;">
@@ -440,8 +440,8 @@
             <h3 class="gen-error-title">系統發生錯誤</h3>
             <p class="gen-error-desc">很抱歉，因網路連線或伺服器暫時異常，本次無法完成生成。請稍後再試一次；若問題持續發生，請聯絡客服協助處理。</p>
             <div class="gen-error-actions">
-              <button class="btn-secondary" id="genErrorBackBtn">‹ 返回設定</button>
-              <a class="btn-primary" href="mailto:scholarcoach.ai@gmail.com" id="genErrorContactBtn">聯絡客服</a>
+              <a class="btn-secondary" href="mailto:scholarcoach.ai@gmail.com" id="genErrorContactBtn">聯絡客服</a>
+              <button class="btn-primary" id="genErrorBackBtn">重新生成 ›</button>
             </div>
           </div>
         </div>
@@ -542,58 +542,6 @@
           </div>
 
           <button class="btn-primary lp-btn-pay" id="startPayBtn">確認付款</button>
-        </div>
-
-        <!-- View 2: 連接付款通道 -->
-        <div id="payCheckoutView" class="pay-view">
-          <div class="lp-processing-container">
-            <div class="lp-loading-wrapper">
-              <div class="lp-spinner"></div>
-            </div>
-            <h4 class="lp-proc-title">正在連接付款通道...</h4>
-            <p class="lp-proc-desc">請勿關閉視窗，系統正在為您導向第三方支付服務</p>
-            <button class="btn-primary" id="lpSubmitPayBtn" style="margin-top:20px;">模擬付款完成（Demo）</button>
-          </div>
-        </div>
-
-        <!-- View 3: Processing (付款處理中) -->
-        <div id="payProcessingView" class="pay-view">
-          <div class="lp-processing-container">
-            <div class="lp-loading-wrapper">
-              <div class="lp-spinner"></div>
-            </div>
-            <h4 class="lp-proc-title">正在確認交易結果...</h4>
-            <p class="lp-proc-desc">請勿關閉視窗</p>
-          </div>
-        </div>
-
-        <!-- View 4: Success (付款成功) -->
-        <div id="paySuccessView" class="pay-view">
-          <div class="lp-success-container">
-            <div class="lp-success-icon-box">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lp-checkmark">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </div>
-            <h4 class="lp-success-title">付款成功！</h4>
-            <p class="lp-success-desc">即將開始為您分析生成研究提案。</p>
-            <div class="lp-receipt-box">
-              <div class="lp-receipt-row">
-                <span>服務項目</span>
-                <span id="lpReceiptGoods" style="font-weight:500;">分析生成研究提案</span>
-              </div>
-              <div class="lp-receipt-row">
-                <span>支付方式</span>
-                <span>第三方支付</span>
-              </div>
-              <div class="lp-receipt-row">
-                <span>實付金額</span>
-                <span id="lpReceiptAmount" style="font-weight:700; color:#222;">NT$ 30</span>
-              </div>
-            </div>
-            <button class="btn-primary lp-success-btn" id="paySuccessDoneBtn">完成，開始生成 ›</button>
-            <div class="confetti-container" id="lpConfettiContainer"></div>
-          </div>
         </div>
 
       </div>
@@ -745,11 +693,11 @@
     <button id="demoPanelToggle" class="demo-panel-toggle" title="錯誤畫面 Demo 面板">🐞</button>
     <div class="demo-panel-body">
       <div class="demo-panel-header">上傳錯誤 Demo</div>
-      <button class="demo-panel-btn" id="demoErrPdf">上傳：非 PDF 格式</button>
-      <button class="demo-panel-btn" id="demoErrSize">上傳：檔案過大</button>
-      <button class="demo-panel-btn" id="demoErrPages">上傳：頁數超過200頁</button>
-      <button class="demo-panel-btn" id="demoErrStructure">確認頁：論文分析失敗</button>
-      <button class="demo-panel-btn" id="demoErrGenNetwork">生成中：網路/伺服器錯誤</button>
+      <button class="demo-panel-btn" id="demoErrPdf">(1) 上傳：非 PDF 格式</button>
+      <button class="demo-panel-btn" id="demoErrSize">(1) 上傳：檔案過大</button>
+      <button class="demo-panel-btn" id="demoErrPages">(1) 上傳：頁數超過200頁</button>
+      <button class="demo-panel-btn" id="demoErrStructure">(2) 確認頁：論文分析失敗</button>
+      <button class="demo-panel-btn" id="demoErrGenNetwork">(4) 生成中：網路/伺服器錯誤</button>
       <div class="demo-panel-header" style="margin-top:8px;">計價情境 Demo</div>
       <button class="demo-panel-btn" id="demoFreeTrial">情境：首次免費使用</button>
       <button class="demo-panel-btn" id="demoPaidUser">情境：已使用過（需付費）</button>

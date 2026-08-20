@@ -313,7 +313,7 @@ function init() {
       if (fileBadge) fileBadge.style.display = 'none';
       if (fileName) fileName.textContent = '';
       if (uploadTitle) uploadTitle.textContent = '拖放 PDF 論文，或點此選取';
-      if (uploadSub) uploadSub.textContent = '支援 PDF 格式，最大 50MB';
+      if (uploadSub) uploadSub.textContent = '支援 PDF 格式，最大 50MB，頁數上限 200 頁';
       if (subjectInput) subjectInput.value = '';
       if (resultSubjectInput) resultSubjectInput.value = '';
       if (subjectContainer) subjectContainer.style.display = 'none';
@@ -383,12 +383,11 @@ function init() {
     };
   }
 
-  // 綁定「生成中系統錯誤」畫面的「返回設定」按鈕事件
+  // 綁定「生成中系統錯誤」畫面的「重新生成」按鈕事件：重跑 Step4 的生成動畫
   const genErrorBackBtn = document.getElementById('genErrorBackBtn');
   if (genErrorBackBtn) {
     genErrorBackBtn.onclick = () => {
-      hideGenerationError();
-      goStep(3);
+      runGeneration();
     };
   }
 
