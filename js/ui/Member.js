@@ -33,13 +33,6 @@ export function renderUsageRecords() {
 }
 window.renderUsageRecords = renderUsageRecords;
 
-function switchPayView(viewId) {
-  const views = document.querySelectorAll('.pay-view');
-  views.forEach(v => v.classList.remove('active'));
-  const activeView = document.getElementById(viewId);
-  if (activeView) activeView.classList.add('active');
-}
-
 // 開啟付款視窗：本服務為單次收費（非首次使用依所選模式計費）
 // amount: 應付金額；desc: 服務項目說明；onSuccess: 付款成功後要執行的動作（開始生成）
 export function openPaymentModal({ amount, desc, onSuccess }) {
@@ -48,12 +41,8 @@ export function openPaymentModal({ amount, desc, onSuccess }) {
 
   currentTransaction = { amount, desc, onSuccess };
 
-  showToast("已建立訂單，即將進行模擬支付...", "info", 1500);
-
   document.getElementById('payGoodsName').textContent = desc;
   document.getElementById('payAmount').textContent = `NT$ ${amount.toLocaleString()}`;
-  document.getElementById('lpReceiptGoods').textContent = desc;
-  document.getElementById('lpReceiptAmount').textContent = `NT$ ${amount.toLocaleString()}`;
 
   // 產生模擬交易編號
   const now = new Date();
@@ -66,8 +55,6 @@ export function openPaymentModal({ amount, desc, onSuccess }) {
   const randomStr = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
   document.getElementById('payTradeNo').textContent = `TXN${dateStr}${randomStr}`;
 
-  switchPayView('paySummaryView');
-
   paymentModal.style.display = 'flex';
 }
 
@@ -76,48 +63,10 @@ export function closePaymentModal() {
   if (paymentModal) paymentModal.style.display = 'none';
 }
 
-function triggerLpConfetti() {
-  const container = document.getElementById('lpConfettiContainer');
-  if (!container) return;
-  container.innerHTML = '';
-
-  // 付款成功慶祝彩紙 (以綠色、金黃色、橘黃色、白色為主)
-  const colors = ['#06C755', '#05b04b', '#ffd700', '#ffffff', '#e6f9ed', '#f39c12'];
-  const count = 50;
-
-  for (let i = 0; i < count; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-
-    const size = Math.random() * 8 + 6;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const left = Math.random() * 100;
-    const xDistance = (Math.random() * 200 - 100) + 'px';
-    const rotation = (Math.random() * 720 - 360) + 'deg';
-    const delay = Math.random() * 0.3;
-    const duration = Math.random() * 1.2 + 0.8;
-
-    piece.style.width = `${size}px`;
-    piece.style.height = `${size}px`;
-    piece.style.backgroundColor = color;
-    piece.style.left = `${left}%`;
-    piece.style.bottom = '0px';
-    piece.style.setProperty('--x-distance', xDistance);
-    piece.style.setProperty('--rotation', rotation);
-    piece.style.animationDelay = `${delay}s`;
-    piece.style.animationDuration = `${duration}s`;
-    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-
-    container.appendChild(piece);
-  }
-}
-
 export function initPaymentEvents() {
   const closePaymentBtn = document.getElementById('closePaymentBtn');
   const paymentModal = document.getElementById('paymentModal');
   const startPayBtn = document.getElementById('startPayBtn');
-  const lpSubmitPayBtn = document.getElementById('lpSubmitPayBtn');
-  const paySuccessDoneBtn = document.getElementById('paySuccessDoneBtn');
 
   const cancelTransaction = () => {
     currentTransaction = { amount: 0, desc: '', onSuccess: null };
@@ -136,28 +85,10 @@ export function initPaymentEvents() {
 
   if (startPayBtn) {
     startPayBtn.onclick = () => {
-      switchPayView('payCheckoutView');
-    };
-  }
-
-  if (lpSubmitPayBtn) {
-    lpSubmitPayBtn.onclick = () => {
-      switchPayView('payProcessingView');
-
-      // 模擬金流加載 1.8 秒（Demo 中一律模擬付款成功）
-      setTimeout(() => {
-        switchPayView('paySuccessView');
-        triggerLpConfetti();
-        showToast("付款成功！即將開始為您分析生成研究提案...", "success");
-      }, 1800);
-    };
-  }
-
-  if (paySuccessDoneBtn) {
-    paySuccessDoneBtn.onclick = () => {
       const onSuccess = currentTransaction.onSuccess;
       currentTransaction = { amount: 0, desc: '', onSuccess: null };
       closePaymentModal();
+      showToast("付款成功！開始為您分析生成研究提案...", "success");
       if (onSuccess) onSuccess();
     };
   }

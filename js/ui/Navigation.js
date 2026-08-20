@@ -42,7 +42,7 @@ export function updateUserUI() {
     
     if (uploadZone) uploadZone.classList.remove('locked');
     if (uploadTitle) uploadTitle.textContent = '拖放 PDF 論文，或點此選取';
-    if (uploadSub) uploadSub.textContent = '支援 PDF 格式，最大 50MB';
+    if (uploadSub) uploadSub.textContent = '支援 PDF 格式，最大 50MB，頁數上限 200 頁';
     if (uploadIcon) {
       uploadIcon.innerHTML = `
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto 1rem;display:block;opacity:0.3">
