@@ -1890,8 +1890,11 @@ body {
 }
 
 .payment-card {
-  max-width: 420px;
-  border-radius: 20px;
+  max-width: 440px;
+  width: 92%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 18px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -1899,7 +1902,7 @@ body {
 
 .payment-header {
   background: #f8fafc;
-  padding: 16px 24px;
+  padding: 16px 22px;
   border-bottom: 1px solid #edf2f7;
 }
 
@@ -1914,12 +1917,12 @@ body {
   font-size: 11px;
   color: #94a3b8;
   background: #f8fafc;
-  padding: 6px 24px;
+  padding: 6px 20px;
   border-bottom: 1px solid #edf2f7;
 }
 
 .payment-body {
-  padding: 24px;
+  padding: 18px 22px 22px;
 }
 
 .pay-view {
@@ -1936,27 +1939,34 @@ body {
 }
 
 .pay-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+}
+
+.pay-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .pay-detail-box {
   background: #f8fafc;
   border-radius: 12px;
-  padding: 16px;
-  border: 1px solid #f1f5f9;
-  margin-bottom: 20px;
+  padding: 12px 16px;
+  border: 1px solid #edf2f7;
+  margin-bottom: 16px;
 }
 
 .pay-detail-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 8px 0;
   border-bottom: 1px dashed #e2e8f0;
-  font-size: 13.5px;
+  font-size: 13px;
 }
 
 .pay-detail-row:last-child {
@@ -1973,8 +1983,8 @@ body {
 }
 
 .pay-detail-row.total-row {
-  padding-top: 14px;
-  margin-top: 4px;
+  padding-top: 10px;
+  margin-top: 2px;
   border-top: 1px solid #e2e8f0;
 }
 
@@ -1984,62 +1994,212 @@ body {
 }
 
 .pay-detail-row.total-row .price-val {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--pay-accent);
 }
 
-.pay-method-section h5 {
-  font-size: 13px;
-  color: #64748b;
-  margin-bottom: 8px;
-  font-weight: 600;
+/* --- Invoice Section --- */
+.invoice-section {
+  margin-bottom: 16px;
 }
 
-.pay-method-option {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  border: 2px solid var(--pay-accent);
-  background: var(--pay-accent-light);
-  border-radius: 12px;
-  cursor: pointer;
-  margin-bottom: 24px;
-  transition: all 0.2s ease;
+.invoice-type-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-.pay-method-info {
-  flex: 1;
-}
-
-.pay-method-title {
-  font-weight: 700;
-  font-size: 14px;
-  color: #0f172a;
-}
-
-.pay-method-desc {
-  font-size: 11px;
-  color: #64748b;
-  margin-top: 2px;
-}
-
-.pay-method-radio {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--pay-accent);
+.invoice-type-card {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
+  padding: 9px 4px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  text-align: center;
 }
 
-.radio-dot {
+.invoice-type-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.invoice-type-radio {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.invoice-type-card.active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.invoice-type-card.active .invoice-type-radio {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: inset 0 0 0 2.5px #ffffff;
+}
+
+.invoice-type-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.invoice-type-card.active .invoice-type-name {
+  color: var(--primary-dark);
+}
+
+.invoice-sub-container {
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.carrier-type-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.carrier-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.carrier-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.carrier-radio-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--pay-accent);
+  border: 1.5px solid #cbd5e1;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.carrier-option.active {
+  border-color: var(--primary);
+  background: #ffffff;
+  color: var(--primary-dark);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(39, 82, 184, 0.1);
+}
+
+.carrier-option.active .carrier-radio-dot {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.carrier-tip-text {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.carrier-tip-text i {
+  color: var(--primary);
+}
+
+.invoice-form-group {
+  margin-bottom: 10px;
+}
+
+.invoice-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.invoice-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.required-star {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.invoice-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.invoice-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(39, 82, 184, 0.12);
+}
+
+.invoice-input.has-error {
+  border-color: #ef4444 !important;
+  background: #fff8f8;
+}
+
+.invoice-input.has-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.field-error {
+  font-size: 11.5px;
+  color: #ef4444;
+  margin-top: 4px;
+  display: none;
+  font-weight: 500;
+}
+
+.field-error.show {
+  display: block;
 }
 
 .lp-btn-pay {
@@ -2047,19 +2207,163 @@ body {
   background: var(--pay-accent) !important;
   color: white;
   font-weight: 700;
-  padding: 14px;
+  padding: 13px;
   border-radius: 12px;
   border: none;
   font-size: 15px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(6, 199, 85, 0.2);
+  margin-top: 2px;
 }
 
 .lp-btn-pay:hover {
   background: var(--pay-accent-hover) !important;
   box-shadow: 0 6px 16px rgba(6, 199, 85, 0.3);
   transform: translateY(-1px);
+}
+
+.pay-security-tip {
+  text-align: center;
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pay-security-tip i {
+  font-size: 11px;
+  color: #10b981;
+}
+
+/* 前往付款按鈕載入中狀態 */
+#startPayBtn.is-loading {
+  opacity: 0.75;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#startPayBtn.is-loading::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* --- View 2: Payment Processing (付款處理中) --- */
+.pay-processing-view {
+  text-align: center;
+  padding: 36px 16px 28px;
+}
+
+.pay-processing-view .spinner {
+  margin: 0 auto 18px;
+}
+
+.pay-processing-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.pay-processing-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+}
+
+.pay-processing-meta span {
+  color: #475569;
+  font-weight: 600;
+}
+
+/* --- View 3: Payment Result / Failed (付款未完成/失敗畫面) --- */
+.pay-result-view {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.pay-error-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fde8e8;
+  color: #e53e3e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.pay-result-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.pay-result-desc {
+  font-size: 13px;
+  color: #64748b;
+  max-width: 340px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.pay-result-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 12px 0 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+}
+
+.pay-result-meta span {
+  color: #475569;
+  font-weight: 600;
+}
+
+.pay-result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.pay-result-actions .btn-primary,
+.pay-result-actions .btn-secondary {
+  padding: 10px 18px;
+  font-size: 13.5px;
+  border-radius: 8px;
+}
+
+.pay-result-contact-row {
+  margin-top: 16px;
+}
+
+.pay-result-contact-link {
+  font-size: 12px;
+  color: #64748b;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.pay-result-contact-link:hover {
+  color: var(--primary);
 }
 
 /* --- Toast Container & Items (Premium) --- */

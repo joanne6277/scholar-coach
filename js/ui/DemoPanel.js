@@ -4,6 +4,7 @@ import { showUploadError, showStructureError } from './Upload.js';
 import { showGenerationError } from './Generation.js';
 import { toggleAuthModal } from './Auth.js';
 import { showToast } from '../utils/Toast.js';
+import { openPaymentModal, showPaymentFailed } from './Member.js';
 
 function ensureMainAppVisible() {
   const landingPage = document.getElementById('landingPage');
@@ -72,6 +73,16 @@ export function initDemoPanel() {
       if (!requireLoginForDemo()) return;
       goStep(4);
       showGenerationError();
+    };
+  }
+
+  const payFailedBtn = document.getElementById('demoPayFailed');
+  if (payFailedBtn) {
+    payFailedBtn.onclick = () => {
+      if (!requireLoginForDemo()) return;
+      goStep(3);
+      openPaymentModal({ amount: 30, desc: '分析生成研究提案（Demo 情境）', onSuccess: () => {} });
+      showPaymentFailed();
     };
   }
 

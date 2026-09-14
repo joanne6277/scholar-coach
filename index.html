@@ -496,11 +496,11 @@
     </div>
   </div>
 
-  <!-- Payment Modal (第三方支付通道 Demo 模擬，實際串接對象未定) -->
+  <!-- Order Confirmation Modal (第三方支付通道 Demo 模擬，實際串接對象未定) -->
   <div id="paymentModal" class="modal-overlay" style="display:none">
     <div class="modal-card payment-card">
       <div class="modal-header payment-header">
-        <h3>確認付款</h3>
+        <h3>確認訂單</h3>
         <button class="close-modal" id="closePaymentBtn">&times;</button>
       </div>
       <p class="lp-demo-note">以下為付款流程 Demo 模擬畫面，正式上線後將導向實際簽約之第三方支付服務商</p>
@@ -511,16 +511,12 @@
           <h4 class="pay-title">確認交易明細</h4>
           <div class="pay-detail-box">
             <div class="pay-detail-row">
-              <span class="pay-detail-label">收款商戶</span>
-              <span class="pay-detail-val">Scholar Coach (學術教練)</span>
-            </div>
-            <div class="pay-detail-row">
               <span class="pay-detail-label">服務項目</span>
               <span class="pay-detail-val" id="payGoodsName">分析生成研究提案</span>
             </div>
             <div class="pay-detail-row">
-              <span class="pay-detail-label">交易編號</span>
-              <span class="pay-detail-val" id="payTradeNo">TXN20260526150242</span>
+              <span class="pay-detail-label">訂單編號</span>
+              <span class="pay-detail-val" id="payOrderNo">ORD20260911150242</span>
             </div>
             <div class="pay-detail-row total-row">
               <span class="pay-detail-label">應付金額</span>
@@ -528,20 +524,132 @@
             </div>
           </div>
 
-          <div class="pay-method-section">
-            <h5>付款方式</h5>
-            <div class="pay-method-option active">
-              <div class="pay-method-info">
-                <div class="pay-method-title">第三方支付通道</div>
-                <div class="pay-method-desc">確認付款後將導向第三方支付服務商頁面完成付款</div>
+          <!-- Invoice Section (發票資訊) -->
+          <div class="invoice-section">
+            <h5 class="pay-subtitle">發票資訊</h5>
+            
+            <!-- 第一層：發票類型 -->
+            <div class="invoice-type-group" id="invoiceTypeGroup">
+              <label class="invoice-type-card active" data-type="personal">
+                <input type="radio" name="invoiceType" value="personal" checked>
+                <span class="invoice-type-radio"></span>
+                <span class="invoice-type-name">個人電子發票</span>
+              </label>
+              <label class="invoice-type-card" data-type="company">
+                <input type="radio" name="invoiceType" value="company">
+                <span class="invoice-type-radio"></span>
+                <span class="invoice-type-name">公司發票</span>
+              </label>
+              <label class="invoice-type-card" data-type="donate">
+                <input type="radio" name="invoiceType" value="donate">
+                <span class="invoice-type-radio"></span>
+                <span class="invoice-type-name">捐贈發票</span>
+              </label>
+            </div>
+
+            <!-- 第二層：各選項展開內容 -->
+            <div class="invoice-sub-container">
+              <!-- 捐贈發票展開區塊 -->
+              <div class="invoice-sub-panel" id="invoiceSubDonate" style="display: none;">
+                <div class="invoice-form-group">
+                  <label class="invoice-form-label" for="donateCode">捐贈碼 <span class="required-star">*</span></label>
+                  <input type="text" id="donateCode" class="invoice-input" placeholder="請輸入愛心碼 (3–7 碼數字)" maxlength="7" autocomplete="off">
+                  <div class="field-error" id="donateCodeError"></div>
+                </div>
               </div>
-              <div class="pay-method-radio">
-                <div class="radio-dot"></div>
+
+              <!-- 個人電子發票展開區塊 -->
+              <div class="invoice-sub-panel" id="invoiceSubPersonal">
+                <div class="carrier-type-group" id="carrierTypeGroup">
+                  <label class="carrier-option active" data-carrier="member">
+                    <input type="radio" name="personalCarrier" value="member" checked>
+                    <span class="carrier-radio-dot"></span>
+                    <span class="carrier-label">存於會員帳號</span>
+                  </label>
+                  <label class="carrier-option" data-carrier="mobile">
+                    <input type="radio" name="personalCarrier" value="mobile">
+                    <span class="carrier-radio-dot"></span>
+                    <span class="carrier-label">手機條碼載具</span>
+                  </label>
+                  <label class="carrier-option" data-carrier="citizen">
+                    <input type="radio" name="personalCarrier" value="citizen">
+                    <span class="carrier-radio-dot"></span>
+                    <span class="carrier-label">自然人憑證</span>
+                  </label>
+                </div>
+
+                <!-- 存於會員帳號說明 -->
+                <div class="carrier-detail" id="carrierDetailMember">
+                  <p class="carrier-tip-text"><i class="fas fa-info-circle"></i> 發票將寄存於您的會員帳號，中獎時系統將主動發信通知。</p>
+                </div>
+
+                <!-- 手機條碼輸入框 -->
+                <div class="carrier-detail" id="carrierDetailMobile" style="display: none;">
+                  <div class="invoice-form-group">
+                    <label class="invoice-form-label" for="mobileBarcode">手機條碼 <span class="required-star">*</span></label>
+                    <input type="text" id="mobileBarcode" class="invoice-input" placeholder="請輸入手機條碼（例：/ABC1234）" maxlength="8" autocomplete="off">
+                    <div class="field-error" id="mobileBarcodeError"></div>
+                  </div>
+                </div>
+
+                <!-- 自然人憑證條碼輸入框 -->
+                <div class="carrier-detail" id="carrierDetailCitizen" style="display: none;">
+                  <div class="invoice-form-group">
+                    <label class="invoice-form-label" for="citizenCode">自然人憑證條碼 <span class="required-star">*</span></label>
+                    <input type="text" id="citizenCode" class="invoice-input" placeholder="請輸入16碼憑證號碼" maxlength="20" autocomplete="off">
+                    <div class="field-error" id="citizenCodeError"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 公司發票展開區塊 -->
+              <div class="invoice-sub-panel" id="invoiceSubCompany" style="display: none;">
+                <div class="invoice-form-group">
+                  <label class="invoice-form-label" for="companyTaxId">統一編號 <span class="required-star">*</span></label>
+                  <input type="text" id="companyTaxId" class="invoice-input" placeholder="請輸入統一編號" maxlength="8" autocomplete="off">
+                  <div class="field-error" id="companyTaxIdError"></div>
+                </div>
+                <div class="invoice-form-group">
+                  <label class="invoice-form-label" for="companyTitle">發票抬頭 <span class="required-star">*</span></label>
+                  <input type="text" id="companyTitle" class="invoice-input" placeholder="請輸入發票抬頭（公司名稱）" maxlength="50" autocomplete="off">
+                  <div class="field-error" id="companyTitleError"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <button class="btn-primary lp-btn-pay" id="startPayBtn">確認付款</button>
+          <button class="btn-primary lp-btn-pay" id="startPayBtn">前往付款</button>
+          <div class="pay-security-tip">
+            <i class="fas fa-lock"></i> 點擊前往付款將導向第三方安全支付閘道
+          </div>
+        </div>
+
+        <!-- View 2: Payment Processing (付款處理中) -->
+        <div id="payProcessingView" class="pay-view">
+          <div class="pay-processing-view">
+            <div class="spinner"></div>
+            <h4 class="pay-processing-title">付款處理中，請稍候…</h4>
+            <div class="pay-processing-meta">訂單編號：<span id="payProcessingOrderNo">--</span></div>
+          </div>
+        </div>
+
+        <!-- View 3: Payment Failed (付款未完成) -->
+        <div id="payFailedView" class="pay-view">
+          <div class="pay-result-view">
+            <div class="pay-error-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h3 class="pay-result-title">付款未完成</h3>
+            <p class="pay-result-desc">本次交易並未完成，系統未向您收取任何費用。您可以重新付款，或返回上一步調整設定。</p>
+            <div class="pay-result-meta">訂單編號：<span id="payFailedOrderNo">--</span></div>
+            <div class="pay-result-actions">
+              <button class="btn-primary" id="payRetryBtn">重新付款 ›</button>
+              <button class="btn-secondary" id="payFailedBackBtn">返回上一步</button>
+            </div>
+            <div class="pay-result-contact-row">
+              <a class="pay-result-contact-link" href="mailto:scholarcoach.ai@gmail.com" id="payErrorContactBtn">聯絡客服</a>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -698,6 +806,8 @@
       <button class="demo-panel-btn" id="demoErrPages">(1) 上傳：頁數超過200頁</button>
       <button class="demo-panel-btn" id="demoErrStructure">(2) 確認頁：論文分析失敗</button>
       <button class="demo-panel-btn" id="demoErrGenNetwork">(4) 生成中：網路/伺服器錯誤</button>
+      <div class="demo-panel-header" style="margin-top:8px;">付款情境 Demo</div>
+      <button class="demo-panel-btn" id="demoPayFailed">(3) 付款：取消／失敗</button>
       <div class="demo-panel-header" style="margin-top:8px;">計價情境 Demo</div>
       <button class="demo-panel-btn" id="demoFreeTrial">情境：首次免費使用</button>
       <button class="demo-panel-btn" id="demoPaidUser">情境：已使用過（需付費）</button>
