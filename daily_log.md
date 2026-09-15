@@ -1,5 +1,34 @@
 # 開發日誌 (Daily Log)
 
+## 2026-09-15
+
+### 付款處理中停留時間延長與無Header彈窗尺寸調整
+
+#### 變更摘要
+依據修訂計畫優化「確認訂單」彈窗（`#paymentModal`）體驗與等待節奏：
+1. **處理中停留時間延長**：將「付款處理中」轉圈畫面停留時間由 800 毫秒延長為 **3 秒**（3000ms），提升模擬第三方支付交易處理的真實等候感。
+2. **無 Header 狀態動態切換**：「付款處理中」(`#payProcessingView`) 與「付款未完成」(`#payFailedView`) 畫面全面隱藏標題列（標題文字與 × 關閉按鈕），「確認訂單」畫面維持正常顯示。
+3. **無 Header 彈窗尺寸緊湊化**：因應上述兩畫面移除 header 且內容精簡，新增 `.payment-card.is-compact`（`max-width: 340px`、`max-height: none`），並微調其內部留白 padding 與加強行動裝置 RWD 樣式。
+
+#### 詳細變更清單
+1. **JavaScript 邏輯優化 (`js/ui/Member.js`)**
+   - **延長等待延遲**：在 `startPayBtn.onclick` 中，將 `setTimeout` 延遲時間由 `800` 改為 `3000` 毫秒。
+   - **統一 Header 與 Compact 狀態切換**：改寫 `showPayView(id)` 函式，以 `isNoHeaderView = id === 'payProcessingView' || id === 'payFailedView'` 統一控制：
+     - `.payment-header` 切換 `is-hidden` class。
+     - `.payment-card` 切換 `is-compact` class。
+     - 開啟彈窗或從失敗畫面點擊「重新付款」時，自動切回預設 440px 寬版及顯示 Header。
+
+2. **CSS 視覺樣式優化 (`css/main.css`)**
+   - 新增 `.payment-header.is-hidden { display: none; }` 規則。
+   - 為 `.payment-card` 新增 `transition: max-width 0.25s ease;` 平滑尺寸過渡效果。
+   - 新增 `.payment-card.is-compact` 規則：`max-width: 340px; max-height: none; overflow-y: visible;`。
+   - 微調內部留白：
+     - `.pay-processing-view` padding 調整為 `40px 20px 32px`。
+     - `.pay-result-view` padding 調整為 `32px 20px 28px`。
+   - **RWD 行動版適配**：在 `@media (max-width: 768px)` 媒體查詢內加入 `.payment-card.is-compact { max-width: 340px; }`，確保卡片在各螢幕寬度下皆保持視覺比例且不超出螢幕。
+
+---
+
 ## 2026-09-11
 
 ### 確認訂單畫面調整與付款情境簡化

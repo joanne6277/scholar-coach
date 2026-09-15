@@ -311,6 +311,14 @@ export function initInvoiceEvents() {
 function showPayView(id) {
   document.querySelectorAll('#paymentModal .pay-view')
     .forEach(v => v.classList.toggle('active', v.id === id));
+
+  const isNoHeaderView = id === 'payProcessingView' || id === 'payFailedView';
+
+  const header = document.querySelector('#paymentModal .payment-header');
+  if (header) header.classList.toggle('is-hidden', isNoHeaderView);
+
+  const card = document.querySelector('#paymentModal .payment-card');
+  if (card) card.classList.toggle('is-compact', isNoHeaderView);
 }
 
 // 顯示付款未完成/失敗畫面 (供 Demo 面板或失敗情境呼叫)
@@ -331,11 +339,11 @@ export function openPaymentModal({ amount, desc, onSuccess }) {
   // 產生模擬訂單編號並固定存入 currentTransaction
   const now = new Date();
   const dateStr = now.getFullYear() +
-                  String(now.getMonth() + 1).padStart(2, '0') +
-                  String(now.getDate()).padStart(2, '0') +
-                  String(now.getHours()).padStart(2, '0') +
-                  String(now.getMinutes()).padStart(2, '0') +
-                  String(now.getSeconds()).padStart(2, '0');
+    String(now.getMonth() + 1).padStart(2, '0') +
+    String(now.getDate()).padStart(2, '0') +
+    String(now.getHours()).padStart(2, '0') +
+    String(now.getMinutes()).padStart(2, '0') +
+    String(now.getSeconds()).padStart(2, '0');
   const randomStr = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
   const orderNo = `ORD${dateStr}${randomStr}`;
 
@@ -480,7 +488,7 @@ export function initPaymentEvents() {
         if (typeof successCb === 'function') {
           successCb();
         }
-      }, 800);
+      }, 3000);
     };
   }
 }
