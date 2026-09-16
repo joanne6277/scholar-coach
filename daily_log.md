@@ -1,5 +1,27 @@
 # 開發日誌 (Daily Log)
 
+## 2026-09-16
+
+### 付款未完成畫面增加訂單編號複製按鈕
+
+#### 變更摘要
+依據《修訂計畫：付款未完成彈窗 — 訂單編號複製按鈕》優化「付款未完成」彈窗（`#payFailedView`）的使用者體驗：
+1. **新增複製按鈕**：在訂單編號（`#payFailedOrderNo`）右側新增精簡且低調的小型 icon 複製按鈕（`#payFailedOrderCopyBtn`），避免使用者手動抄寫或選取時出錯。
+2. **複製回饋與提示**：點擊按鈕時自動將訂單編號寫入系統剪貼簿，並沿用既有 `showToast()` 跳出「已複製訂單編號」成功提示（綠色 success 樣式）；若失敗則提示手動選取。
+3. **支援非 HTTPS 與降級處理**：實作 `copyText()` 工具函式，當不支援 Clipboard API 或處於非安全環境時，自動降級為傳統 `document.execCommand('copy')` 機制。
+
+#### 詳細變更清單
+1. **HTML 結構調整 (`index.html`)**
+   - 在 `#payFailedView` 內的 `.pay-result-meta` 訂單編號文字後，新增 `<button type="button" class="order-copy-btn" id="payFailedOrderCopyBtn" title="複製訂單編號" aria-label="複製訂單編號">` 元素，並內嵌 12×12 SVG 複製圖標。
+2. **CSS 視覺樣式優化 (`css/main.css`)**
+   - 新增 `.order-copy-btn` 樣式（20×20px 可點擊區域、無邊框、預設淺灰 `#94a3b8`、垂直置中對齊）。
+   - 新增 `.order-copy-btn:hover` 懸浮反饋（字色變深 `#475569` 與淡灰底色 `#f1f5f9`）。
+3. **JavaScript 邏輯實作 (`js/ui/Member.js`)**
+   - 實作 `copyText(text)` 函式，包含 `navigator.clipboard.writeText` 及 `textarea` 降級方案。
+   - 在 `showPaymentFailed()` 函式內，畫面顯示並填入訂單編號後綁定複製按鈕點擊事件，非同步觸發複製並跳出 Toast 提示。
+
+---
+
 ## 2026-09-15
 
 ### 付款處理中停留時間延長與無Header彈窗尺寸調整

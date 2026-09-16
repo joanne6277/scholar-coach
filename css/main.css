@@ -2377,6 +2377,29 @@ body {
   font-weight: 600;
 }
 
+.order-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 4px;
+  vertical-align: middle;
+  transition: color 0.15s, background 0.15s;
+}
+
+.order-copy-btn:hover {
+  color: #475569;
+  background: #f1f5f9;
+}
+
 .pay-result-actions {
   display: flex;
   justify-content: center;

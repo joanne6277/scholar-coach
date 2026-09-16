@@ -321,6 +321,23 @@ function showPayView(id) {
   if (card) card.classList.toggle('is-compact', isNoHeaderView);
 }
 
+// 複製文字到剪貼簿，含降級處理（非 HTTPS 或不支援 Clipboard API 時）
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  // 降級方案
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+}
+
 // 顯示付款未完成/失敗畫面 (供 Demo 面板或失敗情境呼叫)
 export function showPaymentFailed() {
   const orderNoEl = document.getElementById('payFailedOrderNo');
@@ -328,6 +345,19 @@ export function showPaymentFailed() {
     orderNoEl.textContent = currentTransaction.orderNo;
   }
   showPayView('payFailedView');
+
+  const copyBtn = document.getElementById('payFailedOrderCopyBtn');
+  if (copyBtn) {
+    copyBtn.onclick = async () => {
+      if (!currentTransaction.orderNo) return;
+      try {
+        await copyText(currentTransaction.orderNo);
+        showToast('已複製訂單編號', 'success', 2000);
+      } catch (err) {
+        showToast('複製失敗，請手動選取複製', 'error', 3000);
+      }
+    };
+  }
 }
 
 // 開啟付款視窗：本服務為單次收費（非首次使用依所選模式計費）

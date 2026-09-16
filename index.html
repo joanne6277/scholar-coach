@@ -3,11 +3,14 @@
 
 <head>
   <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5M8VWLBC');</script>
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5M8VWLBC');</script>
   <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +20,8 @@
 
 <body>
   <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5M8VWLBC"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5M8VWLBC" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
   <!-- Landing Page -->
@@ -114,7 +117,7 @@
         <div class="login-badge" id="loginBtn" style="display: flex;">
           <div class="f-icon" style="width:36px;height:36px;background:#eef2fd;color:#2752b8;margin-bottom:0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
             </svg>
           </div>
           <div class="member-info">
@@ -123,7 +126,10 @@
               <span class="member-status" style="background:#eee;color:#888">訪客</span>
             </div>
           </div>
-          <svg class="badge-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <svg class="badge-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
         </div>
 
         <!-- 已登入狀態 -->
@@ -132,13 +138,16 @@
             id="userAvatar">
           <div class="member-info">
             <div class="member-name" id="userName">林小明</div>
-            <div class="member-hint">查看帳戶與使用紀錄</div>
+            <div class="member-hint">查看帳戶與付款紀錄</div>
           </div>
-          <svg class="badge-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <svg class="badge-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
         </div>
 
         <hr class="sidebar-divider">
-        
+
         <div id="historyContainer" style="display: none;">
           <h3>歷史紀錄</h3>
           <ul class="history-list" id="historyList">
@@ -183,7 +192,8 @@
 
             <div class="upload-zone locked" id="uploadZone" style="margin-top: 1.5rem;">
               <div id="uploadIcon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 1rem;display:block;opacity:0.3">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                  style="margin:0 auto 1rem;display:block;opacity:0.3">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
@@ -194,12 +204,22 @@
                 <span>&#10003;</span><span id="fileName">paper.pdf</span>
               </div>
               <div id="uploadErrorText" style="display:none" class="upload-error-text">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
                 <span id="uploadErrorMsg"></span>
               </div>
             </div>
             <div class="upload-notice">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
               <span>上傳須知：檔案請至少包含標題與摘要（簡介）</span>
             </div>
             <input type="file" id="fileInput" accept=".pdf" style="display:none">
@@ -220,7 +240,12 @@
             <div class="section-label">論文摘要</div>
             <textarea class="nlp-input" id="confirmAbstractInput" style="height:140px;" readonly></textarea>
             <div class="upload-notice" style="margin-top:16px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
               <span>若萃取結果有誤，可能是檔案為加密類型（如受密碼保護或掃描影像檔）所致，請選擇另一份檔案重新上傳。</span>
             </div>
             <div class="cta-row">
@@ -232,7 +257,12 @@
           <!-- 分析失敗：涵蓋缺少標題摘要、系統暫時無法分析等情況（僅發生在扣款前，不涉及退款） -->
           <div class="generation-error-view" id="uploadAnalysisErrorView" style="display:none;">
             <div class="gen-error-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
             </div>
             <h3 class="gen-error-title">論文分析失敗</h3>
             <p class="gen-error-desc">系統無法從此檔案中辨識出標題與摘要，可能是檔案不完整、非標準學術論文格式，或伺服器暫時忙碌。請重新上傳符合條件的 PDF 檔案再試一次。</p>
@@ -367,24 +397,35 @@
           </div>
 
           <div class="section-label">迭代說明</div>
-          <p class="info-text-blue" style="margin-bottom: 0;">AI 以初步的創新原型為核心，透過 RAG（檢索增強生成） 技術進行循環檢索與邏輯補強，在大幅減少AI幻覺的同時，將模糊概念轉化為具備理論深度與實作可能性的研究方案。<br>迭代越多次，系統越能精準串接外部權威文獻來填補知識空白，並在不斷的自我修正中，讓創新概念蛻變成具備高度可行性與學術深度的具體提案。</p>
+          <p class="info-text-blue" style="margin-bottom: 0;">AI 以初步的創新原型為核心，透過 RAG（檢索增強生成）
+            技術進行循環檢索與邏輯補強，在大幅減少AI幻覺的同時，將模糊概念轉化為具備理論深度與實作可能性的研究方案。<br>迭代越多次，系統越能精準串接外部權威文獻來填補知識空白，並在不斷的自我修正中，讓創新概念蛻變成具備高度可行性與學術深度的具體提案。
+          </p>
 
           <div class="section-label">如何解讀提案分數</div>
           <p class="section-subdesc">每個生成的研究提案都會標示以下兩項分數，幫助你快速判斷這個構想值不值得深入發展。</p>
           <div class="metric-info-grid">
             <div class="metric-info-card">
               <div class="metric-info-icon" style="background:#eef7f0;color:#27500a">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6l-6.3 4.4L8 13.8 2 9.4h7.6z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.6l-6.3 4.4L8 13.8 2 9.4h7.6z" />
+                </svg>
               </div>
               <div class="metric-info-title">新穎性 <span class="metric-info-sub">Novelty</span></div>
-              <div class="metric-info-desc">系統會把這個提案拿去跟該領域大量既有文獻比對，計算主題重疊的程度。分數越高，代表這個構想跟目前已發表的研究差異越大，越有機會做出別人還沒做過的題目。</div>
+              <div class="metric-info-desc">系統會把這個提案拿去跟該領域大量既有文獻比對，計算主題重疊的程度。分數越高，代表這個構想跟目前已發表的研究差異越大，越有機會做出別人還沒做過的題目。
+              </div>
             </div>
             <div class="metric-info-card">
               <div class="metric-info-icon" style="background:#eef2fd;color:#2752b8">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H3v2a4 4 0 0 0 4 3.65M17 5h4v2a4 4 0 0 1-4 3.65"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4z" />
+                  <path d="M7 5H3v2a4 4 0 0 0 4 3.65M17 5h4v2a4 4 0 0 1-4 3.65" />
+                </svg>
               </div>
               <div class="metric-info-title">勝場數 <span class="metric-info-sub">Tournament Wins</span></div>
-              <div class="metric-info-desc">所有提案會進行「瑞士制錦標賽」——就像西洋棋比賽一樣兩兩配對對戰，由 AI 評審依動機、方法、嚴謹度逐輪 PK。每贏過一個對手就多一場勝場，勝場數越高，代表這個提案在多輪比較中持續勝出，整體品質相對更穩定可靠。</div>
+              <div class="metric-info-desc">所有提案會進行「瑞士制錦標賽」——就像西洋棋比賽一樣兩兩配對對戰，由 AI 評審依動機、方法、嚴謹度逐輪
+                PK。每贏過一個對手就多一場勝場，勝場數越高，代表這個提案在多輪比較中持續勝出，整體品質相對更穩定可靠。</div>
             </div>
           </div>
 
@@ -435,7 +476,12 @@
           <!-- 系統錯誤：生成過程中因網路或伺服器異常中斷（僅供 Demo 展示） -->
           <div class="generation-error-view" id="generationErrorView" style="display:none;">
             <div class="gen-error-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
             </div>
             <h3 class="gen-error-title">系統發生錯誤</h3>
             <p class="gen-error-desc">很抱歉，因網路連線或伺服器暫時異常，本次無法完成生成。請稍後再試一次；若問題持續發生，請聯絡客服協助處理。</p>
@@ -487,8 +533,8 @@
         </div>
 
         <div class="records-section">
-          <h4>使用紀錄</h4>
-          <p class="recharge-rate-note">首次使用免費，第二次起每次使用需付款：簡易模式 NT$ 30、一般模式 NT$ 60（於點擊「開始生成」時收款）</p>
+          <h4>付款紀錄</h4>
+          <p class="recharge-rate-note">首次使用免費，第二次起每次使用需付款：簡易模式 NT$ 30、一般模式 NT$ 60</p>
           <div class="records-list" id="usageRecordsList">
           </div>
         </div>
@@ -527,7 +573,7 @@
           <!-- Invoice Section (發票資訊) -->
           <div class="invoice-section">
             <h5 class="pay-subtitle">發票資訊</h5>
-            
+
             <!-- 第一層：發票類型 -->
             <div class="invoice-type-group" id="invoiceTypeGroup">
               <label class="invoice-type-card active" data-type="personal">
@@ -553,7 +599,8 @@
               <div class="invoice-sub-panel" id="invoiceSubDonate" style="display: none;">
                 <div class="invoice-form-group">
                   <label class="invoice-form-label" for="donateCode">捐贈碼 <span class="required-star">*</span></label>
-                  <input type="text" id="donateCode" class="invoice-input" placeholder="請輸入愛心碼 (3–7 碼數字)" maxlength="7" autocomplete="off">
+                  <input type="text" id="donateCode" class="invoice-input" placeholder="請輸入愛心碼 (3–7 碼數字)" maxlength="7"
+                    autocomplete="off">
                   <div class="field-error" id="donateCodeError"></div>
                 </div>
               </div>
@@ -586,8 +633,10 @@
                 <!-- 手機條碼輸入框 -->
                 <div class="carrier-detail" id="carrierDetailMobile" style="display: none;">
                   <div class="invoice-form-group">
-                    <label class="invoice-form-label" for="mobileBarcode">手機條碼 <span class="required-star">*</span></label>
-                    <input type="text" id="mobileBarcode" class="invoice-input" placeholder="請輸入手機條碼（例：/ABC1234）" maxlength="8" autocomplete="off">
+                    <label class="invoice-form-label" for="mobileBarcode">手機條碼 <span
+                        class="required-star">*</span></label>
+                    <input type="text" id="mobileBarcode" class="invoice-input" placeholder="請輸入手機條碼（例：/ABC1234）"
+                      maxlength="8" autocomplete="off">
                     <div class="field-error" id="mobileBarcodeError"></div>
                   </div>
                 </div>
@@ -595,8 +644,10 @@
                 <!-- 自然人憑證條碼輸入框 -->
                 <div class="carrier-detail" id="carrierDetailCitizen" style="display: none;">
                   <div class="invoice-form-group">
-                    <label class="invoice-form-label" for="citizenCode">自然人憑證條碼 <span class="required-star">*</span></label>
-                    <input type="text" id="citizenCode" class="invoice-input" placeholder="請輸入16碼憑證號碼" maxlength="20" autocomplete="off">
+                    <label class="invoice-form-label" for="citizenCode">自然人憑證條碼 <span
+                        class="required-star">*</span></label>
+                    <input type="text" id="citizenCode" class="invoice-input" placeholder="請輸入16碼憑證號碼" maxlength="20"
+                      autocomplete="off">
                     <div class="field-error" id="citizenCodeError"></div>
                   </div>
                 </div>
@@ -606,12 +657,14 @@
               <div class="invoice-sub-panel" id="invoiceSubCompany" style="display: none;">
                 <div class="invoice-form-group">
                   <label class="invoice-form-label" for="companyTaxId">統一編號 <span class="required-star">*</span></label>
-                  <input type="text" id="companyTaxId" class="invoice-input" placeholder="請輸入統一編號" maxlength="8" autocomplete="off">
+                  <input type="text" id="companyTaxId" class="invoice-input" placeholder="請輸入統一編號" maxlength="8"
+                    autocomplete="off">
                   <div class="field-error" id="companyTaxIdError"></div>
                 </div>
                 <div class="invoice-form-group">
                   <label class="invoice-form-label" for="companyTitle">發票抬頭 <span class="required-star">*</span></label>
-                  <input type="text" id="companyTitle" class="invoice-input" placeholder="請輸入發票抬頭（公司名稱）" maxlength="50" autocomplete="off">
+                  <input type="text" id="companyTitle" class="invoice-input" placeholder="請輸入發票抬頭（公司名稱）" maxlength="50"
+                    autocomplete="off">
                   <div class="field-error" id="companyTitleError"></div>
                 </div>
               </div>
@@ -637,17 +690,33 @@
         <div id="payFailedView" class="pay-view">
           <div class="pay-result-view">
             <div class="pay-error-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
             </div>
             <h3 class="pay-result-title">付款未完成</h3>
             <p class="pay-result-desc">本次交易並未完成，系統未向您收取任何費用。您可以重新付款，或返回上一步調整設定。</p>
-            <div class="pay-result-meta">訂單編號：<span id="payFailedOrderNo">--</span></div>
+            <div class="pay-result-meta">
+              訂單編號：<span id="payFailedOrderNo">--</span>
+              <button type="button" class="order-copy-btn" id="payFailedOrderCopyBtn" title="複製訂單編號"
+                aria-label="複製訂單編號">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
             <div class="pay-result-actions">
               <button class="btn-primary" id="payRetryBtn">重新付款 ›</button>
               <button class="btn-secondary" id="payFailedBackBtn">返回上一步</button>
             </div>
             <div class="pay-result-contact-row">
-              <a class="pay-result-contact-link" href="mailto:scholarcoach.ai@gmail.com" id="payErrorContactBtn">聯絡客服</a>
+              <a class="pay-result-contact-link" href="mailto:scholarcoach.ai@gmail.com"
+                id="payErrorContactBtn">聯絡客服</a>
             </div>
           </div>
         </div>
@@ -664,7 +733,7 @@
         <button class="close-modal" id="closeAuthBtn">&times;</button>
       </div>
       <div class="modal-body auth-body">
-        
+
         <!-- View 1: Main View (Google 登入主畫面) -->
         <div id="authMainView" class="auth-view active">
           <div class="auth-brand-container">
@@ -675,15 +744,20 @@
           <p class="auth-free-note">首次使用免費</p>
           <button class="google-btn" id="googleLoginBtn">
             <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              <path fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+              <path fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
             <span>使用 Google 帳戶繼續</span>
           </button>
           <div class="auth-terms">
-            點擊上方按鈕即代表您同意我們的<a href="terms.html" target="_blank" rel="noopener">服務條款</a>與<a href="terms.html#privacy" target="_blank" rel="noopener">隱私權政策</a>。
+            點擊上方按鈕即代表您同意我們的<a href="terms.html" target="_blank" rel="noopener">服務條款</a>與<a href="terms.html#privacy"
+              target="_blank" rel="noopener">隱私權政策</a>。
           </div>
         </div>
 
@@ -691,10 +765,14 @@
         <div id="authGoogleChooseView" class="auth-view">
           <div class="google-header">
             <svg viewBox="0 0 24 24" width="32" height="32" style="margin-bottom:8px">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              <path fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+              <path fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
             <h4 class="google-choose-title">選擇帳戶</h4>
             <p class="google-choose-subtitle">以繼續前往 Scholar Coach</p>
@@ -712,10 +790,10 @@
             <div class="google-account-item" id="googleAccountOther">
               <div class="google-avatar-other">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <line x1="19" y1="8" x2="19" y2="14"/>
-                  <line x1="16" y1="11" x2="22" y2="11"/>
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <line x1="19" y1="8" x2="19" y2="14" />
+                  <line x1="16" y1="11" x2="22" y2="11" />
                 </svg>
               </div>
               <div class="google-account-info">
@@ -732,10 +810,14 @@
         <div id="authCustomAccountView" class="auth-view">
           <div class="google-header">
             <svg viewBox="0 0 24 24" width="32" height="32" style="margin-bottom:8px">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              <path fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+              <path fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
             <h4 class="google-choose-title">建立模擬帳戶</h4>
             <p class="google-choose-subtitle">請輸入您的 Google 帳戶資訊</p>
@@ -751,7 +833,8 @@
             </div>
             <div class="form-actions" style="margin-top: 24px; display: flex; gap: 12px;">
               <button type="button" class="btn-secondary" id="customBackBtn" style="flex: 1; padding: 10px;">返回</button>
-              <button type="submit" class="btn-primary" id="customSubmitBtn" style="flex: 1; padding: 10px;">確定登入</button>
+              <button type="submit" class="btn-primary" id="customSubmitBtn"
+                style="flex: 1; padding: 10px;">確定登入</button>
             </div>
           </form>
         </div>
@@ -767,12 +850,14 @@
             <!-- Success state -->
             <div class="auth-success-wrapper" id="authSuccessWrapper" style="display:none;">
               <div class="success-icon-wrapper">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2a7a4f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="success-checkmark">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2a7a4f" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round" class="success-checkmark">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
               <h4 id="authSuccessTitle" style="font-size:18px; margin-top:16px;">登入成功！</h4>
-              <p id="authSuccessSubtitle" style="font-size:14px; color:#666; margin-top:8px;">歡迎使用 Scholar Coach，正在為您載入...</p>
+              <p id="authSuccessSubtitle" style="font-size:14px; color:#666; margin-top:8px;">歡迎使用 Scholar
+                Coach，正在為您載入...</p>
               <div class="confetti-container" id="confettiContainer"></div>
             </div>
           </div>
@@ -830,7 +915,8 @@
   <div id="cookieConsent" class="cookie-consent" style="display:none;">
     <div class="cookie-consent-inner">
       <p class="cookie-consent-text">
-        本產品使用 Cookie 及類似技術，以維持您的登入狀態、記住偏好設定，並透過蒐集使用行為數據，瞭解功能使用情形及改善產品體驗。您可透過瀏覽器設定管理、封鎖或刪除 Cookie；惟停用必要性 Cookie 後，登入狀態維持等部分功能可能無法正常運作。本產品不會將 Cookie 蒐集之資料出售予第三方，亦未使用第三方廣告聯播網進行跨站追蹤或個人化廣告投放。
+        本產品使用 Cookie 及類似技術，以維持您的登入狀態、記住偏好設定，並透過蒐集使用行為數據，瞭解功能使用情形及改善產品體驗。您可透過瀏覽器設定管理、封鎖或刪除 Cookie；惟停用必要性 Cookie
+        後，登入狀態維持等部分功能可能無法正常運作。本產品不會將 Cookie 蒐集之資料出售予第三方，亦未使用第三方廣告聯播網進行跨站追蹤或個人化廣告投放。
         <a href="terms.html#privacy" target="_blank" rel="noopener" class="cookie-consent-link">隱私權政策</a>
       </p>
       <div class="cookie-consent-actions">
