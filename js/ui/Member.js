@@ -420,7 +420,6 @@ export function initPaymentEvents() {
   const closePaymentBtn = document.getElementById('closePaymentBtn');
   const paymentModal = document.getElementById('paymentModal');
   const startPayBtn = document.getElementById('startPayBtn');
-  const payRetryBtn = document.getElementById('payRetryBtn');
   const payFailedBackBtn = document.getElementById('payFailedBackBtn');
 
   // 初始化發票事件綁定
@@ -455,25 +454,9 @@ export function initPaymentEvents() {
     };
   }
 
-  // 付款未完成畫面：返回上一步
+  // 付款未完成畫面：返回設定頁面
   if (payFailedBackBtn) {
     payFailedBackBtn.onclick = cancelTransaction;
-  }
-
-  // 付款未完成畫面：重新付款
-  if (payRetryBtn) {
-    payRetryBtn.onclick = () => {
-      currentTransaction.status = 'idle';
-
-      // 切換回確認訂單明細 View，保留原訂單編號與已填發票資訊（不呼叫 resetInvoiceState()）
-      showPayView('paySummaryView');
-
-      if (startPayBtn) {
-        startPayBtn.disabled = false;
-        startPayBtn.classList.remove('is-loading');
-        startPayBtn.textContent = '前往付款';
-      }
-    };
   }
 
   // 點擊「前往付款」

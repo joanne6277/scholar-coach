@@ -1,5 +1,27 @@
 # 開發日誌 (Daily Log)
 
+## 2026-09-17
+
+### 付款未完成彈窗按鈕整併為「返回設定頁面」及說明文案修訂
+
+#### 變更摘要
+依據《修訂計畫：付款未完成彈窗 — 兩顆按鈕併為一顆「返回設定頁面」》進行付款未完成畫面（`#payFailedView`）互動與文案優化：
+1. **說明文案修訂**：移除「您可以重新付款，或返回上一步調整設定」之選項描述，改為引導使用者回到設定頁面重新確認後再付款（「本次交易並未完成，系統未向您收取任何費用。請返回設定頁面確認後，重新完成付款。」）。
+2. **按鈕整併為單一主要動作**：移除「重新付款 ›」（`#payRetryBtn`），僅保留一顆按鈕，文字修訂為「返回設定頁面」（`#payFailedBackBtn`），樣式由次要按鈕（`btn-secondary`）調整為主要按鈕（`btn-primary`），提供明確且唯一的引導動線。
+3. **簡化 JavaScript 邏輯**：移除 `Member.js` 內針對 `payRetryBtn` 之變數宣告與重試事件監聽，維持點擊「返回設定頁面」呼叫 `cancelTransaction` 關閉付款視窗並重置交易狀態，使用者關閉視窗後自然回到 Step 3 設定條件頁面。
+
+#### 詳細變更清單
+1. **HTML 結構調整 (`index.html`)**
+   - 更新 `#payFailedView` 下之說明文字段落（`.pay-result-desc`）。
+   - 移除按鈕區（`.pay-result-actions`）內的 `<button class="btn-primary" id="payRetryBtn">重新付款 ›</button>`。
+   - 將原本的 `<button class="btn-secondary" id="payFailedBackBtn">返回上一步</button>` 調整為 `<button class="btn-primary" id="payFailedBackBtn">返回設定頁面</button>`。
+2. **JavaScript 邏輯調整 (`js/ui/Member.js`)**
+   - 移除 `initPaymentEvents()` 中的 `const payRetryBtn = document.getElementById('payRetryBtn');` 變數宣告。
+   - 移除 `if (payRetryBtn) { ... }` 重新付款事件監聽邏輯。
+   - 更新 `payFailedBackBtn` 之註解說明為「付款未完成畫面：返回設定頁面」，維持綁定 `cancelTransaction`。
+
+---
+
 ## 2026-09-16
 
 ### 付款未完成畫面增加訂單編號複製按鈕
